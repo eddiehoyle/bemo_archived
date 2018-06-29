@@ -4,12 +4,17 @@ import unittest
 sys.path.insert(0, "/Users/eddiehoyle/Code/cpp/bemo/build")
 import pybemo
 
-
-
-class TestNode(unittest.TestCase):
+class TestFactoryNode(unittest.TestCase):
 
     def test_createFunc(self):
-        pybemo.create_node("Bemo")
+        node = pybemo.create_node("Bemo")
+        self.assertEquals(node.get_name(), "Bemo")
+
+    def test_readFunc(self):
+        node = pybemo.create_node("Bemo")
+        pybemo.read_node(node)
+
+class TestNode(unittest.TestCase):
 
     def test_create(self):
         node = pybemo.Node("node")
@@ -24,6 +29,10 @@ class TestNode(unittest.TestCase):
         node.set_name("Bemo")
         self.assertEqual(node.get_name(), "Bemo")
 
+    def test_execute(self):
+        node = pybemo.Node("Penny")
+        self.assertEquals(node.execute(), 0)
+
 class TestGraph(unittest.TestCase):
 
     def test_create(self):
@@ -35,6 +44,19 @@ class TestGraph(unittest.TestCase):
         node = pybemo.Node("Bemo")
         graph.add(node)
         self.assertEqual(graph.get_count(), 1)
+
+    def test_remove(self):
+        graph = pybemo.Graph()
+        node = pybemo.Node("Bemo")
+        graph.add(node)
+        graph.remove(node)
+        self.assertEqual(graph.get_count(), 0)
+
+    def test_execute(self):
+        graph = pybemo.Graph()
+        node = pybemo.Node("Bemo")
+        graph.add(node)
+        self.assertEquals(graph.execute(), 0)
 
 
 

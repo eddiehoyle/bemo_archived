@@ -1,12 +1,22 @@
 set(TARGET_PYLIB pybemo)
 set(TARGET_LIB node)
+set(TARGET_EXE app)
 
 include_directories(include)
 
 add_library(${TARGET_LIB} SHARED
-        src/Node.cc include/Node.hh
-        src/Graph.cc include/Graph.hh
-        )
+        src/Node.cc
+        src/Graph.cc)
+
+# Qt5
+set(CMAKE_PREFIX_PATH $ENV{HOME}/Qt/5.7/clang_64/lib/cmake ${CMAKE_PREFIX_PATH} )
+set(CMAKE_AUTOMOC ON)
+
+find_package(Qt5Widgets REQUIRED)
+
+add_executable(app src/ui/Main.cc src/ui/Button.cc)
+target_link_libraries(${TARGET_EXE} PRIVATE
+        ${TARGET_LIB} pybind11::embed Qt5::Widgets)
 
 pybind11_add_module(${TARGET_PYLIB} src/pybemo.cc)
 target_link_libraries(${TARGET_PYLIB} PRIVATE ${TARGET_LIB})

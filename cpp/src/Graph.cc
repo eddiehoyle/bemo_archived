@@ -3,11 +3,11 @@
 
 namespace bemo {
 
-void Graph::add( const Node& node ) {
+void Graph::add( NodePtr node ) {
     m_nodes.push_back( node );
 }
 
-void Graph::remove( const Node& node ) {
+void Graph::remove( NodePtr node ) {
     auto iter = std::find( m_nodes.begin(), m_nodes.end(), node );
     if ( iter != m_nodes.end() ) {
         m_nodes.erase( iter );

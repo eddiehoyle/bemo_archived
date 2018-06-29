@@ -8,11 +8,20 @@ namespace bemo {
 
 class Graph {
 public:
-    void add( const Node& node );
-    void remove( const Node& node );
+    void add( NodePtr node );
+    void remove( NodePtr node );
     std::size_t get_count() const;
+    int execute() {
+        for ( NodePtr node : m_nodes ) {
+            int rc = node->execute();
+            if ( rc != 0 ) {
+                break;
+            }
+        }
+        return 0;
+    }
 private:
-    std::vector< Node > m_nodes;
+    std::vector< NodePtr > m_nodes;
 };
 
 }

@@ -4,7 +4,7 @@
 namespace bemo {
 
 NodePtr create_node( const std::string& name ) {
-    return NodePtr( new Node( name ) );
+    return std::make_shared<Node>( name );
 }
 
 std::string read_node( const NodePtr& node ) {
@@ -25,5 +25,6 @@ void Node::set_name( const std::string& name ) {
 std::string Node::get_name() const {
     return m_name;
 }
+
 
 }
