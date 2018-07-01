@@ -6,6 +6,13 @@
 
 namespace bemo {
 
+class Graph;
+using GraphPtr = std::shared_ptr< Graph >;
+
+GraphPtr create_graph() {
+    return std::make_shared< Graph >();
+}
+
 class Graph {
 public:
     void add( NodePtr node );
@@ -23,6 +30,29 @@ public:
 private:
     std::vector< NodePtr > m_nodes;
 };
+
+class GraphManager {
+public:
+    GraphManager() : m_graph( nullptr ) {
+        m_graph = create_graph();
+    }
+    static GraphManager& instance() {
+        static GraphManager instance;
+        std::cerr << "got instance=" << (void*)&instance << std::endl;
+        return instance;
+    }
+    GraphPtr graph() {
+        return m_graph;
+    }
+private:
+    GraphPtr m_graph;
+};
+
+bemo::GraphPtr get_ui_graph() {
+    GraphPtr graph = GraphManager::instance().graph();
+    std::cerr << "got graph=" << (void*)graph.get() << std::endl;
+    return graph;
+}
 
 }
 

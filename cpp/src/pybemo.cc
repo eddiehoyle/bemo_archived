@@ -3,19 +3,10 @@
 
 #include <Node.hh>
 #include <Graph.hh>
+#include <memory>
 
 namespace py = pybind11;
 using namespace bemo;
-
-class Child {};
-
-class Parent {
-public:
-    Parent() : child( std::make_shared<Child>()) { }
-    std::shared_ptr<Child> get_child() { return child; }
-private:
-    std::shared_ptr<Child> child;
-};
 
 PYBIND11_MODULE(pybemo, m) {
 
@@ -44,13 +35,7 @@ PYBIND11_MODULE(pybemo, m) {
 
     m.def("create_node", &create_node, py::arg("name"));
     m.def("read_node", &read_node, py::arg("node"));
-
-//    py::class_<Child, std::shared_ptr<Child>>(m, "Child");
-//
-//    py::class_<Parent, std::shared_ptr<Parent>>(m, "Parent")
-//            .def(py::init<>())
-//            .def("get_child", &Parent::get_child);
-
+    m.def("get_ui_graph", &get_ui_graph);
 }
 
 
