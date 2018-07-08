@@ -26,10 +26,8 @@ private slots:
     void execScript();
 
 private:
-
     Outliner* m_outliner;
     ScriptEditor* m_editor;
-
     py::scoped_interpreter m_py;
 };
 

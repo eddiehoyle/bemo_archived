@@ -12,8 +12,6 @@ class Outliner : public QTreeWidget {
 public:
     Outliner( QWidget* parent = nullptr );
     ~Outliner() = default;
-
 };
-
 
 #endif // BEMO_VIEW_HH

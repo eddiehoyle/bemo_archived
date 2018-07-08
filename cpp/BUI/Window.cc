@@ -5,12 +5,16 @@
 #include "Window.hh"
 #include "ScriptEditor.hh"
 #include "Outliner.hh"
+
 #include <QVBoxLayout>
 #include <QPushButton>
-#include <iostream>
-
-#include <Graph.hh>
 #include <QTreeWidgetItem>
+
+#include <iostream>
+#include <BCore/API.hh>
+#include <BCore/Graph.hh>
+#include <BCore/util/Log.hh>
+
 
 Window::Window()
     : m_editor( nullptr ),
@@ -37,15 +41,19 @@ Window::Window()
     connect( runScriptButton, SIGNAL(clicked()), this, SLOT(execScript()));
 
     m_editor->setText(R"(import pybemo
-g = pybemo.get_ui_graph()
-print g.get_count())");
+mgr = pybemo.GraphManager()
+graph = mgr.get_graph()
+print "Python : There are %s Bemo(s) in graph." % (graph.get_count())
+)");
 }
 
 void Window::addNode() {
-    bemo::GraphPtr graph = bemo::get_ui_graph();
-    bemo::NodePtr node = bemo::create_node( "Bemo" );
+    bemo::GraphManager* mgr = bemo::BMO_GraphManager;
+    BMO_ERROR << "C++ : Got GraphManager=" << (void*)mgr;
+
+    bemo::GraphPtr graph = mgr->get_graph();
+    bemo::NodePtr node = bemo::create_node( "Penny" + std::to_string( graph->get_count() ) );
     graph->add( node );
-    std::cerr << "node count=" << graph->get_count() << std::endl;
 
     // Create new item (top level item)
     QTreeWidgetItem* item = new QTreeWidgetItem( m_outliner );

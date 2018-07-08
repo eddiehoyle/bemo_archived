@@ -1,0 +1,4 @@
+#ifndef BEMO_PLATFORM_HH
+#define BEMO_PLATFORM_HH
+
+#endif // BEMO_PLATFORM_HH

@@ -1,21 +1,29 @@
 set(TARGET_PYLIB pybemo)
-set(TARGET_LIB node)
-set(TARGET_EXE app)
+set(TARGET_CORELIB corebemo)
+set(TARGET_UI appbemo)
 
-include_directories(include)
+include_directories(.)
 
-add_library(${TARGET_LIB} SHARED
-        src/Node.cc
-        src/Graph.cc)
+set(BMO_LOGGING_ENABLED true)
+add_definitions(-DBMO_LOGGING_ENABLED=${DLP_LOGGING_ENABLED})
 
-pybind11_add_module(${TARGET_PYLIB} src/pybemo.cc)
-target_link_libraries(${TARGET_PYLIB} PRIVATE ${TARGET_LIB})
+add_library(${TARGET_CORELIB} SHARED
+        BCore/API.cc
+        BCore/Bemo.cc
+        BCore/Node.cc
+        BCore/Graph.cc
+
+        BCore/util/Log.cc
+        )
+
+pybind11_add_module(${TARGET_PYLIB} BPy/pybemo.cc)
+target_link_libraries(${TARGET_PYLIB} PRIVATE ${TARGET_CORELIB})
 
 add_custom_command(TARGET ${TARGET_PYLIB} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${TARGET_PYLIB}> ${PYTHON_DIST_DIR})
 
-add_custom_command(TARGET ${TARGET_LIB}  POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${TARGET_LIB}> ${PYTHON_DIST_DIR})
+add_custom_command(TARGET ${TARGET_CORELIB}  POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${TARGET_CORELIB}> ${PYTHON_DIST_DIR})
 
 
 # Qt5
@@ -24,12 +32,12 @@ set(CMAKE_AUTOMOC ON)
 
 find_package(Qt5Widgets REQUIRED)
 
-add_executable(${TARGET_EXE}
-        src/ui/Main.cc
-        src/ui/Window.cc
-        src/ui/Outliner.cc
-        src/ui/ScriptEditor.cc)
-target_link_libraries(${TARGET_EXE} PRIVATE
-        ${TARGET_LIB} pybind11::embed Qt5::Widgets)
+add_executable(${TARGET_UI}
+        BUI/Main.cc
+        BUI/Window.cc
+        BUI/Outliner.cc
+        BUI/ScriptEditor.cc)
+target_link_libraries(${TARGET_UI} PRIVATE
+        ${TARGET_CORELIB} pybind11::embed Qt5::Widgets)
 
-add_dependencies(${TARGET_EXE} ${TARGET_PYLIB} ${TARGET_LIB})
+add_dependencies(${TARGET_UI} ${TARGET_PYLIB} ${TARGET_CORELIB})

@@ -5,4 +5,5 @@
 #include "Outliner.hh"
 
 Outliner::Outliner( QWidget* parent )
-    : QTreeWidget( parent ) {}
+    : QTreeWidget( parent ) {
+}
