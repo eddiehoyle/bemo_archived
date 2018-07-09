@@ -3,8 +3,8 @@
 
 
 #include <BCore/API.hh>
-#include <BCore/Graph.hh>
-#include <BCore/Node.hh>
+#include <BCore/node/Graph.hh>
+#include <BCore/node/Node.hh>
 
 #include <memory>
 #include <BCore/util/Log.hh>
@@ -40,7 +40,7 @@ PYBIND11_MODULE(pybemo, m) {
 
 
     m.def("create_node", &create_node, py::arg("name"));
-    m.def("read_node", &read_node, py::arg("node"));
+    m.def("read_node", &read_node, py::arg("container"));
 
 //    py::class_<GraphManager, std::shared_ptr<GraphManager> >(m, "GraphManager")
 //            .def(py::init<>())

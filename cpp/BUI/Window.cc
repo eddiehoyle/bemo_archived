@@ -12,7 +12,7 @@
 
 #include <iostream>
 #include <BCore/API.hh>
-#include <BCore/Graph.hh>
+#include <BCore/node/Graph.hh>
 #include <BCore/util/Log.hh>
 
 

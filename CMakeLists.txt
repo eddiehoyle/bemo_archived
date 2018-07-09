@@ -17,5 +17,12 @@ set(PYBIND11 ${CMAKE_SOURCE_DIR}/ext/pybind11)
 set(PYTHON_INCLUDE_DIR /usr/include/python2.7)
 set(PYBIND11_PYTHON_VERSION 2.7 CACHE STRING "")
 
-add_subdirectory(ext/pybind11)
+set(BMO_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/cpp)
+set(BMO_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/cpp)
+set(BMO_EXTERNAL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/ext)
+
+include_directories(${BMO_INCLUDE_DIR})
+
+add_subdirectory(ext)
 add_subdirectory(cpp)
+add_subdirectory(test)

@@ -3,9 +3,9 @@
 
 namespace bemo {
 
-class GraphManager;
+class ContainerManager;
 
-extern GraphManager* BMO_GraphManager;
+extern ContainerManager* BMO_ContainerManager;
 
 extern void initialize();
 extern void terminate();

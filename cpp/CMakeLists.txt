@@ -7,16 +7,16 @@ include_directories(.)
 set(BMO_LOGGING_ENABLED true)
 add_definitions(-DBMO_LOGGING_ENABLED=${DLP_LOGGING_ENABLED})
 
-add_library(${TARGET_CORELIB} SHARED
-        BCore/API.cc
-        BCore/Bemo.cc
-        BCore/Node.cc
-        BCore/Graph.cc
+file(GLOB_RECURSE LIBBEMO_SOURCES BCore/*.cc)
+file(GLOB_RECURSE LIBBEMO_HEADERS BCore/*.hh)
+file(GLOB_RECURSE PYBEMO_SOURCES BPy/*.cc)
+file(GLOB_RECURSE PYBEMO_HEADERS BPy/*.hh)
+file(GLOB_RECURSE UIBEMO_SOURCES BUI/*.cc)
+file(GLOB_RECURSE UIBEMO_HEADERS BUI/*.hh)
 
-        BCore/util/Log.cc
-        )
+add_library(${TARGET_CORELIB} SHARED ${LIBBEMO_SOURCES})
 
-pybind11_add_module(${TARGET_PYLIB} BPy/pybemo.cc)
+pybind11_add_module(${TARGET_PYLIB} ${PYBEMO_SOURCES})
 target_link_libraries(${TARGET_PYLIB} PRIVATE ${TARGET_CORELIB})
 
 add_custom_command(TARGET ${TARGET_PYLIB} POST_BUILD
@@ -32,11 +32,7 @@ set(CMAKE_AUTOMOC ON)
 
 find_package(Qt5Widgets REQUIRED)
 
-add_executable(${TARGET_UI}
-        BUI/Main.cc
-        BUI/Window.cc
-        BUI/Outliner.cc
-        BUI/ScriptEditor.cc)
+add_executable(${TARGET_UI} ${UIBEMO_SOURCES})
 target_link_libraries(${TARGET_UI} PRIVATE
         ${TARGET_CORELIB} pybind11::embed Qt5::Widgets)
 

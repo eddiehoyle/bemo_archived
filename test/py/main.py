@@ -17,7 +17,7 @@ class TestFactoryNode(unittest.TestCase):
 class TestNode(unittest.TestCase):
 
     def test_create(self):
-        node = pybemo.Node("node")
+        node = pybemo.Node("container")
         self.assertTrue(isinstance(node, pybemo.Node))
 
     def test_name(self):
