@@ -5,7 +5,7 @@
 
 #if BEMO_ASSERT_ENABLED
 #define STR(exp) #exp
-#define BMOASSERT(exp)                                         \
+#define BMO_ASSERT(exp)                                         \
 do {                                                            \
     if ( !( exp ) ) {                                           \
         BMO_ERROR << "Assertion failed: (" << STR(exp) << ") "  \

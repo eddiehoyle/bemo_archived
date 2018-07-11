@@ -11,8 +11,6 @@ using GraphWeakPtr = std::weak_ptr< Graph >;
 class GraphManager {
 public:
     ~GraphManager() = default;
-    void setActive( GraphPtr graph );
-    GraphPtr getActive() const;
 private:
     GraphWeakPtr m_active;
 };

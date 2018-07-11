@@ -5,13 +5,10 @@
 
 namespace bemo {
 
-class AbstractContainer;
 class ContainerManager;
 
 using ContainerID = ObjectID;
 using ContainerTypeID = TypeID;
-using ContainerIDs = std::vector< ContainerID >;
-using AbstractContainers = std::list< AbstractContainer* >;
 
 class AbstractContainer {
 
@@ -19,21 +16,15 @@ class AbstractContainer {
 
 public:
     ContainerID id() const { return m_id; }
-    AbstractContainer* getParent() const;
-    AbstractContainers getChildren() const;
-    void setParent( AbstractContainer* parent );
 
 protected:
-    AbstractContainer() = default;
+    explicit AbstractContainer( ContainerID id ) : m_id( id ), m_manager( nullptr ) {}
     virtual ~AbstractContainer() = default;
-    virtual int _execute() = 0;
-
+    virtual int execute() = 0;
 protected:
     ContainerID m_id;
+private:
     ContainerManager* m_manager;
-
-    ContainerID m_parent;
-    ContainerIDs m_children;
 };
 
 } // namespace bemo

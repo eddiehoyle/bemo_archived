@@ -79,9 +79,9 @@ Log& error_log();
 } // namespace bemo
 
 #define BMO_INITIALISE_LOG() \
-    ::bemo::debug_log();   \
-    ::bemo::info_log();    \
-    ::bemo::warn_log();    \
+    ::bemo::debug_log();    \
+    ::bemo::info_log();     \
+    ::bemo::warn_log();     \
     ::bemo::error_log();
 
 #ifdef BMO_LOGGING_ENABLED

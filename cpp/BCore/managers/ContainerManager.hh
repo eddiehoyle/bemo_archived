@@ -1,16 +1,34 @@
 #ifndef BEMO_CONTAINERMAINAGER_HH
 #define BEMO_CONTAINERMAINAGER_HH
 
+#include <BCore/util/Assert.hh>
+#include <BCore/util/Log.hh>
 #include <BCore/Platform.hh>
 #include <BCore/container/AbstractContainer.hh>
 
 namespace bemo {
 
-/// Owns all container lifetimes.
+/* Owns all managed object lifetimes.
+ * Thoughts:
+ *  Could this create all objects? Handle all allocations? Eg:
+ *   ObjectManager->create< Graph >();
+ *   ObjectManager->create< Node >();
+ *   ObjectManager->create< Connection >();
+ *  All object types and ids will be unique...
+ *   m_objects {
+ *      Connections: [0, 1, ..., n],
+ *      Graph:       [0, 1, ..., n],
+ *      Group:       [0, 1, ..., n],
+ *      Node:        [0, 1, ..., n],
+ *      Plug:        [0, 1, ..., n],
+ *   }
+ */
+
 class ContainerManager {
 
-    class AbstractWrapper {
+    class Wrapper {
     public:
+        virtual ~Wrapper() = default;
         ContainerID id() const { return m_id; }
         ContainerTypeID type() const { return m_type; }
     protected:
@@ -18,71 +36,74 @@ class ContainerManager {
         ContainerTypeID m_type;
     };
 
-    template< typename T >
-    class ContainerWrapper : public AbstractWrapper {
+    template< typename C >
+    class ContainerWrapper : public Wrapper {
     public:
-        ContainerWrapper( T container )
-                : m_container( container ) {
-            m_type = T::m_typeID;
+        ContainerWrapper( C container ) : m_container( container ) {
+            this->m_id = container.id();
+            this->m_type = C::TYPEID;
         }
-        T& get() { return m_container; }
+        C& get() { return m_container; }
     private:
-        T m_container;
+        C m_container;
     };
 
-    using ContanierIDs = std::set< ContainerID >;
-    using ContainerMap = std::unordered_map< ContainerTypeID, ContanierIDs >;
-    using ContainerWrappers = std::vector< AbstractWrapper* >;
+    using ContanierIDSet = std::set< ContainerID >;
+    using ContainerMap = std::map< ContainerTypeID, ContanierIDSet >;
+    using ContainerWrappers = std::vector< Wrapper* >;
 
 public:
 
-//    template< typename C, class... Args >
-//    ContainerID create( Args&&... args ) {
-//        ContainerWrapper< C >* wrapper = new ContainerWrapper< C >( C( std::forward<Args>(args)... ) );
-//        EntityID id = acquire( container );
-//        container->get().m_componentManager = m_componentManager;
-//        container->get().m_id = id;
-//        CNC_ERROR << "Created entity: " << (void*)&container->get();
-//        ContainerID id = 0;
-//        wrapper->get().m_id = id;
-//        return id;
-//    }
-
     template< typename C, class... Args >
-    AbstractContainer* create( Args&&... args ) {
-        ContainerWrapper< C >* wrapper = new ContainerWrapper< C >( C( std::forward<Args>(args)... ) );
-        wrapper->get().m_id = 0;
+    ContainerID create( Args&&... args ) {
+
+        ContainerID id = acquire< C >();
+        auto wrapper = new ContainerWrapper< C >( C( id, std::forward<Args>(args)... ) );
+        wrapper->get().m_id = id;
         wrapper->get().m_manager = this;
-        return &wrapper->get();
+
+        BMO_ERROR << "created: type=" << C::TYPEID << ", id=" << id;
+
+        m_containers[ C::TYPEID ].insert( id );
+        m_wrappers.push_back( wrapper );
+
+        return id;
     }
 
     template< typename C >
-    void destroy( ContainerID id ) {
-//        CNC_ASSERT( id < m_containers.size() );
-//        EntityContainer< T >* container = get_container< T >( id );
-//        CNC_ASSERT( container != nullptr );
-//        CNC_ERROR << "Deleting entity: " << (void*)&container->get();
-//
-//        auto type_iter = m_entities.find( container->type() );
-//        CNC_ASSERT( type_iter != m_entities.end() );
-//        auto id_iter = std::find( type_iter->second.begin(), type_iter->second.end(), container->id() );
-//        CNC_ASSERT( id_iter != type_iter->second.end() );
-//        type_iter->second.erase( id_iter );
-//
-//        delete m_containers[ id ];
-//        m_containers[ id ] = nullptr;
+    void release( ContainerID id ) {
+
+        BMO_ASSERT( m_containers.find( C::TYPEID ) != m_containers.end() );
+        auto wrapper = getWrapper< C >( id );
+        BMO_ASSERT( wrapper != nullptr );
+        BMO_ERROR << "Deleting: type=" << wrapper->type() << ", id=" << wrapper->id();
+        delete wrapper;
+
+        // Cleanup
+        m_containers[ C::TYPEID ].erase( m_containers[ C::TYPEID ].find( id ) );
+        m_wrappers.erase( std::find( m_wrappers.begin(), m_wrappers.end(), wrapper ) );
     }
 
-    AbstractContainer* getContainer( ContainerID id ) const {
+    template< typename C >
+    inline bool exists( ContainerID id ) {
+        return m_containers[ C::TYPEID ].find( id ) != m_containers.end();
+    }
+
+private:
+
+    template< typename C >
+    Wrapper* getWrapper( ContainerID id ) const {
+        for ( auto wrapper : m_wrappers ) {
+            if ( wrapper->type() == C::TYPEID &&  wrapper->id() == id ) {
+                return wrapper;
+            }
+        }
         return nullptr;
     }
 
-    AbstractContainers getContainers( ContainerIDs ids ) const {
-        return AbstractContainers();
-    }
-
-    void link( ContainerID parent, ContainerID child ) {
-        return;
+    template< typename C >
+    inline ContainerID acquire() {
+        return m_containers[ C::TYPEID ].size();
     }
 
 private:

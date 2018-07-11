@@ -2,6 +2,7 @@
 #include <utility>
 
 #include <BCore/API.hh>
+#include <BCore/util/Log.hh>
 #include <BCore/container/Graph.hh>
 #include <BCore/managers/ContainerManager.hh>
 
@@ -18,7 +19,13 @@ TEST_F( TestGraph, ctor ) {
 }
 
 TEST_F( TestGraph, create ) {
-    Graph* graph = BMO_ContainerManager->create< Graph >();
+    Graph graph0( BMO_ContainerManager->create< Graph >() );
+    Graph graph1( BMO_ContainerManager->create< Graph >() );
+    Graph graph2( BMO_ContainerManager->create< Graph >() );
+
+    BMO_ContainerManager->release< Graph >( graph0.id() );
+    BMO_ContainerManager->release< Graph >( graph1.id() );
+    BMO_ContainerManager->release< Graph >( graph2.id() );
     EXPECT_TRUE( true );
 }
 

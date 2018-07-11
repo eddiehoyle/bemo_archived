@@ -4,25 +4,32 @@
 #include "AbstractContainer.hh"
 #include <BCore/internal/ObjectType.hh>
 
-#include <string>
-#include <memory>
-#include <iostream>
-
 namespace bemo {
 
 template< typename C >
 class Container : public AbstractContainer {
-
+public:
+    static const ContainerTypeID TYPEID;
 protected:
-    virtual int _execute() { return 0; };
 
-protected:
-    static const ContainerTypeID m_typeID;
+    explicit Container( ContainerID id ) : AbstractContainer( id ) {}
+    ~Container() override = default;
 
+    virtual void getInput( void* ) const {}
+    virtual void getOutput( void* ) const {}
+
+    virtual void getInputs() const {}
+    virtual void getOutputs() const {}
+
+    virtual void getConnections() const {}
+
+    int execute() override { return 0; } ;
+
+private:
 };
 
 template< typename C >
-const bemo::ContainerID Container< C >::m_typeID =
+const bemo::ContainerID Container< C >::TYPEID =
         bemo::internal::ObjectTypeID< bemo::AbstractContainer >::allocate<C>();
 
 }

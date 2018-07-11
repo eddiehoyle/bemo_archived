@@ -3,14 +3,16 @@
 
 #include <vector>
 #include "Container.hh"
+#include <BCore/API.hh>
+#include <BCore/managers/ContainerManager.hh>
 
 namespace bemo {
 
-class Graph;
-using GraphPtr = std::shared_ptr< Graph >;
-
 /// Top level container used as an execution entry point.
 class Graph : public Container< Graph > {
+public:
+    explicit Graph( ContainerID id ) : Container( id ) {}
+    ~Graph() override = default;
 };
 
 }

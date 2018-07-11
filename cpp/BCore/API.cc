@@ -7,7 +7,11 @@ namespace bemo {
 ContainerManager* BMO_ContainerManager = nullptr;
 
 void initialize() {
+
+    BMO_INITIALISE_LOG()
+
     BMO_ERROR << "starting up";
+
     if ( BMO_ContainerManager == nullptr ) {
         BMO_ContainerManager = new ContainerManager();
     }
