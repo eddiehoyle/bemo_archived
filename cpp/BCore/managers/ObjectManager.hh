@@ -40,9 +40,7 @@ public:
     ObjectID create( Args&&... args ) { return 0; }
 
     /// TODO
-    /// \tparam O
-    template< typename O >
-    void destroy( ObjectID ) {}
+    void destroy( ObjectID id ) {}
 
 private:
     ObjectID acquire() { return 0; }

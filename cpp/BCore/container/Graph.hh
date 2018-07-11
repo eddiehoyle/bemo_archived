@@ -1,5 +1,5 @@
-#ifndef BEMO_GRAPH_HH
-#define BEMO_GRAPH_HH
+#ifndef BEMO_GRAPH2_HH
+#define BEMO_GRAPH2_HH
 
 #include <vector>
 #include "Container.hh"
@@ -17,4 +17,4 @@ public:
 
 }
 
-#endif // BEMO_GRAPH_HH
+#endif // BEMO_GRAPH2_HH

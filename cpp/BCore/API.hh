@@ -4,8 +4,10 @@
 namespace bemo {
 
 class ContainerManager;
+class ObjectManager;
 
 extern ContainerManager* BMO_ContainerManager;
+extern ObjectManager* BMO_ObjectManager;
 
 extern void initialize();
 extern void terminate();

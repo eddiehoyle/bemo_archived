@@ -1,5 +1,5 @@
-#ifndef BEMO_CONTAINER_HH
-#define BEMO_CONTAINER_HH
+#ifndef BEMO_CONTAINER2_HH
+#define BEMO_CONTAINER2_HH
 
 #include "AbstractContainer.hh"
 #include <BCore/internal/ObjectType.hh>
@@ -34,4 +34,4 @@ const bemo::ContainerID Container< C >::TYPEID =
 
 }
 
-#endif // BEMO_CONTAINER_HH
+#endif // BEMO_CONTAINER2_HH
