@@ -5,7 +5,7 @@ enable_testing()
 
 set(TEST_MAIN_SOURCE testMain.cc )
 set(TEST_ALL_SOURCES
-        managers/testObjectManager.cc)
+        internal/testHandle.cc)
 add_executable(test_bemo
         ${TEST_MAIN_SOURCE}
         ${TEST_ALL_SOURCES})
