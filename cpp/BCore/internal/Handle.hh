@@ -26,6 +26,7 @@ public:
 public:
     Handle() : m_id( 0 ) {}
     explicit Handle( NumericType id ) : m_id( id ) {}
+    Handle( const Handle& rhs ) { this->m_id = rhs.m_id; }
     Handle& operator=( const Handle& rhs ) { this->m_id = rhs.m_id; }
     bool operator==( const Handle& rhs ) { return this->m_id == rhs.m_id; }
     bool operator!=( const Handle& rhs ) { return this->m_id != rhs.m_id; }

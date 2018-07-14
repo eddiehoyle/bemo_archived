@@ -46,19 +46,27 @@ TEST_F( BemoAPI, templates ) {
     EXPECT_EQ( static_cast< unsigned long >( handleUnsignedLong ), static_cast< unsigned long >( 0 ) );
 }
 
-TEST_F( BemoAPI, default_ctor ) {
+TEST_F( BemoAPI, ctor_default ) {
     using Handle32 = Handle< u32, 20, 12 >;
     Handle32 handle;
     EXPECT_EQ( u32( handle ), 0 );
 }
 
-TEST_F( BemoAPI, explicit_ctor ) {
+TEST_F( BemoAPI, ctor_explicit ) {
     using Handle32 = Handle< u32, 20, 12 >;
     Handle32 handle( 3 );
     EXPECT_EQ( u32( handle ), 3 );
 }
 
-TEST_F( BemoAPI, copy ) {
+TEST_F( BemoAPI, ctor_copy ) {
+    using Handle32 = Handle< u32, 20, 12 >;
+    Handle32 handleA( 3 );
+    Handle32 handleB( handleA );
+    EXPECT_EQ( handleA, handleB );
+    EXPECT_EQ( u32( handleA ), u32( handleB ) );
+}
+
+TEST_F( BemoAPI, operator_copy ) {
     using Handle32 = Handle< u32, 20, 12 >;
     Handle32 handleA( 3 );
     Handle32 handleB = handleA;
@@ -66,7 +74,7 @@ TEST_F( BemoAPI, copy ) {
     EXPECT_EQ( u32( handleA ), u32( handleB ) );
 }
 
-TEST_F( BemoAPI, equal ) {
+TEST_F( BemoAPI, operator_equal ) {
     using Handle32 = Handle< u32, 20, 12 >;
     Handle32 handleA( 3 );
     Handle32 handleB( 3 );
@@ -74,7 +82,7 @@ TEST_F( BemoAPI, equal ) {
     EXPECT_EQ( u32( handleA ), u32( handleB ) );
 }
 
-TEST_F( BemoAPI, not_equal ) {
+TEST_F( BemoAPI, operator_not_equal ) {
     using Handle32 = Handle< u32, 20, 12 >;
     Handle32 handleA( 2 );
     Handle32 handleB( 3 );
@@ -82,7 +90,7 @@ TEST_F( BemoAPI, not_equal ) {
     EXPECT_NE( u32( handleA ), u32( handleB ) );
 }
 
-TEST_F( BemoAPI, less_than ) {
+TEST_F( BemoAPI, operator_less_than ) {
     using Handle32 = Handle< u32, 20, 12 >;
     Handle32 handleA( 2 );
     Handle32 handleB( 5 );
@@ -92,7 +100,7 @@ TEST_F( BemoAPI, less_than ) {
     EXPECT_FALSE( u32( handleC ) < u32( handleB ) );
 }
 
-TEST_F( BemoAPI, greater_than ) {
+TEST_F( BemoAPI, operator_greater_than ) {
     using Handle32 = Handle< u32, 20, 12 >;
     Handle32 handleA( 2 );
     Handle32 handleB( 5 );
