@@ -18,22 +18,24 @@ class HandleTable {
     using Handle = H;
 
 public:
-    HandleTable()
-        : m_indices(),
-          m_versions(),
-          m_objects() {}
+    HandleTable() = default;
     ~HandleTable() = default;
 
     Handle acquire( T* object ) {
-        auto iter = std::find( m_indices.begin(), m_indices.end(),
-                               typename Handle::NumericType( Handle::INVALID_HANDLE ) );
-        if ( iter != m_indices.end() ) {
-            typename Handle::NumericType index = std::distance( m_indices.begin(), iter );
-            m_indices[ index ] = index;
-            m_objects[ index ] = object;
-            return Handle( index | m_versions[ index ] << Handle::NUM_INDEX_BITS );
+
+        typename Handle::NumericType index = 0;
+        if ( m_indices.size() >= Handle::MAX_INDICES ) {
+            index = m_indices.front();
+            m_indices.pop_front();
+        } else {
+            m_versions.push_back( 0 );
+            index = m_versions.size() - 1;
+            m_indices.push_back( index );
         }
-        return Handle( Handle::INVALID_HANDLE );
+
+        m_objects[ index ] = object;
+
+        return Handle( index | m_versions[index] << Handle::NUM_INDEX_BITS );
     }
 
     void release( Handle handle ) {
@@ -41,7 +43,7 @@ public:
             m_versions[handle.index()] = ( m_versions[handle.index()] + 1 > Handle::MAX_VERSION )
                     ? Handle::MIN_VERSION
                     : m_versions[handle.index()] + 1;
-            m_indices[handle.index()] = Handle::INVALID_HANDLE;
+            m_indices.push_back( handle.index() );
             m_objects[handle.index()] = nullptr;
         }
     }
@@ -59,9 +61,9 @@ public:
     }
 
 private:
-    std::vector< typename Handle::NumericType > m_indices;
+    std::deque< typename Handle::NumericType > m_indices;
     std::vector< typename Handle::NumericType > m_versions;
-    std::vector< T* > m_objects;
+    std::map< typename Handle::NumericType, T* > m_objects;
 
 };
 

@@ -21,7 +21,31 @@ TEST_F( BemoAPI, table_acquire ) {
     using Table = HandleTable< Graph, Handle32 >;
 
     Table table;
-    Handle32 handle = table.acquire( nullptr );
-    EXPECT_EQ( handle.index(), Handle32::MIN_INDEX );
-    EXPECT_EQ( handle.version(), Handle32::MIN_VERSION );
+    Handle32 handleA = table.acquire( nullptr );
+    EXPECT_EQ( handleA.index(), Handle32::MIN_INDEX );
+    EXPECT_EQ( handleA.version(), Handle32::MIN_VERSION );
+
+    Handle32 handleB = table.acquire( nullptr );
+    EXPECT_EQ( handleB.index(), Handle32::MIN_INDEX + 1 );
+    EXPECT_EQ( handleB.version(), Handle32::MIN_VERSION );
+}
+
+TEST_F( BemoAPI, table_loop_acquire ) {
+
+    using Handle32 = Handle< u32, 4, 2 >;
+    using Table = HandleTable< Graph, Handle32 >;
+
+    BMO_ERROR << Handle32::MAX_INDICES;
+
+    // Use up all slots
+    Table table;
+    Handle32 handleA = table.acquire( nullptr );
+    for ( std::size_t i = 0; i < Handle32::MAX_INDICES-1; ++i ) {
+        table.acquire( nullptr );
+    }
+
+    // Should re-use first slot
+    Handle32 handleB = table.acquire( nullptr );
+
+    EXPECT_EQ( handleA, handleB );
 }
