@@ -13,7 +13,7 @@ public:
 protected:
     explicit Container( ObjectID id ) : AbstractManagedObject( id ) {}
     ~Container() override = default;
-    virtual int execute() {};
+    virtual int execute() { return 0; };
 };
 
 template< typename T >
