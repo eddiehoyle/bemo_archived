@@ -2,6 +2,7 @@
 #define BEMO_HANDLE_HH
 
 #include <BCore/util/Log.hh>
+#include <climits>
 
 namespace bemo {
 

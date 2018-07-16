@@ -7,6 +7,7 @@
 #include <deque>
 #include <vector>
 #include <array>
+#include <map>
 
 #include "Handle.hh"
 
@@ -25,9 +26,15 @@ public:
 
         typename Handle::NumericType index = 0;
         if ( m_indices.size() >= Handle::MAX_INDICES ) {
+
+            // Re-use first index
             index = m_indices.front();
             m_indices.pop_front();
+            m_indices.push_back( index );
+
         } else {
+
+            // Create an index
             m_versions.push_back( 0 );
             index = m_versions.size() - 1;
             m_indices.push_back( index );
@@ -43,8 +50,7 @@ public:
             m_versions[handle.index()] = ( m_versions[handle.index()] + 1 > Handle::MAX_VERSION )
                     ? Handle::MIN_VERSION
                     : m_versions[handle.index()] + 1;
-            m_indices.push_back( handle.index() );
-            m_objects[handle.index()] = nullptr;
+            m_objects.erase( handle.index() );
         }
     }
 
@@ -52,12 +58,8 @@ public:
         return m_versions[ handle.index() ] != handle.version();
     }
 
-    inline Handle operator[]( typename Handle::NumericType index ) const {
-        return Handle( index | m_versions[ index ] << Handle::NUM_INDEX_BITS );
-    }
-
-    inline T* operator[]( Handle handle ) {
-        return m_objects[ handle.index() ];
+    inline T* operator[]( const Handle& handle ) const {
+        return m_objects.at( handle.index() );
     }
 
 private:
