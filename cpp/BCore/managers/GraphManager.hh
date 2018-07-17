@@ -1,14 +1,13 @@
 #ifndef BEMO_GRAPHMANAGER_HH
 #define BEMO_GRAPHMANAGER_HH
 
-#include "ContainerManager.hh"
+//#include "ContainerManager.hh"
+#include "AbstractManager.hh"
 #include <BCore/object/Graph.hh>
 
 namespace bemo {
 
-class GraphManager : public ContainerManager< Graph, GraphID > {
-public:
-    Graph create() { return Graph( GraphID::INVALID_HANDLE ); }
+class GraphManager : public AbstractManager< Graph > {
 
 };
 

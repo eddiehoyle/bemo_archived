@@ -1,31 +1,17 @@
-#ifndef BEMO_CONTAINER_HH
-#define BEMO_CONTAINER_HH
+#ifndef BEMO_ABSTRACTCONTAINER_HH
+#define BEMO_ABSTRACTCONTAINER_HH
 
-#include "AbstractObject.hh"
-#include <BCore/internal/ObjectType.hh>
+#include "Object.hh"
 
 namespace bemo {
 
 template< typename T, typename H >
-class Container : public AbstractObject< T, H > {
-
-    using ObjectType = T;
-    using HandleType = H;
-
-public:
-    static TypeID typeID() { return m_typeID; }
+class Container : public Object< T, H > {
 protected:
-    explicit Container( HandleType id ) : AbstractObject< T, H >( id ) {}
-    ~Container() override = default;
-    virtual int execute() { return 0; };
-private:
-    static const TypeID m_typeID;
+    explicit Container( typename AbstractObject< T, H >::HandleType id ) : Object< T, H >( id ) {}
+    virtual void execute() = 0;
 };
-
-template< typename T, typename H >
-const bemo::TypeID Container< T, H >::m_typeID =
-        bemo::internal::ObjectTypeID< bemo::AbstractObject< T, H > >::template allocate< T >();
 
 }
 
-#endif // BEMO_CONTAINER_HH
+#endif // BEMO_ABSTRACTCONTAINER_HH

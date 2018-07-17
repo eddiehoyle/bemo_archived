@@ -5,7 +5,6 @@
 
 #include <BCore/API.hh>
 #include <BCore/util/Log.hh>
-#include <BCore/container/Graph.hh>
 #include <BCore/managers/ObjectManager.hh>
 #include <BCore/internal/Handle.hh>
 #include <deque>

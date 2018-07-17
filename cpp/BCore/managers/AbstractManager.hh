@@ -5,19 +5,27 @@
 
 namespace bemo {
 
-template< typename T, typename H >
+template< typename T >
 class AbstractManager {
 
+    using ObjectType = T;
+    using HandleType = typename T::HandleType;
+
 public:
-    virtual T create() = 0;
-    virtual T destroy() = 0;
+    virtual ObjectType create() {
+        HandleType id = this->m_table.acquire( nullptr );
+        return ObjectType( id );
+    }
+    virtual void destroy( HandleType objectID ) {
+        this->m_table.release( objectID );
+    }
 
 protected:
 
-    using ObjectType = T;
-    using HandleType = H;
+    AbstractManager() = default;
+    ~AbstractManager() = default;
 
-    HandleTable< T, H > m_table;
+    HandleTable< T > m_table;
 };
 
 }

@@ -3,19 +3,19 @@
 
 #include <BCore/Platform.hh>
 #include <BCore/managers/ObjectManager.hh>
+#include <BCore/internal/Handle.hh>
 
 namespace bemo {
 
-using Handle32 = Handle< u32, 16, 16 >;
+using ObjectID = Handle< u32, 16, 16 >;
 
 class ObjectManager;
 
 template< typename T, typename H >
 class AbstractObject {
-
+public:
     using ObjectType = T;
     using HandleType = H;
-
 public:
     HandleType objectID() const { return m_objectID; }
 protected:

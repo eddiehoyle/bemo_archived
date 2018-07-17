@@ -13,10 +13,10 @@
 
 namespace bemo {
 
-template< typename T, typename H >
+template< typename T >
 class HandleTable {
 
-    using Handle = H;
+    using Handle = typename T::HandleType;
 
 public:
     HandleTable() = default;

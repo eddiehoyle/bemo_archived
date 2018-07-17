@@ -5,7 +5,7 @@
 #include <BCore/util/Assert.hh>
 #include <BCore/util/Log.hh>
 #include <BCore/Platform.hh>
-//#include <BCore/object/Container.hh>
+//#include <BCore/object/Object.hh>
 
 namespace bemo {
 
@@ -28,9 +28,18 @@ namespace bemo {
 
 template< typename T, typename H >
 class ContainerManager : public AbstractManager< T, H > {
+
+    using ObjectType = T;
+    using HandleType = H;
+
 public:
-    T create() override {}
-    T destroy() override {}
+    ObjectType create() override {
+        HandleType id = this->m_table.acquire( nullptr );
+        return ObjectType( id );
+    }
+    void destroy( const ObjectType& graph ) override {
+        this->m_table.release( graph.objectID() );
+    }
 };
 
 //class ContainerManager {
