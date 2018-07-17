@@ -3,10 +3,10 @@
 
 namespace bemo {
 
-class ContainerManager;
+class GraphManager;
 class ObjectManager;
 
-extern ContainerManager* BMO_ContainerManager;
+extern GraphManager* BMO_GraphManager;
 extern ObjectManager* BMO_ObjectManager;
 
 extern void initialize();

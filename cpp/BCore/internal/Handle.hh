@@ -12,6 +12,7 @@ template< typename N,
 class Handle {
 
 public:
+
     using NumericType = N;
 
     static_assert(std::is_arithmetic< NumericType >::value, "NumericType must be numeric");
@@ -28,6 +29,9 @@ public:
     static constexpr NumericType MAX_VERSION{ ( NumericType( 1 ) << NUM_VERSION_BITS ) - 1 };
 
     static constexpr NumericType INVALID_HANDLE{ std::numeric_limits< NumericType >::max() };
+
+public:
+    static Handle invalid() { return Handle< N, IndexBits, VersionBits >( INVALID_HANDLE ); }
 
 public:
     Handle() : m_id( 0 ) {}

@@ -1,10 +1,11 @@
 #ifndef BEMO_CONTAINERMAINAGER_HH
 #define BEMO_CONTAINERMAINAGER_HH
 
+#include "AbstractManager.hh"
 #include <BCore/util/Assert.hh>
 #include <BCore/util/Log.hh>
 #include <BCore/Platform.hh>
-#include <BCore/container/AbstractContainer.hh>
+//#include <BCore/object/Container.hh>
 
 namespace bemo {
 
@@ -24,92 +25,100 @@ namespace bemo {
  *   }
  */
 
-class ContainerManager {
 
-    class Wrapper {
-    public:
-        virtual ~Wrapper() = default;
-        ContainerID id() const { return m_id; }
-        ContainerTypeID type() const { return m_type; }
-    protected:
-        ContainerID m_id;
-        ContainerTypeID m_type;
-    };
-
-    template< typename C >
-    class ContainerWrapper : public Wrapper {
-    public:
-        ContainerWrapper( C container ) : m_container( container ) {
-            this->m_id = container.id();
-            this->m_type = C::TYPEID;
-        }
-        C& get() { return m_container; }
-    private:
-        C m_container;
-    };
-
-    using ContanierIDSet = std::set< ContainerID >;
-    using ContainerMap = std::map< ContainerTypeID, ContanierIDSet >;
-    using ContainerWrappers = std::vector< Wrapper* >;
-
+template< typename T, typename H >
+class ContainerManager : public AbstractManager< T, H > {
 public:
-
-    template< typename C, class... Args >
-    ContainerID create( Args&&... args ) {
-
-        ContainerID id = acquire< C >();
-        auto wrapper = new ContainerWrapper< C >( C( id, std::forward<Args>(args)... ) );
-        wrapper->get().m_id = id;
-        wrapper->get().m_manager = this;
-
-        BMO_ERROR << "created: type=" << C::TYPEID << ", id=" << id;
-
-        m_containers[ C::TYPEID ].insert( id );
-        m_wrappers.push_back( wrapper );
-
-        return id;
-    }
-
-    template< typename C >
-    void release( ContainerID id ) {
-
-        BMO_ASSERT( m_containers.find( C::TYPEID ) != m_containers.end() );
-        auto wrapper = getWrapper< C >( id );
-        BMO_ASSERT( wrapper != nullptr );
-        BMO_ERROR << "Deleting: type=" << wrapper->type() << ", id=" << wrapper->id();
-        delete wrapper;
-
-        // Cleanup
-        m_containers[ C::TYPEID ].erase( m_containers[ C::TYPEID ].find( id ) );
-        m_wrappers.erase( std::find( m_wrappers.begin(), m_wrappers.end(), wrapper ) );
-    }
-
-    template< typename C >
-    inline bool exists( ContainerID id ) {
-        return m_containers[ C::TYPEID ].find( id ) != m_containers.end();
-    }
-
-private:
-
-    template< typename C >
-    Wrapper* getWrapper( ContainerID id ) const {
-        for ( auto wrapper : m_wrappers ) {
-            if ( wrapper->type() == C::TYPEID &&  wrapper->id() == id ) {
-                return wrapper;
-            }
-        }
-        return nullptr;
-    }
-
-    template< typename C >
-    inline ContainerID acquire() {
-        return m_containers[ C::TYPEID ].size();
-    }
-
-private:
-    ContainerWrappers m_wrappers;
-    ContainerMap m_containers;
+    T create() override {}
+    T destroy() override {}
 };
+
+//class ContainerManager {
+//
+//    class Wrapper {
+//    public:
+//        virtual ~Wrapper() = default;
+//        ContainerID id() const { return m_id; }
+//        ContainerTypeID type() const { return m_type; }
+//    protected:
+//        ContainerID m_id;
+//        ContainerTypeID m_type;
+//    };
+//
+//    template< typename C >
+//    class ContainerWrapper : public Wrapper {
+//    public:
+//        ContainerWrapper( C container ) : m_container( container ) {
+//            this->m_id = container.id();
+//            this->m_type = C::TYPEID;
+//        }
+//        C& get() { return m_container; }
+//    private:
+//        C m_container;
+//    };
+//
+//    using ContanierIDSet = std::set< ContainerID >;
+//    using ContainerMap = std::map< ContainerTypeID, ContanierIDSet >;
+//    using ContainerWrappers = std::vector< Wrapper* >;
+//
+//public:
+//
+//    template< typename C, class... Args >
+//    ContainerID create( Args&&... args ) {
+//
+//        ContainerID id = acquire< C >();
+//        auto wrapper = new ContainerWrapper< C >( C( id, std::forward<Args>(args)... ) );
+//        wrapper->get().m_id = id;
+//        wrapper->get().m_manager = this;
+//
+//        BMO_ERROR << "created: type=" << C::TYPEID << ", id=" << id;
+//
+//        m_containers[ C::TYPEID ].insert( id );
+//        m_wrappers.push_back( wrapper );
+//
+//        return id;
+//    }
+//
+//    template< typename C >
+//    void release( ContainerID id ) {
+//
+//        BMO_ASSERT( m_containers.find( C::TYPEID ) != m_containers.end() );
+//        auto wrapper = getWrapper< C >( id );
+//        BMO_ASSERT( wrapper != nullptr );
+//        BMO_ERROR << "Deleting: type=" << wrapper->type() << ", id=" << wrapper->id();
+//        delete wrapper;
+//
+//        // Cleanup
+//        m_containers[ C::TYPEID ].erase( m_containers[ C::TYPEID ].find( id ) );
+//        m_wrappers.erase( std::find( m_wrappers.begin(), m_wrappers.end(), wrapper ) );
+//    }
+//
+//    template< typename C >
+//    inline bool exists( ContainerID id ) {
+//        return m_containers[ C::TYPEID ].find( id ) != m_containers.end();
+//    }
+//
+//private:
+//
+//    template< typename C >
+//    Wrapper* getWrapper( ContainerID id ) const {
+//        for ( auto wrapper : m_wrappers ) {
+//            if ( wrapper->type() == C::TYPEID &&  wrapper->id() == id ) {
+//                return wrapper;
+//            }
+//        }
+//        return nullptr;
+//    }
+//
+//    template< typename C >
+//    inline ContainerID acquire() {
+//        return m_containers[ C::TYPEID ].size();
+//    }
+//
+//private:
+//    ContainerWrappers m_wrappers;
+//    ContainerMap m_containers;
+//};
 
 }
 

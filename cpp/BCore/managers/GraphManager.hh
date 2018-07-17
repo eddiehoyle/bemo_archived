@@ -1,20 +1,16 @@
 #ifndef BEMO_GRAPHMANAGER_HH
 #define BEMO_GRAPHMANAGER_HH
 
-#include <BCore/container/Graph.hh>
+#include "ContainerManager.hh"
+#include <BCore/object/Graph.hh>
 
 namespace bemo {
 
-using GraphWeakPtr = std::weak_ptr< Graph >;
-
-/// Manager to track and operate on active graph.
-class GraphManager {
+class GraphManager : public ContainerManager< Graph, GraphID > {
 public:
-    ~GraphManager() = default;
-private:
-    GraphWeakPtr m_active;
+    Graph create() { return Graph( GraphID::INVALID_HANDLE ); }
+
 };
 
 }
-
 #endif // BEMO_GRAPHMANAGER_HH
