@@ -2,6 +2,7 @@
 #define BEMO_ABSTRACTMANAGER_HH
 
 #include <BCore/internal/Table.hh>
+#include <BCore/object/AbstractObject.hh>
 
 namespace bemo {
 
@@ -9,15 +10,14 @@ template< typename T >
 class AbstractManager {
 
     using ObjectType = T;
-    using HandleType = typename T::HandleType;
 
 public:
     virtual ObjectType create() {
-        HandleType id = this->m_table.acquire( nullptr );
+        ObjectID id = this->m_table.acquire( nullptr );
         return ObjectType( id );
     }
-    virtual void destroy( HandleType objectID ) {
-        this->m_table.release( objectID );
+    virtual void destroy( ObjectID id ) {
+        this->m_table.release( id );
     }
 
 protected:
@@ -25,7 +25,7 @@ protected:
     AbstractManager() = default;
     ~AbstractManager() = default;
 
-    HandleTable< T > m_table;
+    HandleTable< ObjectType, ObjectID > m_table;
 };
 
 }

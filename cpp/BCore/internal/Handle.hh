@@ -3,35 +3,39 @@
 
 #include <BCore/util/Log.hh>
 #include <climits>
+#include <ostream>
 
 namespace bemo {
 
-template< typename N,
-        std::size_t IndexBits,
-        std::size_t VersionBits >
+template< typename N, std::size_t I, std::size_t V >
+class Handle;
+
+template< typename N, std::size_t I, std::size_t V >
+std::ostream& operator<<( std::ostream& stream, const Handle< N, I, V >& handle ) {
+    return stream << "Handle(index=" << handle.index() << ", version=" << handle.version() << ")";
+}
+
+template< typename N, std::size_t I, std::size_t V >
 class Handle {
 
-public:
-
-    using NumericType = N;
-
-    static_assert(std::is_arithmetic< NumericType >::value, "NumericType must be numeric");
-    static_assert( sizeof( NumericType ) * CHAR_BIT >= ( VersionBits + IndexBits ),
+    static_assert(std::is_arithmetic< N >::value, "NumericType must be numeric");
+    static_assert( sizeof( N ) * CHAR_BIT >= ( V + I ),
                    "Invalid handle layout. More bits used than base value type can hold" );
 
 public:
-    static constexpr std::size_t NUM_INDEX_BITS{ IndexBits };
-    static constexpr std::size_t NUM_VERSION_BITS{ VersionBits };
+    using NumericType = N;
 
+public:
+    static constexpr std::size_t NUM_INDEX_BITS{ I };
+    static constexpr std::size_t NUM_VERSION_BITS{ V };
     static constexpr NumericType MIN_INDEX{ 0 };
     static constexpr NumericType MAX_INDICES{ ( NumericType( 1 ) << NUM_INDEX_BITS ) - 1 };
     static constexpr NumericType MIN_VERSION{ 0 };
     static constexpr NumericType MAX_VERSION{ ( NumericType( 1 ) << NUM_VERSION_BITS ) - 1 };
-
     static constexpr NumericType INVALID_HANDLE{ std::numeric_limits< NumericType >::max() };
 
 public:
-    static Handle invalid() { return Handle< N, IndexBits, VersionBits >( INVALID_HANDLE ); }
+    static Handle invalid() { return Handle< N, I, V >( INVALID_HANDLE ); }
 
 public:
     Handle() : m_id( 0 ) {}
@@ -51,17 +55,17 @@ private:
     NumericType m_id;
 };
 
-template< typename N, std::size_t IndexBits, std::size_t VersionBits >
-constexpr N Handle< N, IndexBits, VersionBits >::MIN_INDEX;
+template< typename N, std::size_t I, std::size_t V >
+constexpr N Handle< N, I, V >::MIN_INDEX;
 
-template< typename N, std::size_t IndexBits, std::size_t VersionBits >
-constexpr N Handle< N, IndexBits, VersionBits >::MAX_INDICES;
+template< typename N, std::size_t I, std::size_t V >
+constexpr N Handle< N, I, V >::MAX_INDICES;
 
-template< typename N, std::size_t IndexBits, std::size_t VersionBits >
-constexpr N Handle< N, IndexBits, VersionBits >::MIN_VERSION;
+template< typename N, std::size_t I, std::size_t V >
+constexpr N Handle< N, I, V >::MIN_VERSION;
 
-template< typename N, std::size_t IndexBits, std::size_t VersionBits >
-constexpr N Handle< N, IndexBits, VersionBits >::MAX_VERSION;
+template< typename N, std::size_t I, std::size_t V >
+constexpr N Handle< N, I, V >::MAX_VERSION;
 
 }
 

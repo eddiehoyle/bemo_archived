@@ -5,11 +5,9 @@
 
 namespace bemo {
 
-using NodeID = ObjectID;
-
-class Node : public Container< Node, NodeID > {
+class Node : public Container< Node > {
 public:
-    explicit Node( NodeID id ) : Container< Node, NodeID >( id ) {}
+    explicit Node( ObjectID id ) : Container< Node >( id ) {}
     void execute() override {}
 };
 

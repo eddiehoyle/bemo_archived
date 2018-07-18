@@ -6,20 +6,20 @@
 
 namespace bemo {
 
-template< typename T, typename H >
-class Object : public AbstractObject< T, H > {
+template< typename T >
+class Object : public AbstractObject {
 public:
     static TypeID typeID() { return m_typeID; }
 protected:
-    explicit Object( typename AbstractObject< T, H >::HandleType id ) : AbstractObject< T, H >( id ) {}
+    explicit Object( ObjectID id ) : AbstractObject( id ) {}
     ~Object() override = default;
 private:
     static const TypeID m_typeID;
 };
 
-template< typename T, typename H >
-const bemo::TypeID Object< T, H >::m_typeID =
-        bemo::internal::ObjectTypeID< bemo::AbstractObject< T, H > >::template allocate< T >();
+template< typename T >
+const bemo::TypeID Object< T >::m_typeID =
+        bemo::internal::ObjectTypeID< bemo::AbstractObject >::template allocate< T >();
 
 }
 

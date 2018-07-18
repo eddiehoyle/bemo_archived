@@ -11,18 +11,15 @@ using ObjectID = Handle< u32, 16, 16 >;
 
 class ObjectManager;
 
-template< typename T, typename H >
 class AbstractObject {
 public:
-    using ObjectType = T;
-    using HandleType = H;
-public:
-    HandleType objectID() const { return m_objectID; }
+    ObjectID objectID() const { return m_objectID; }
 protected:
-    explicit AbstractObject( HandleType id ) : m_objectID( id ), m_manager( nullptr ) {}
+    explicit AbstractObject( ObjectID id ) : m_objectID( id ), m_manager( nullptr ) {}
     virtual ~AbstractObject() = default;
+    bool operator==( const AbstractObject& rhs ) { return this->m_objectID == rhs.objectID(); }
 protected:
-    HandleType m_objectID;
+    ObjectID m_objectID;
     ObjectManager* m_manager;
 };
 

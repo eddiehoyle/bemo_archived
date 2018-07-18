@@ -5,10 +5,10 @@
 
 namespace bemo {
 
-template< typename T, typename H >
-class Container : public Object< T, H > {
+template< typename T >
+class Container : public Object< T > {
 protected:
-    explicit Container( typename AbstractObject< T, H >::HandleType id ) : Object< T, H >( id ) {}
+    explicit Container( ObjectID id ) : Object< T >( id ) {}
     virtual void execute() = 0;
 };
 

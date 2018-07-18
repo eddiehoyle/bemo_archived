@@ -5,11 +5,9 @@
 
 namespace bemo {
 
-using GraphID = ObjectID;
-
-class Graph : public Container< Graph, GraphID > {
+class Graph : public Container< Graph > {
 public:
-    explicit Graph( GraphID id ) : Container< Graph, GraphID >( id ) {}
+    explicit Graph( ObjectID id ) : Container< Graph >( id ) {}
     void execute() {}
 };
 
