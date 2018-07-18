@@ -35,6 +35,7 @@ public:
     static constexpr NumericType INVALID_HANDLE{ std::numeric_limits< NumericType >::max() };
 
 public:
+    static Handle identity() { return Handle< N, I, V >( 0 ); }
     static Handle invalid() { return Handle< N, I, V >( INVALID_HANDLE ); }
 
 public:

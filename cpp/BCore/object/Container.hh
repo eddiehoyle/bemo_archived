@@ -9,7 +9,7 @@ template< typename T >
 class Container : public Object< T > {
 protected:
     explicit Container( ObjectID id ) : Object< T >( id ) {}
-    virtual void execute() = 0;
+    virtual int execute() = 0;
 };
 
 }

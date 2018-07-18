@@ -8,7 +8,7 @@ namespace bemo {
 class Graph : public Container< Graph > {
 public:
     explicit Graph( ObjectID id ) : Container< Graph >( id ) {}
-    void execute() {}
+    int execute() override { return 0; }
 };
 
 }

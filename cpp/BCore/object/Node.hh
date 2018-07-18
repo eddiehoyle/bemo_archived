@@ -8,7 +8,7 @@ namespace bemo {
 class Node : public Container< Node > {
 public:
     explicit Node( ObjectID id ) : Container< Node >( id ) {}
-    void execute() override {}
+    int execute() override { return 0; }
 };
 
 }

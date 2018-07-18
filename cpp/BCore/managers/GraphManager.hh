@@ -1,7 +1,6 @@
 #ifndef BEMO_GRAPHMANAGER_HH
 #define BEMO_GRAPHMANAGER_HH
 
-//#include "ContainerManager.hh"
 #include "AbstractManager.hh"
 #include <BCore/object/Graph.hh>
 

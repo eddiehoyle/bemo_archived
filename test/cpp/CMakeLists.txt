@@ -5,7 +5,7 @@ enable_testing()
 
 set(TEST_MAIN_SOURCE testMain.cc )
 set(TEST_ALL_SOURCES
-        managers/testObjectManager.cc
+        managers/testNodeManager.cc
         object/testNode.cc
         internal/testHandle.cc
         internal/testTable.cc)
