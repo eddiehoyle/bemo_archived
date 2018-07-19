@@ -12,9 +12,9 @@ namespace bemo {
 /* Owns all managed object lifetimes.
  * Thoughts:
  *  Could this create all objects? Handle all allocations? Eg:
- *   ObjectManager->create< Graph >();
- *   ObjectManager->create< Node >();
- *   ObjectManager->create< Connection >();
+ *   PlugManager->create< Graph >();
+ *   PlugManager->create< Node >();
+ *   PlugManager->create< Connection >();
  *  All object types and ids will be unique...
  *   m_objects {
  *      Connections: [0, 1, ..., n],

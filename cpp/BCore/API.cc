@@ -1,12 +1,12 @@
 #include "API.hh"
 #include <BCore/util/Log.hh>
 #include <BCore/managers/GraphManager.hh>
-#include <BCore/managers/ObjectManager.hh>
+#include <BCore/managers/PlugManager.hh>
 
 namespace bemo {
 
 GraphManager* BMO_GraphManager = nullptr;
-ObjectManager* BMO_ObjectManager = nullptr;
+PlugManager* BMO_PlugManager = nullptr;
 
 void initialize() {
 
@@ -16,8 +16,8 @@ void initialize() {
         BMO_GraphManager = new GraphManager();
     }
 
-    if ( BMO_ObjectManager == nullptr ) {
-        BMO_ObjectManager = new ObjectManager();
+    if ( BMO_PlugManager == nullptr ) {
+        BMO_PlugManager = new PlugManager();
     }
 }
 
@@ -28,9 +28,9 @@ void terminate() {
         BMO_GraphManager = nullptr;
     }
 
-    if ( BMO_ObjectManager != nullptr ) {
-        delete BMO_ObjectManager;
-        BMO_ObjectManager = nullptr;
+    if ( BMO_PlugManager != nullptr ) {
+        delete BMO_PlugManager;
+        BMO_PlugManager = nullptr;
     }
 }
 

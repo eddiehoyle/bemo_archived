@@ -4,10 +4,10 @@
 namespace bemo {
 
 class GraphManager;
-class ObjectManager;
+class PlugManager;
 
 extern GraphManager* BMO_GraphManager;
-extern ObjectManager* BMO_ObjectManager;
+extern PlugManager* BMO_PlugManager;
 
 extern void initialize();
 extern void terminate();
