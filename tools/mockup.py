@@ -28,13 +28,10 @@ inputs0 = node0.getInputs()
 node0.getInput("path")
 # Result: ""
 
-class CustomNode(Node):
+# ---------------------------------------------------------------------------- #
 
-    def __init__(self, *args, **kwargs):
-        super(CustomNode, self).__init__(*args, **kwargs)
+# How do I create custom nodes?
+# How does API know how to create custom node?
 
-    def execute(self):
-        path = self.getInput("path")
-
-
-
+from pybemo import cmds
+node = cmds.createNode("MyCustomNode")

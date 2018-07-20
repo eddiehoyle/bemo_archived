@@ -1,0 +1,31 @@
+#ifndef BEMO_SNIPPET_HH
+#define BEMO_SNIPPET_HH
+
+#include <BCore/API.hh>
+#include <BCore/Registry.hh>
+#include <BCore/object/Container.hh>
+
+#include <pybind11/embed.h>
+
+namespace py = pybind11;
+
+namespace bemo {
+
+class SnippetNode : public Container< SnippetNode > {
+public:
+    explicit SnippetNode( ObjectID id ) : Container< SnippetNode >( id ) {}
+    int execute() override {
+        Variant snippet = getInput( "code" );
+
+        try {
+            py::exec( snippet.toString() );
+        } catch ( py::error_already_set& e ) {
+            BMO_ERROR << e.what();
+        }
+    }
+};
+
+
+}
+
+#endif // BEMO_SNIPPET_HH

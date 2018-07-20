@@ -37,6 +37,7 @@ PYBIND11_MODULE(pybemo, m) {
 //
 //
 //
+//    m.def("create_node", &NodeRegistry::create, py::arg("name"));
 //    m.def("create_node", &create_node, py::arg("name"));
 //    m.def("read_node", &read_node, py::arg("container"));
 //
