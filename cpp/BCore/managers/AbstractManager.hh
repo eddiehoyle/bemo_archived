@@ -9,14 +9,14 @@ namespace bemo {
 template< typename T >
 class AbstractManager {
 
-    using ObjectType = T;
+    using Object = T;
 
 public:
-    virtual ObjectType create() {
+    Object create() {
         ObjectID id = this->m_table.acquire( nullptr );
-        return ObjectType( id );
+        return id;
     }
-    virtual void destroy( ObjectID id ) {
+    void release( ObjectID id ) {
         this->m_table.release( id );
     }
 
@@ -25,7 +25,7 @@ protected:
     AbstractManager() = default;
     ~AbstractManager() = default;
 
-    HandleTable< ObjectType, ObjectID > m_table;
+    HandleTable< Object, ObjectID > m_table;
 };
 
 }

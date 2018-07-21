@@ -9,8 +9,12 @@ namespace bemo {
 
 class PlugManager : public AbstractManager< Plug > {
 
+    // TODO
+    // Should I change this to layout/plugs?
+
     using OwnerID = ObjectID;
     using PlugIDs = std::vector< ObjectID >;
+
 
 public:
     Plugs getPlugs( ObjectID owner ) {

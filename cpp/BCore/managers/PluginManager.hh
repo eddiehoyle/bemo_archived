@@ -14,8 +14,7 @@ class PluginManager : public AbstractManager< Plugin > {
 
 public:
     void registerNode( const std::string& name,
-                       std::function<void>&& creator,
-                       std::function<void>&& initialiser ) {
+                       std::function<void>&& creator) {
         m_pluginMap[ name ] = create().objectID();
     }
     void unregisterNode( const std::string& name ) {

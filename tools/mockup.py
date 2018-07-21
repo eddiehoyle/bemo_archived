@@ -35,3 +35,41 @@ node0.getInput("path")
 
 from pybemo import cmds
 node = cmds.createNode("MyCustomNode")
+
+# Plugins?
+
+from pybemo import Node
+from pybemo import PluginID
+from pybemo import PluginManager
+from pybemo import Plug
+
+# Used to identify plugins
+myCustomPluginID = PluginID(0x870FE)
+
+# My node
+class MyCustomNode(Node):
+    """Everything here is allocated when a user runs:
+    cmds.createNode("MyCustomNode")
+    """
+    def execute(self):
+        """Entry point"""
+        print "Hello!"
+def header(self):
+    """Description, icons, etc"""
+    return {"name": "MyCustomNode",
+            "description": "My custom node!",
+            "icon": "res/myCustomIcon.png"}
+def layout():
+    """Plugs, input/output, etc"""
+    return [Plug("path", Plug.Direction.Input, Plug.String),
+            Plug("frame", Plug.Direction.Input, Plug.Int),
+            Plug("image", Plug.Direction.Output, Plug.Int),]
+def create():
+    """Creator function"""
+    return MyCustomNode()
+def bemoInitialisePlugin():
+    PluginManager.registerNode("MyCustomNode",
+                               myCustomPluginID,
+                               MyCustomNode::create,
+                               MyCustomNode::header,
+                               MyCustomNode::layout,)

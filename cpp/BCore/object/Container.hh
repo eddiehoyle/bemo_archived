@@ -13,19 +13,13 @@ namespace bemo {
 template< typename T >
 class Container : public Object< T > {
 public:
-    Plugs getInputPlugs() const {
-        return BMO_PlugManager->getPlugs( this->m_objectID );
-    }
-
-    Variant getInput( const std::string& name ) {
-        return Variant( Variant::invalid() );
-    }
-
-    void setInput( const std::string name& const Variant& value ) {}
-
+    int getInput( const std::string& name ) { return int( 0 ); }
+    void setOutput( const std::string& name, int value ) {}
 protected:
     explicit Container( ObjectID id ) : Object< T >( id ) {}
     virtual int execute() = 0;
+protected:
+    ObjectID m_layoutID;
 };
 
 }

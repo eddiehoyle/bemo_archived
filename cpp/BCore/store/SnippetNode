@@ -3,7 +3,7 @@
 
 #include <BCore/API.hh>
 #include <BCore/Registry.hh>
-#include <BCore/object/Container.hh>
+#include <BCore/object/Node.hh>
 
 #include <pybind11/embed.h>
 
@@ -11,12 +11,11 @@ namespace py = pybind11;
 
 namespace bemo {
 
-class SnippetNode : public Container< SnippetNode > {
+class SnippetNode : public Node {
 public:
-    explicit SnippetNode( ObjectID id ) : Container< SnippetNode >( id ) {}
+    explicit SnippetNode( ObjectID id ) : Node( id ) {}
     int execute() override {
         Variant snippet = getInput( "code" );
-
         try {
             py::exec( snippet.toString() );
         } catch ( py::error_already_set& e ) {
