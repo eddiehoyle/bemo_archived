@@ -7,6 +7,7 @@ namespace bemo {
 
 GraphManager* BMO_GraphManager = nullptr;
 PlugManager* BMO_PlugManager = nullptr;
+NodeRegistry* BMO_NodeRegistry = nullptr;
 
 void initialize() {
 
@@ -18,6 +19,16 @@ void initialize() {
 
     if ( BMO_PlugManager == nullptr ) {
         BMO_PlugManager = new PlugManager();
+    }
+
+    if ( BMO_NodeRegistry == nullptr ) {
+        BMO_NodeRegistry = new NodeRegistry();
+
+        // Add simple node
+        BMO_NodeRegistry->add( AddNode::nodeTypeID(),
+                               AddNode::create,
+                               AddHeader::header,
+                               AddLayout::layout );
     }
 }
 

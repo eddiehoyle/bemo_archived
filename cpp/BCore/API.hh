@@ -5,9 +5,11 @@ namespace bemo {
 
 class GraphManager;
 class PlugManager;
+class NodeRegistry;
 
 extern GraphManager* BMO_GraphManager;
 extern PlugManager* BMO_PlugManager;
+extern NodeRegistry* BMO_NodeRegistry;
 
 extern void initialize();
 extern void terminate();
