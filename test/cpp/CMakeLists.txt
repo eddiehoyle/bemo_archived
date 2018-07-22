@@ -6,6 +6,7 @@ enable_testing()
 set(TEST_MAIN_SOURCE testMain.cc )
 set(TEST_ALL_SOURCES
         managers/testNodeManager.cc
+        managers/testPluginManager.cc
         object/testNode.cc
         internal/testHandle.cc
         internal/testTable.cc)

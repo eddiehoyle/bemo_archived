@@ -14,10 +14,10 @@ class AbstractManager {
 public:
     Object create() {
         ObjectID id = this->m_table.acquire( nullptr );
-        return id;
+        return T( id );
     }
-    void release( ObjectID id ) {
-        this->m_table.release( id );
+    void release( T object ) {
+        this->m_table.release( object.objectID() );
     }
 
 protected:

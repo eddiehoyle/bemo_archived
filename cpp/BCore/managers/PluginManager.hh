@@ -6,6 +6,9 @@
 
 namespace bemo {
 
+std::function< void() > Func;
+
+
 class PluginManager : public AbstractManager< Plugin > {
 
     using PluginName = std::string;
@@ -13,15 +16,16 @@ class PluginManager : public AbstractManager< Plugin > {
     using PluginMap = std::map< PluginName, PluginID >;
 
 public:
+    template< typename T >
     void registerNode( const std::string& name,
                        int nodeTypeID,
-                       std::function<void>&& creator,
-                       std::function<void>&& header,
-                       std::function<void>&& layout ) {
-        Plugin plugin = create();
+                       std::function< T() > creator,
+                       std::function< T() > header,
+                       std::function< T() > layout ) {
+        T node = creator();
+        BMO_ERROR << "got node=" << node.objectID();
     }
     void unregisterNode( const std::string& name ) {
-        m_pluginMap.erase( name );
     }
 private:
     PluginMap m_pluginMap;

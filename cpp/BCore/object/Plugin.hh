@@ -8,8 +8,8 @@ namespace bemo {
 class Plugin : public Object< Plugin > {
 public:
     explicit Plugin( ObjectID id ) : Object< Plugin >( id ) {}
-private:
-    Direction m_direction;
+    void load() {}
+    void unload() {}
 };
 
 }
