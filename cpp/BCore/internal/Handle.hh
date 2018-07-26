@@ -7,6 +7,16 @@
 
 namespace bemo {
 
+
+class BTypeID {
+public:
+    explicit BTypeID( unsigned long id ) : m_typeID( 0 ) {}
+    unsigned long typeID() const { return m_typeID; }
+private:
+    unsigned long m_typeID;
+};
+
+
 template< typename N, std::size_t I, std::size_t V >
 class Handle;
 

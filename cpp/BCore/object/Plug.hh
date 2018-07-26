@@ -18,7 +18,6 @@ enum class Direction {
 
 class Plug : public Object< Plug > {
 public:
-    explicit Plug( ObjectID id ) : Object< Plug >( id ) {}
 
 //    /// TODO
 //    bool isConnected() const {

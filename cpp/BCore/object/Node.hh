@@ -1,23 +1,26 @@
 #ifndef BEMO_NODE_HH
 #define BEMO_NODE_HH
 
-#include "Container.hh"
+#include "AbstractNode.hh"
+
+#include <BCore/Platform.hh>
+#include <BCore/internal/Handle.hh>
+#include <BCore/Defs.hh>
+#include <BCore/internal/ObjectType.hh>
 
 namespace bemo {
 
-class Node : public Container< Node > {
-//public:
-//    static TypeID nodeTypeID() { return m_nodeTypeID; }
+using NodeTypeID = TypeID;
+
+template< NodeType node_type >
+class Node : public AbstractNode {
 public:
-    explicit Node( ObjectID id ) : Container< Node >( id ) {}
-    int execute() override { return 0; }
-//private:
-//    static const TypeID m_nodeTypeID;
+    static const NodeTypeID NODE_TYPE_ID = { static_cast< NodeTypeID >( node_type ) };
+public:
+    NodeTypeID nodeTypeID() const { return NODE_TYPE_ID; }
+
 };
 
-//const bemo::TypeID Node::m_nodeTypeID =
-//        bemo::internal::ObjectTypeID< Node >::allocate< Node >();
-
-}
+} // namespace bemo
 
 #endif // BEMO_NODE_HH

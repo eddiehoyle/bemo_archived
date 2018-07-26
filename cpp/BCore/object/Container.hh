@@ -10,13 +10,18 @@
 
 namespace bemo {
 
-template< typename T >
-class Container : public Object< T > {
+
+class AbstractContainer {
+
+public:
+    virtual int execute() = 0;
+};
+
+class Container : public AbstractContainer {
 public:
     int getInput( const std::string& name ) { return int( 0 ); }
     void setOutput( const std::string& name, int value ) {}
 protected:
-    explicit Container( ObjectID id ) : Object< T >( id ) {}
     virtual int execute() = 0;
 protected:
     ObjectID m_layoutID;

@@ -7,9 +7,10 @@ namespace bemo {
 
 class Plugin : public Object< Plugin > {
 public:
-    explicit Plugin( ObjectID id ) : Object< Plugin >( id ) {}
     void load() {}
     void unload() {}
+private:
+    ObjectID m_headerID;
 };
 
 }

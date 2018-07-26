@@ -5,25 +5,25 @@
 
 namespace bemo {
 
-class AbstractRegistry {};
-
-template< typename T >
-class Registry : public AbstractRegistry {
-
-};
-
-class NodeRegistry : public Registry< Node >{
-
-    using NodeName = std::string;
-
-public:
-    Node create( const std::string& name ) { return Node( ObjectID::invalid() ); }
-    void release( const std::string& name ) { }
-
-private:
-    std::map< NodeName, std::function<void> > m_createMap;
-    std::map< NodeName, std::function<void> > m_initialiseMap;
-};
+//class AbstractRegistry {};
+//
+//template< typename T >
+//class Registry : public AbstractRegistry {
+//
+//};
+//
+//class NodeRegistry : public Registry< Node >{
+//
+//    using NodeName = std::string;
+//
+//public:
+//    Node create( const std::string& name ) { return Node( ObjectID::invalid() ); }
+//    void release( const std::string& name ) { }
+//
+//private:
+//    std::map< NodeName, std::function<void> > m_createMap;
+//    std::map< NodeName, std::function<void> > m_initialiseMap;
+//};
 
 }
 

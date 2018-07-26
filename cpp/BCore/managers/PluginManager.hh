@@ -16,14 +16,9 @@ class PluginManager : public AbstractManager< Plugin > {
     using PluginMap = std::map< PluginName, PluginID >;
 
 public:
-    template< typename T >
     void registerNode( const std::string& name,
-                       int nodeTypeID,
-                       std::function< T() > creator,
-                       std::function< T() > header,
-                       std::function< T() > layout ) {
-        T node = creator();
-        BMO_ERROR << "got node=" << node.objectID();
+                       TypeID typeID,
+                       std::function< ObjectID() > creator ) {
     }
     void unregisterNode( const std::string& name ) {
     }

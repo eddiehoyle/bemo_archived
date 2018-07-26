@@ -11,7 +11,6 @@ class Object : public AbstractObject {
 public:
     static TypeID typeID() { return m_typeID; }
 protected:
-    explicit Object( ObjectID id ) : AbstractObject( id ) {}
     ~Object() override = default;
 private:
     static const TypeID m_typeID;

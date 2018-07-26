@@ -16,17 +16,17 @@ class PlugManager : public AbstractManager< Plug > {
     using PlugIDs = std::vector< ObjectID >;
 
 
-public:
-    Plugs getPlugs( ObjectID owner ) {
-        Plugs plugs;
-        auto iter = m_plugMap.find( owner );
-        if ( iter != m_plugMap.end() ) {
-            for ( ObjectID plugID : iter->second ) {
-                plugs.push_back( Plug( plugID ) );
-            }
-        }
-        return plugs;
-    }
+//public:
+//    Plugs getPlugs( ObjectID owner ) {
+//        Plugs plugs;
+//        auto iter = m_plugMap.find( owner );
+//        if ( iter != m_plugMap.end() ) {
+//            for ( ObjectID plugID : iter->second ) {
+//                plugs.push_back( Plug( plugID ) );
+//            }
+//        }
+//        return plugs;
+//    }
 
 private:
     std::map< OwnerID, PlugIDs > m_plugMap;

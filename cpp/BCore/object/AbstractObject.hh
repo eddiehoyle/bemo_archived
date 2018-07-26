@@ -14,7 +14,6 @@ class AbstractObject {
 public:
     ObjectID objectID() const { return m_objectID; }
 protected:
-    explicit AbstractObject( ObjectID id ) : m_objectID( id ), m_manager( nullptr ) {}
     virtual ~AbstractObject() = default;
     bool operator==( const AbstractObject& rhs ) { return this->m_objectID == rhs.objectID(); }
 protected:

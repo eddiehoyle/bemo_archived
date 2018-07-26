@@ -5,38 +5,25 @@
 
 #include <BCore/API.hh>
 #include <BCore/util/Log.hh>
-#include <BCore/managers/PluginManager.hh>
-#include <BCore/managers/NodeManager.hh>
+//#include <BCore/managers/PluginManager.hh>
+//#include <BCore/managers/NodeManager.hh>
+#include <BCore/object/AbstractNode.hh>
 #include <BCore/object/Node.hh>
+#include <BCore/store/SumNode.hh>
+#include <BCore/store/SnippetNode.hh>
 
 using namespace bemo;
 
-
-class SumNode : public Node {
-public:
-    explicit SumNode( ObjectID id ) : Node( id ) {}
-
-    int execute() override {
-        int valueA = getInput( "valueA" );
-        int valueB = getInput( "valueB" );
-        setOutput( "valueB", valueA + valueB );
-        BMO_ERROR << "valueA=" << valueA
-                  << ", valueB=" << valueB
-                  << ", result=" << ( valueA + valueB );
-        return 0;
-    }
-public:
-    const static TypeID m_nodeTypeID = 0x00;
-};
-
-static SumNode create() {
-    return BMO_NodeManager->createNode< SumNode >();
-}
-
 TEST_F( BemoAPI, PluginManager_ctro ) {
-    PluginManager manager;
-    manager.registerNode< SumNode >( "Sum", 13,
-                                     &create,
-                                     &create,
-                                     &create );
+    SumNode* nodeA = new SumNode();
+    AbstractNode* nodeB = new SumNode();
+    BMO_ERROR << "nodeA=" << nodeA->nodeTypeID();
+    BMO_ERROR << "nodeB=" << nodeB->nodeTypeID();
+    BMO_ERROR << "id=" << SumNode::NODE_TYPE_ID;
+
+    SnippetNode* nodeC = new SnippetNode();
+    AbstractNode* nodeD = new SnippetNode();
+    BMO_ERROR << "nodeC=" << nodeC->nodeTypeID();
+    BMO_ERROR << "nodeD=" << nodeD->nodeTypeID();
+    BMO_ERROR << "id=" << SnippetNode::NODE_TYPE_ID;
 }

@@ -11,13 +11,12 @@
 using namespace bemo;
 
 TEST_F( BemoAPI, nodemanager_ctor ) {
-    NodeManager manager;
+//    NodeManager manager;
 }
 
 TEST_F( BemoAPI, nodemanager_create ) {
-    NodeManager manager;
-    Node nodeA = manager.create();
-    EXPECT_EQ( nodeA.objectID(), ObjectID::identity() );
-
+//    NodeManager manager;
+//    Node nodeA = manager.create();
+//    EXPECT_EQ( nodeA.objectID(), ObjectID::identity() );
 }
 
