@@ -2,9 +2,10 @@ cmake_minimum_required(VERSION 3.5)
 
 project(bemo)
 
-include(GNUInstallDirs)
+#include(GNUInstallDirs)
 
 set(CMAKE_CXX_STANDARD 11)
+
 
 set(TARGET_DIR ${CMAKE_SOURCE_DIR}/build)
 set(PYTHON_DIST_DIR ${TARGET_DIR})
