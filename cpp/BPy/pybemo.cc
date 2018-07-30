@@ -1,202 +1,85 @@
 
+#include "pybemo.hh"
+
 #include <pybind11/stl.h>
 #include <pybind11/pybind11.h>
 #include <pybind11/functional.h>
-//#include <pybind11/factory.h>
-
-#include <memory>
-
-//#include <BCore/API.hh>
 
 #include <memory>
 #include <string>
+#include <list>
 #include <BCore/util/Log.hh>
 
 namespace py = pybind11;
+
 using namespace bemo;
 
-int add(int i, int j) {
-    return i + j;
-}
-//
-//class Example {
-//private:
-//    Example(int a) : m_id(a) {} // private constructor
-//public:
-//    // Factory function - returned by value:
-//    static Example* create(int a) { return new Example(a); }
-//    int execute() { return -1; }
-//private:
-//    int m_id;
-//};
+NodeManager* BMO_NodeManager = nullptr;
 
-class MyManager;
+/// TODO
+BaseNode* creator( CreateFunc func ) { return func(); }
 
-class BaseNode {
+std::list< CreateFunc > creators;
 
-//    friend class MyManager;
-//
-public:
-//    virtual ~BaseNode() = default;
-    virtual int execute() { return -1; }
-//    virtual int nodeTypeID() const { return 0; }
-//    int objectID() const { return m_nodeID; }
-//private:
-//    int m_nodeID;
-};
+BaseNode::BaseNode( int value )
+    : m_value( value ),
+    m_nodeID( 0 ),
+    m_typeID( 0 ) {}
 
-//class PyBaseNode : public BaseNode {
-//public:
-//    /* Inherit the constructors */
-//    using BaseNode::BaseNode;
-//
-//    /* Trampoline (need one for each virtual function) */
-//    int execute() override {
-//        PYBIND11_OVERLOAD_PURE(
-//                int, /* Return type */
-//                BaseNode,      /* Parent class */
-//                execute,          /* Name of function in C++ (must match Python name) */
-//        );
-//    }
-//
-//    int nodeTypeID() const override {
-//        PYBIND11_OVERLOAD_PURE(
-//                int, /* Return type */
-//                BaseNode,      /* Parent class */
-//                nodeTypeID,          /* Name of function in C++ (must match Python name) */
-//        );
-//    }
-//};
+int BaseNode::value() const { return m_value; }
+int BaseNode::typeID() const { return m_typeID; }
+int BaseNode::nodeID() const { return m_nodeID; }
 
-//class AddNode : public BaseNode {
-//public:
-//    int execute() override { return -1; }
-//    int nodeTypeID() const override { return 3; }
-//};
-
-
-template< typename T >
-static T* creator() { return new T(); }
-
-BaseNode* my_create( std::function< BaseNode*() > func ) {
-    return func();
+NodeManager::NodeManager() : m_creators() {
+//    m_creators.emplace_back( [](){ return new CppNode( 3 ); } );
+    BMO_ERROR << "NodeManager started!";
 }
 
-//
-//class MyManager {
-//
-//    using CreateFunc = std::function< BaseNode*() >;
-//    using NodeMap = std::map< std::string, CreateFunc >;
-////    using NodeMap = std::map< std::string, py::object >;
-//
-//public:
-//    MyManager() : m_nodes() { /*add( "add", &createAddNode );*/ }
-//    ~MyManager() = default;
-//
-//    int func_arg(const std::function<int(int)> &f) {
-//        return f(10);
-//    }
-//
-//    void add( const std::string& name, CreateFunc func ) {
-//        BMO_ERROR << "Adding node: " << name;
-//        m_nodes[ name ] = func;
-//    }
-//
-//    std::shared_ptr< BaseNode > create( const std::string& name ) {
-//        auto iter = m_nodes.find( name );
-//        if ( iter != m_nodes.end() ) {
-//            BMO_ERROR << "Found node: " << name;
-//            auto creator = iter->second;
-//            return std::shared_ptr< BaseNode >( creator() );
-//        }
-//        return nullptr;
-//    }
-//
-//private:
-//    NodeMap m_nodes;
-//};
-
-// ---------------------------------------------------------
-
-class BaseA {
-public:
-    BaseA(int v) : value_(v) {}
-    int value() const { return value_; }
-private:
-    int value_{};
-};
-
-std::shared_ptr<BaseA> create_instance() {
-    return std::shared_ptr< BaseA >( new BaseA(1) );
+void NodeManager::add( const CreateFunc& func ) {
+    m_creators.emplace_back( std::move( func) );
 }
 
-std::shared_ptr<BaseA> check_creation(py::function py_factory) {
-    std::shared_ptr<BaseA> obj;{
-        py::object py_obj = py_factory();
-        obj = py::cast<std::shared_ptr<BaseA>>(py_obj);
+NodePtr NodeManager::create() {
+    auto func = creators.back();
+    return NodePtr( func() );
+}
+
+void init() {
+    BMO_ERROR << "init!";
+    creators.emplace_back( [](){ return new CppNode( 3 ); } );
+
+    if ( BMO_NodeManager == nullptr ) {
+        BMO_NodeManager = new NodeManager();
     }
-    return obj;
 }
 
-
-class MyManager {
-
-    using CreateFunc = std::function< std::shared_ptr<BaseA>() >;
-    using NodeMap = std::map< std::string, CreateFunc >;
-
-public:
-
-    void add( const std::string& name, CreateFunc func ) {
-        m_nodes[ name ] = func;
-    }
-
-    std::shared_ptr< BaseA > create( const std::string& name ) {
-        auto iter = m_nodes.find( name );
-        if ( iter != m_nodes.end() ) {
-            BMO_ERROR << "Found node: " << name;
-            auto creator = iter->second;
-            return creator();
-        }
-        return nullptr;
-    }
-
-private:
-    NodeMap m_nodes;
-};
+NodePtr create() {
+    auto func = creators.back();
+    return NodePtr( func() );
+}
 
 // ---------------------------------------------------------
 
 PYBIND11_MODULE(pybemo, m) {
 
+    m.def("init", &init);
+    m.def("create", &create);
 
-    py::class_<BaseA, std::shared_ptr<BaseA>>(m, "BaseA")
-            .def(py::init<int>())
-            .def("value", &BaseA::value);
 
+//    py::class_<BaseA, std::shared_ptr<BaseA>>(m, "BaseA")
+//            .def(py::init<int>())
+//            .def("value", &BaseA::value);
+//
     py::class_<BaseNode, std::shared_ptr<BaseNode>>(m, "BaseNode")
-            .def(py::init<>())
-            .def("execute", &BaseNode::execute);
+            .def(py::init<int>())
+            .def("value", &BaseNode::value)
+            .def("nodeID", &BaseNode::nodeID)
+            .def("typeID", &BaseNode::typeID);
 
-    m.def("create_instance", &create_instance);
-    m.def("check_creation", &check_creation);
-
-
-
-    m.doc() = "pybind11 example plugin"; // optional module docstring
-    m.def("add", &add, "A function which adds two numbers");
-    m.def("create", &my_create);
-
-//    py::class_<BaseNode, PyBaseNode > pyBaseNode(m, "BaseNode");
-
-//    pyBaseNode
-
-    py::class_<MyManager>(m, "MyManager")
-            .def(py::init<>())
-            .def("add", &MyManager::add)
-            .def("create", &MyManager::create);
-//                 []( const std::string& n, std::function< BaseNode*() >& f ) {
-//                return std::unique_ptr<BaseNode*, py::nodelete >( this->create( n, f ) );
-//                }, );
+    py::class_<NodeManager>(m, "NodeManager")
+            .def(py::init([]() { return BMO_NodeManager; }))
+            .def("add", &NodeManager::add)
+            .def("create", &NodeManager::create);
 
 
 //    py::class_<AddNode>(m, "Dog", animal)
@@ -302,3 +185,16 @@ PYBIND11_MODULE(pybemo, m) {
 
 
 
+
+
+//std::shared_ptr<BaseA> create_instance() {
+//    return std::shared_ptr< BaseA >( new BaseA(1) );
+//}
+//
+//std::shared_ptr<BaseA> check_creation(py::function py_factory) {
+//    std::shared_ptr<BaseA> obj;{
+//        py::object py_obj = py_factory();
+//        obj = py::cast<std::shared_ptr<BaseA>>(py_obj);
+//    }
+//    return obj;
+//}
