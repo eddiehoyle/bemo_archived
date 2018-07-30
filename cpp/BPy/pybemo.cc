@@ -36,11 +36,12 @@ NodeManager::NodeManager() : m_creators() {
 }
 
 void NodeManager::add( const CreateFunc& func ) {
+    BMO_ERROR << "adding...";
     m_creators.emplace_back( std::move( func) );
 }
 
 NodePtr NodeManager::create() {
-    auto func = creators.back();
+    auto func = m_creators.back();
     return NodePtr( func() );
 }
 
