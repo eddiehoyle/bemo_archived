@@ -4,6 +4,9 @@
 #include <memory>
 #include <functional>
 #include <list>
+#include <map>
+#include <string>
+#include <vector>
 
 namespace bemo {
 
@@ -20,12 +23,13 @@ class BaseNode {
 
 public:
     explicit BaseNode( int value );
+    virtual ~BaseNode() = default;
     int value() const;
-    int typeID() const;
+    std::string typeID() const;
     int nodeID() const;
 private:
     int m_nodeID;
-    int m_typeID;
+    std::string m_typeID;
     int m_value;
 };
 
@@ -37,37 +41,12 @@ public:
 class NodeManager {
 public:
     NodeManager();
-    void add( const CreateFunc& func );
-    NodePtr create();
+    void add( const std::string& type, CreateFunc func );
+    BaseNode* create( const std::string& type );
 private:
-    std::list< CreateFunc > m_creators;
+    std::map< std::string, CreateFunc > m_creators;
+    std::vector< BaseNode* > m_nodes;
 };
-
-//class MyManager {
-//
-//    using CreateFunc = std::function< std::shared_ptr<BaseA>() >;
-//    using NodeMap = std::map< std::string, CreateFunc >;
-//
-//public:
-//
-//    void add( const std::string& name, CreateFunc func ) {
-//        m_nodes[ name ] = func;
-//    }
-//
-//    std::shared_ptr< BaseA > create( const std::string& name ) {
-//        auto iter = m_nodes.find( name );
-//        if ( iter != m_nodes.end() ) {
-//            BMO_ERROR << "Found node: " << name;
-//            auto creator = iter->second;
-//            return creator();
-//        }
-//        return nullptr;
-//    }
-//
-//private:
-//    NodeMap m_nodes;
-//};
-
 
 }
 
