@@ -1,22 +1,34 @@
 #ifndef BEMO_NODEREGISTRY_HH
 #define BEMO_NODEREGISTRY_HH
 
+#include <map>
+#include <functional>
+
 namespace bemo {
+
+class AbstractNode;
+
+using CreatorFunc = std::function< AbstractNode*() >;
 
 class NodeRegistry {
 
-    typedef void( C::*Func )();
-
-    template< typename C >
-    class AbstractDelegate {};
+    using CreatorMap = std::map< std::string, CreatorFunc >;
 
 public:
-    void add( TypeID nodeTypeID,
-              std::function<void>& create,
-              std::function<void>& header,
-              std::function<void>& layout ) {}
+    void add( const std::string& type, CreatorFunc func ) {
+        m_creators[ type ] = func;
+    }
+    CreatorFunc find( const std::string& type ) const {
+        auto iter = m_creators.find( type );
+        if ( iter != m_creators.end() ) {
+            return iter->second;
+        }
+        return CreatorFunc( nullptr );
+    }
+
 private:
-    std::map< TypeID, std::vector< Func > > m_functions;
+    CreatorMap m_creators;
 };
+
 }
 #endif // BEMO_NODEREGISTRY_HH

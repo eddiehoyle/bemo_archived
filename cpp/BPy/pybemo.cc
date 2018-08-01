@@ -5,82 +5,93 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/functional.h>
 
+#include <BCore/API.hh>
+#include <BCore/util/Log.hh>
+#include <BCore/managers/NodeRegistry.hh>
+#include <BCore/managers/NodeManager.hh>
+
 #include <memory>
 #include <sstream>
 #include <string>
 #include <list>
-#include <BCore/util/Log.hh>
 
 namespace py = pybind11;
 
 using namespace bemo;
-
-NodeManager* BMO_NodeManager = nullptr;
-
-BaseNode::BaseNode( int value )
-    : m_value( value ),
-    m_nodeID( 0 ),
-    m_typeID( "invalid" ) {}
-
-int BaseNode::value() const { return m_value; }
-std::string BaseNode::typeID() const { return m_typeID; }
-int BaseNode::nodeID() const { return m_nodeID; }
-
-NodeManager::NodeManager() : m_creators() {
-    BMO_ERROR << "NodeManager started!";
-}
-
-void NodeManager::add( const std::string& type, CreateFunc func ) {
-    BMO_ERROR << "adding... " << type;
-    m_creators[ type ] = func;
-}
-
-BaseNode* NodeManager::create( const std::string& type ) {
-    auto iter = m_creators.find( type );
-    if ( iter != m_creators.end() ) {
-        auto func = iter->second;
-        BaseNode* node = func();
-        node->m_nodeID = m_nodes.size();
-        node->m_typeID = type;
-        m_nodes.emplace_back( node );
-        return node;
-    }
-    return nullptr;
-}
-
-void init() {
-    BMO_ERROR << "init!";
-    if ( BMO_NodeManager == nullptr ) {
-        BMO_NodeManager = new NodeManager();
-        BMO_NodeManager->add( "cpp", []()->BaseNode*{
-            return new CppNode( 3 );
-        });
-    }
-}
+//
+//NodeManager* BMO_NodeManager = nullptr;
+//
+//AbstractNode::AbstractNode( int value )
+//    : m_value( value ),
+//    m_nodeID( 0 ),
+//    m_typeID( "invalid" ) {}
+//
+//int AbstractNode::value() const { return m_value; }
+//std::string AbstractNode::typeID() const { return m_typeID; }
+//int AbstractNode::nodeID() const { return m_nodeID; }
+//
+//NodeManager::NodeManager() : m_creators() {
+//    BMO_ERROR << "NodeManager started!";
+//}
+//
+//void NodeManager::add( const std::string& type, CreateFunc func ) {
+//    BMO_ERROR << "adding... " << type;
+//    m_creators[ type ] = func;
+//}
+//
+//AbstractNode* NodeManager::create( const std::string& type ) {
+//    auto iter = m_creators.find( type );
+//    if ( iter != m_creators.end() ) {
+//        auto func = iter->second;
+//        AbstractNode* node = func();
+//        node->m_nodeID = m_nodes.size();
+//        node->m_typeID = type;
+//        m_nodes.emplace_back( node );
+//        return node;
+//    }
+//    return nullptr;
+//}
+//
+//void init() {
+//    BMO_ERROR << "init!";
+//    if ( BMO_NodeManager == nullptr ) {
+//        BMO_NodeManager = new NodeManager();
+//        BMO_NodeManager->add( "cpp", []()->AbstractNode*{
+//            return new CppNode( 3 );
+//        });
+//    }
+//}
 
 
 PYBIND11_MODULE(pybemo, m) {
 
-    m.def("init", &init);
-    m.def("add", []( const std::string& type, CreateFunc func ){
-        BMO_NodeManager->add( type, func );
+    m.def("init", [](){
+        initialize();
+        BMO_NodeRegistry->add( "cpp", []()->AbstractNode*{
+            return new AbstractNode();
+        });
     });
-    m.def("create", []( const std::string& type )->std::unique_ptr< BaseNode, py::nodelete >{
-        return std::unique_ptr<BaseNode, py::nodelete>( BMO_NodeManager->create( type ) );
+    m.def("add", []( const std::string& type, CreatorFunc func ){
+        BMO_NodeRegistry->add( type, func );
+    });
+//    m.def("create", []( const std::string& type )->std::unique_ptr< AbstractNode, py::nodelete >{
+//        return std::unique_ptr<AbstractNode, py::nodelete>( BMO_NodeManager->create( type ) );
+//    });
+    m.def("create", []( const std::string& type )->AbstractNode*{
+        return BMO_NodeManager->create( type );
     });
 
-    py::class_<BaseNode, std::unique_ptr<BaseNode, py::nodelete>>(m, "BaseNode")
-            .def(py::init<int>())
-            .def("value", &BaseNode::value)
-            .def("nodeID", &BaseNode::nodeID)
-            .def("typeID", &BaseNode::typeID)
-            .def("__repr__", []( const BaseNode& n ){
+    py::class_<AbstractNode, std::unique_ptr<AbstractNode, py::nodelete>>(m, "AbstractNode")
+            .def(py::init<>())
+            .def("nodeID", &AbstractNode::nodeID)
+            .def("typeID", &AbstractNode::typeID)
+            .def("execute", &AbstractNode::execute)
+            .def("__repr__", []( const AbstractNode& n ){
                 std::stringstream ss;
-                ss << "<BaseNode(";
+                ss << "<AbstractNode(";
                 ss << "addr=" << (void*)&n;
-                ss << ",id=" << n.nodeID();
+                ss << ", id=" << n.nodeID();
                 ss << ", type=" << n.typeID();
-                ss << ", value=" << n.value();
                 ss << ")>";
                 return ss.str();
             });
