@@ -18,50 +18,64 @@
 namespace py = pybind11;
 
 using namespace bemo;
-//
-//NodeManager* BMO_NodeManager = nullptr;
-//
-//AbstractNode::AbstractNode( int value )
-//    : m_value( value ),
-//    m_nodeID( 0 ),
-//    m_typeID( "invalid" ) {}
-//
-//int AbstractNode::value() const { return m_value; }
-//std::string AbstractNode::typeID() const { return m_typeID; }
-//int AbstractNode::nodeID() const { return m_nodeID; }
-//
-//NodeManager::NodeManager() : m_creators() {
-//    BMO_ERROR << "NodeManager started!";
-//}
-//
-//void NodeManager::add( const std::string& type, CreateFunc func ) {
-//    BMO_ERROR << "adding... " << type;
-//    m_creators[ type ] = func;
-//}
-//
-//AbstractNode* NodeManager::create( const std::string& type ) {
-//    auto iter = m_creators.find( type );
-//    if ( iter != m_creators.end() ) {
-//        auto func = iter->second;
-//        AbstractNode* node = func();
-//        node->m_nodeID = m_nodes.size();
-//        node->m_typeID = type;
-//        m_nodes.emplace_back( node );
-//        return node;
-//    }
-//    return nullptr;
-//}
-//
-//void init() {
-//    BMO_ERROR << "init!";
-//    if ( BMO_NodeManager == nullptr ) {
-//        BMO_NodeManager = new NodeManager();
-//        BMO_NodeManager->add( "cpp", []()->AbstractNode*{
-//            return new CppNode( 3 );
-//        });
-//    }
-//}
 
+class PyAbstractNode : public AbstractNode {
+public:
+    using AbstractNode::AbstractNode;
+    virtual ~PyAbstractNode() = default;
+    int execute() override {
+        PYBIND11_OVERLOAD(
+                int,
+                AbstractNode,
+                execute,
+        );
+    }
+};
+
+class Animal {
+public:
+    virtual ~Animal() = default;
+    virtual std::string name() { return "unknown"; }
+};
+class Dog : public Animal {
+public:
+    virtual std::string bark() { return "woof!"; }
+};
+
+class PyAnimal : public Animal {
+public:
+    using Animal::Animal; // Inherit constructors
+    std::string name() override { PYBIND11_OVERLOAD(std::string, Animal, name, ); }
+};
+class PyDog : public Dog {
+public:
+    using Dog::Dog; // Inherit constructors
+    std::string name() override { PYBIND11_OVERLOAD(std::string, Dog, name, ); }
+    std::string bark() override { PYBIND11_OVERLOAD(std::string, Dog, bark, ); }
+};
+class Husky : public Dog {};
+class PyHusky : public Husky {
+public:
+    using Husky::Husky; // Inherit constructors
+    std::string name() override { PYBIND11_OVERLOAD(std::string, Husky, name, ); }
+    std::string bark() override { PYBIND11_OVERLOAD(std::string, Husky, bark, ); }
+};
+
+//template <class AnimalBase = Animal>
+//class PyAnimal : public AnimalBase {
+//public:
+//    using AnimalBase::AnimalBase; // Inherit constructors
+//    std::string go(int n_times) override { PYBIND11_OVERLOAD_PURE(std::string, AnimalBase, go, n_times); }
+//    std::string name() override { PYBIND11_OVERLOAD(std::string, AnimalBase, name, ); }
+//};
+//template <class DogBase = Dog>
+//class PyDog : public PyAnimal<DogBase> {
+//public:
+//    using PyAnimal<DogBase>::PyAnimal; // Inherit constructors
+//    // Override PyAnimal's pure virtual go() with a non-pure one:
+//    std::string go(int n_times) override { PYBIND11_OVERLOAD(std::string, DogBase, go, n_times); }
+//    std::string bark() override { PYBIND11_OVERLOAD(std::string, DogBase, bark, ); }
+//};
 
 PYBIND11_MODULE(pybemo, m) {
 
@@ -74,14 +88,17 @@ PYBIND11_MODULE(pybemo, m) {
     m.def("add", []( const std::string& type, CreatorFunc func ){
         BMO_NodeRegistry->add( type, func );
     });
-//    m.def("create", []( const std::string& type )->std::unique_ptr< AbstractNode, py::nodelete >{
-//        return std::unique_ptr<AbstractNode, py::nodelete>( BMO_NodeManager->create( type ) );
-//    });
     m.def("create", []( const std::string& type )->AbstractNode*{
         return BMO_NodeManager->create( type );
     });
+    m.def("test", []( std::function<Dog*()> func ){
+        return func();
+    }, py::return_value_policy::reference );
+    m.def("test2", []( py::function func ){
+        return func();
+    }, py::return_value_policy::reference );
 
-    py::class_<AbstractNode, std::unique_ptr<AbstractNode, py::nodelete>>(m, "AbstractNode")
+    py::class_<AbstractNode, PyAbstractNode>(m, "AbstractNode")
             .def(py::init<>())
             .def("nodeID", &AbstractNode::nodeID)
             .def("typeID", &AbstractNode::typeID)
@@ -95,6 +112,16 @@ PYBIND11_MODULE(pybemo, m) {
                 ss << ")>";
                 return ss.str();
             });
+
+    py::class_<Animal, PyAnimal> animal(m, "Animal");
+    animal.def(py::init<>()).def("name", &Animal::name);
+
+    py::class_<Dog, PyDog> dog(m, "Dog");
+    dog.def(py::init<>()).def("name", &Dog::name);
+//    py::class_<Husky, PyDog<Husky>> husky(m, "Husky");
+//    husky.def(py::init<>()).def("go", &Husky::go);
+
+
 
 
 
