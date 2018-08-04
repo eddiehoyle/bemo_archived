@@ -33,6 +33,7 @@ class Handle {
                    "Invalid handle layout. More bits used than base value type can hold" );
 
 public:
+
     using NumericType = N;
 
 public:

@@ -1,23 +1,16 @@
 #include "API.hh"
 #include <BCore/util/Log.hh>
 #include <BCore/managers/NodeManager.hh>
-#include <BCore/managers/NodeRegistry.hh>
 #include <BCore/managers/PlugManager.hh>
 
 namespace bemo {
 
 PlugManager* BMO_PlugManager = nullptr;
 NodeManager* BMO_NodeManager = nullptr;
-NodeRegistry* BMO_NodeRegistry = nullptr;
 
 void initialize() {
 
     BMO_INITIALISE_LOG()
-
-
-    if ( BMO_NodeRegistry == nullptr ) {
-        BMO_NodeRegistry = new NodeRegistry();
-    }
 
     if ( BMO_NodeManager == nullptr ) {
         BMO_NodeManager = new NodeManager();
@@ -31,11 +24,6 @@ void initialize() {
 
 void terminate() {
 
-    if ( BMO_NodeRegistry != nullptr ) {
-        delete BMO_NodeRegistry;
-        BMO_NodeRegistry = nullptr;
-    }
-
     if ( BMO_NodeManager != nullptr ) {
         delete BMO_NodeManager;
         BMO_NodeManager = nullptr;
@@ -45,6 +33,10 @@ void terminate() {
         delete BMO_PlugManager;
         BMO_PlugManager = nullptr;
     }
+
+}
+
+void send( const std::string& message ) {
 
 }
 

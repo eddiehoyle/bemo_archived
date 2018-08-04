@@ -6,22 +6,14 @@
 
 namespace bemo {
 
-std::function< void() > Func;
+using PluginID = ObjectID;
 
-
-class PluginManager : public AbstractManager< Plugin > {
+class PluginManager {
 
     using PluginName = std::string;
-    using PluginID = ObjectID;
     using PluginMap = std::map< PluginName, PluginID >;
-
 public:
-    void registerNode( const std::string& name,
-                       TypeID typeID,
-                       std::function< ObjectID() > creator ) {
-    }
-    void unregisterNode( const std::string& name ) {
-    }
+    virtual ~PluginManager() = default;
 private:
     PluginMap m_pluginMap;
 

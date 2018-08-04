@@ -1,16 +1,18 @@
-#ifndef BEMO_NODEREGISTRY_HH
-#define BEMO_NODEREGISTRY_HH
+#ifndef BEMO_PYNODEREGISTRY_HH
+#define BEMO_PYNODEREGISTRY_HH
 
-#include <map>
+#include <pybind11/pybind11.h>
+
 #include <functional>
+#include <map>
+
+namespace py = pybind11;
 
 namespace bemo {
 
-class AbstractNode;
+using CreatorFunc = std::function< py::object() >;
 
-using CreatorFunc = std::function< AbstractNode*() >;
-
-class NodeRegistry {
+class PyNodeRegistry {
 
     using CreatorMap = std::map< std::string, CreatorFunc >;
 
@@ -31,4 +33,5 @@ private:
 };
 
 }
-#endif // BEMO_NODEREGISTRY_HH
+
+#endif // BEMO_PYNODEREGISTRY_HH

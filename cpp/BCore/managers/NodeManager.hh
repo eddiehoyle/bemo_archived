@@ -4,19 +4,19 @@
 #include <BCore/API.hh>
 #include <BCore/internal/Table.hh>
 #include <BCore/object/AbstractNode.hh>
-#include <BCore/managers/NodeRegistry.hh>
 
 namespace bemo {
 
 class NodeManager {
 public:
-    AbstractNode* create( const std::string& type ) {
-        auto func = BMO_NodeRegistry->find( type );
-        NodeID id = m_table.acquire( func() );
-        AbstractNode* node = m_table[ id ];
+    NodeID acquire( const std::string& type, AbstractNode* node ) {
+//        auto func = BMO_NodeRegistry->find( type );
+//        NodeID id = m_table.acquire( func() );
+//        AbstractNode* node = m_table[ id ];
+        NodeID id( 0 );
         node->m_nodeID = id;
         node->m_typeID = type;
-        return node;
+        return id;
     }
 private:
     HandleTable< AbstractNode, NodeID > m_table;
