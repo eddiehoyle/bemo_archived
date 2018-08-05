@@ -11,25 +11,37 @@ namespace py = pybind11;
 namespace bemo {
 
 using CreatorFunc = std::function< py::object() >;
+using InitFunc = std::function< py::object( py::object ) >;
 
 class PyNodeRegistry {
 
     using CreatorMap = std::map< std::string, CreatorFunc >;
+    using InitMap = std::map< std::string, InitFunc >;
 
 public:
-    void add( const std::string& type, CreatorFunc func ) {
-        m_creators[ type ] = func;
+    void add( const std::string& type, CreatorFunc& creFunc, InitFunc& iniFunc ) {
+        m_creators[ type ] = std::move( creFunc );
+        m_initialisers[ type ] = std::move( iniFunc );
     }
-    CreatorFunc find( const std::string& type ) const {
+    CreatorFunc findCreator( const std::string& type ) const {
         auto iter = m_creators.find( type );
         if ( iter != m_creators.end() ) {
             return iter->second;
         }
-        return CreatorFunc( nullptr );
+        return CreatorFunc( py::none() );
+    }
+
+    InitFunc findInitialiser( const std::string& type ) const {
+        auto iter = m_initialisers.find( type );
+        if ( iter != m_initialisers.end() ) {
+            return iter->second;
+        }
+        return InitFunc( nullptr );
     }
 
 private:
     CreatorMap m_creators;
+    InitMap m_initialisers;
 };
 
 }

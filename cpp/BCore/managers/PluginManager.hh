@@ -12,8 +12,12 @@ class PluginManager {
 
     using PluginName = std::string;
     using PluginMap = std::map< PluginName, PluginID >;
+
 public:
     virtual ~PluginManager() = default;
+    PluginID acquire() {
+        return PluginID( 0 );
+    }
 private:
     PluginMap m_pluginMap;
 

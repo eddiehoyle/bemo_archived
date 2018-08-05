@@ -11,10 +11,21 @@ class Plug;
 
 using Plugs = std::vector< Plug >;
 
-enum class Direction {
+enum class PlugDirection {
     Input,
-    Output,
+    Outout,
 };
+
+enum class PlugType {
+    Int,
+    String,
+    Float,
+    List,
+    Dict,
+    Object,
+    Variant,
+};
+
 
 class Plug : public Object< Plug > {
 public:
@@ -38,9 +49,6 @@ public:
 //                                            targetOwnerID, plug.objectID() );
 //        }
 //    }
-
-private:
-    Direction m_direction;
 };
 
 }

@@ -11,6 +11,7 @@
 #include <BCore/API.hh>
 #include <BCore/util/Log.hh>
 #include <BCore/managers/NodeManager.hh>
+#include <BCore/system/NodeRegistrySystem.hh>
 
 #include <memory>
 #include <sstream>
@@ -33,12 +34,20 @@ PYBIND11_MODULE(pybemo, m) {
         initialize();
         py_initialize();
     });
-    m.def("add", []( const std::string& type, CreatorFunc func ){
-        BMO_PyNodeRegistry->add( type, func );
+    m.def("add", []( const std::string& type, CreatorFunc& creFunc, InitFunc& initFunc ){
+        BMO_PyNodeRegistry->add( type, creFunc, initFunc );
     });
     m.def("create", []( const std::string& type ){
         return BMO_PyNodeManager->create( type );
     });
+
+    py::class_<NodeRegistrySystem>(m, "NodeRegistrySystem")
+            .def(py::init<NodeID>())
+            .def("addHeader", &NodeRegistrySystem::addHeader)
+            .def("addPlug", &NodeRegistrySystem::addPlug);
+
+    py::class_<NodeID>(m, "NodeID")
+            .def(py::init<>());
 
     py::class_<AbstractNode, PyAbstractNode>(m, "AbstractNode")
             .def(py::init<>())

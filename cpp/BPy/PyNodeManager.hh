@@ -17,9 +17,14 @@ namespace bemo {
 class PyNodeManager : public NodeManager {
 public:
     py::object create( const std::string& type ) {
-        CreatorFunc func = BMO_PyNodeRegistry->find( type );
-        py::object node = func();
+        CreatorFunc creFunc = BMO_PyNodeRegistry->findCreator( type );
+        InitFunc initFunc = BMO_PyNodeRegistry->findInitialiser( type );
+
+        py::object node = creFunc();
         acquire( type, node.cast< AbstractNode* >() );
+
+        initFunc( node );
+
         return node;
     }
 };

@@ -15,7 +15,9 @@ namespace bemo {
 class PyPluginManager : public PluginManager {
 public:
     int registerNode( const std::string& type, CreatorFunc func ) {
-        return 0;
+        PluginID id = acquire();
+        Plugin plugin = Plugin();
+        plugin.m_
     }
     void unregisterNode( const std::string& type ) {
     }
