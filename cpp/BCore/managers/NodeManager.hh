@@ -10,16 +10,17 @@ namespace bemo {
 class NodeManager {
 public:
     NodeID acquire( const std::string& type, AbstractNode* node ) {
-//        auto func = BMO_NodeRegistry->find( type );
-//        NodeID id = m_table.acquire( func() );
-//        AbstractNode* node = m_table[ id ];
-        NodeID id( 0 );
+        NodeID id( static_cast< u32 >( m_objectIDs.size() ) );
         node->m_nodeID = id;
         node->m_typeID = type;
+        m_objectIDs.insert( id );
         return id;
     }
+    inline bool has( const NodeID& id ) {
+        return m_objectIDs.find( id ) != m_objectIDs.end();
+    }
 private:
-    HandleTable< AbstractNode, NodeID > m_table;
+    std::set< NodeID > m_objectIDs;
 };
 
 }

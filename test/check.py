@@ -1,5 +1,9 @@
 #!/usr/bin/env python
 
+import os
+import sys
+sys.path.insert(0, os.path.abspath("../build"))
+
 import pybemo
 
 class PyNode(pybemo.AbstractNode):
@@ -8,23 +12,26 @@ class PyNode(pybemo.AbstractNode):
         print "Executing %s!" % (self.__class__.__name__)
         return 3
 
-def py_creator():
+def py_create():
     return PyNode()
 
-def py_initialise(node):
+def py_register(node):
     manager = pybemo.NodeRegistrySystem(node.nodeID())
     manager.addHeader("PyNode", "Some description", "icons/PyNode.png")
-    manager.addPlug("path", pybemo.Plug.Input, pybemo.Plug.String, required=False, strict=False)
-    manager.addPlug("frame", pybemo.Plug.Input, pybemo.Plug.Int, required=False, strict=False)
-    manager.addPlug("output", pybemo.Plug.Output, pybemo.Plug.String, required=False, strict=False)
+    manager.addPlug("path", pybemo.PlugDirection.Input, pybemo.PlugType.String, isRequired=False, isStrict=False)
+    manager.addPlug("frame", pybemo.PlugDirection.Input, pybemo.PlugType.Int, isRequired=False, isStrict=False)
+    manager.addPlug("output", pybemo.PlugDirection.Output, pybemo.PlugType.String, isRequired=False, isStrict=False)
 
 def main():
     pybemo.init();
 
-    pybemo.add("py", py_creator, py_initialise)
+    pybemo.add("py", py_create, py_register)
     nodeA = pybemo.create("py")
-    print nodeA
-    print nodeA.execute()
+    print "nodeA : nodeA=%s" % (nodeA)
+    print "nodeA : execute=%s" % (nodeA.execute())
+    print "nodeA : nodeID=%s" % (nodeA.nodeID())
+    print "nodeA : typeID=%s" % (nodeA.typeID())
+    print "nodeA : isValid=%s" % (nodeA.isValid())
     
     
 

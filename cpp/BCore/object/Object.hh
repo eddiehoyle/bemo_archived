@@ -6,20 +6,20 @@
 
 namespace bemo {
 
-template< typename T >
-class Object : public AbstractObject {
-public:
-    static TypeID typeID() { return m_typeID; }
-protected:
-    ~Object() override = default;
-private:
-    static const TypeID m_typeID;
-};
-
-template< typename T >
-const bemo::TypeID Object< T >::m_typeID =
-        bemo::internal::ObjectTypeID< bemo::AbstractObject >::template allocate< T >();
-
+//template< typename T >
+//class Object : public AbstractObject {
+//public:
+//    static TypeID typeID() { return m_typeID; }
+//protected:
+//    ~Object() override = default;
+//private:
+//    static const TypeID m_typeID;
+//};
+//
+//template< typename T >
+//const bemo::TypeID Object< T >::m_typeID =
+//        bemo::internal::ObjectTypeID< bemo::AbstractObject >::template allocate< T >();
+//
 }
 
 #endif // BEMO_CONTAINER_HH

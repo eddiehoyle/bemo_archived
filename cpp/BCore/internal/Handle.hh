@@ -4,28 +4,20 @@
 #include <BCore/util/Log.hh>
 #include <climits>
 #include <ostream>
+#include <BCore/API.hh>
 
 namespace bemo {
 
 
-class BTypeID {
-public:
-    explicit BTypeID( unsigned long id ) : m_typeID( 0 ) {}
-    unsigned long typeID() const { return m_typeID; }
-private:
-    unsigned long m_typeID;
-};
-
-
-template< typename N, std::size_t I, std::size_t V >
+template< ObjectType T, typename N, std::size_t I, std::size_t V >
 class Handle;
 
-template< typename N, std::size_t I, std::size_t V >
-std::ostream& operator<<( std::ostream& stream, const Handle< N, I, V >& handle ) {
+template< ObjectType T, typename N, std::size_t I, std::size_t V >
+std::ostream& operator<<( std::ostream& stream, const Handle< T, N, I, V >& handle ) {
     return stream << "Handle(index=" << handle.index() << ", version=" << handle.version() << ")";
 }
 
-template< typename N, std::size_t I, std::size_t V >
+template< ObjectType T, typename N, std::size_t I, std::size_t V >
 class Handle {
 
     static_assert(std::is_arithmetic< N >::value, "NumericType must be numeric");
@@ -46,14 +38,12 @@ public:
     static constexpr NumericType INVALID_HANDLE{ std::numeric_limits< NumericType >::max() };
 
 public:
-    static Handle identity() { return Handle< N, I, V >( 0 ); }
-    static Handle invalid() { return Handle< N, I, V >( INVALID_HANDLE ); }
+    static Handle identity() { return Handle< T, N, I, V >( 0, T ); }
+    static Handle invalid() { return Handle< T, N, I, V >( INVALID_HANDLE, ObjectType::Invalid ); }
 
 public:
-    Handle() : m_id( 0 ) {}
-    explicit Handle( NumericType id ) : m_id( id ) {}
-    Handle( const Handle& rhs ) { this->m_id = rhs.m_id; }
-//    Handle& operator=( const Handle& rhs ) { this->m_id = rhs.m_id; }
+    explicit Handle( NumericType id ) : m_type( T ), m_id( id ) {}
+    Handle( const Handle& rhs ) { this->m_id = rhs.m_id; this->m_type = rhs.m_type; }
     bool operator==( const Handle& rhs ) { return this->m_id == rhs.m_id; }
     bool operator!=( const Handle& rhs ) { return this->m_id != rhs.m_id; }
     bool operator<( const Handle& rhs ) { return this->m_id < rhs.m_id; }
@@ -65,19 +55,20 @@ public:
 
 private:
     NumericType m_id;
+    ObjectType m_type;
 };
 
-template< typename N, std::size_t I, std::size_t V >
-constexpr N Handle< N, I, V >::MIN_INDEX;
+template< ObjectType T, typename N, std::size_t I, std::size_t V >
+constexpr N Handle< T, N, I, V >::MIN_INDEX;
 
-template< typename N, std::size_t I, std::size_t V >
-constexpr N Handle< N, I, V >::MAX_INDICES;
+template< ObjectType T, typename N, std::size_t I, std::size_t V >
+constexpr N Handle< T, N, I, V >::MAX_INDICES;
 
-template< typename N, std::size_t I, std::size_t V >
-constexpr N Handle< N, I, V >::MIN_VERSION;
+template< ObjectType T, typename N, std::size_t I, std::size_t V >
+constexpr N Handle< T, N, I, V >::MIN_VERSION;
 
-template< typename N, std::size_t I, std::size_t V >
-constexpr N Handle< N, I, V >::MAX_VERSION;
+template< ObjectType T, typename N, std::size_t I, std::size_t V >
+constexpr N Handle< T, N, I, V >::MAX_VERSION;
 
 }
 

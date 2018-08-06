@@ -2,7 +2,6 @@
 #define BEMO_PYNODEMANAGER_HH
 
 #include "pybemo.hh"
-#include "PyNodeRegistry.hh"
 
 #include <BCore/managers/NodeManager.hh>
 
@@ -14,19 +13,59 @@ namespace py = pybind11;
 
 namespace bemo {
 
-class PyNodeManager : public NodeManager {
+using FnCreate = std::function< py::object() >;
+using FnLayout = std::function< py::object( py::object ) >;
+
+class PyNodeManager {
+
+    using FnCreateMap = std::map< std::string, FnCreate >;
+    using FnLayoutMap = std::map< std::string, FnLayout >;
+
 public:
+
     py::object create( const std::string& type ) {
-        CreatorFunc creFunc = BMO_PyNodeRegistry->findCreator( type );
-        InitFunc initFunc = BMO_PyNodeRegistry->findInitialiser( type );
 
-        py::object node = creFunc();
-        acquire( type, node.cast< AbstractNode* >() );
+        py::object node = py::none();
 
-        initFunc( node );
+        FnCreate fnCreate;
+        FnLayout fnLayout;
+        if ( findBlueprint( type, &fnCreate, &fnLayout ) ) {
+            node = fnCreate();
+            BMO_NodeManager->acquire( type, node.cast< AbstractNode* >() );
+            fnLayout( node );
+        }
 
         return node;
     }
+
+    bool findBlueprint( const std::string& type,
+                        FnCreate* fnCreate,
+                        FnLayout* fnLayout ) {
+
+        bool result = false;
+
+        auto fnCreateIter = m_create.find( type );
+        auto fnLayoutIter = m_layout.find( type );
+        if ( ( fnCreateIter != m_create.end() ) &&
+             ( fnLayoutIter != m_layout.end() ) ) {
+            *fnCreate = fnCreateIter->second;
+            *fnLayout = fnLayoutIter->second;
+            result = true;
+        }
+        return result;
+    }
+
+    void addBlueprint( const std::string& type,
+                       FnCreate& fnCreate,
+                       FnLayout& fnLayout ) {
+        m_create[ type ] = std::move( fnCreate );
+        m_layout[ type ] = std::move( fnLayout );
+    }
+
+private:
+    FnCreateMap m_create;
+    FnLayoutMap m_layout;
+
 };
 
 }

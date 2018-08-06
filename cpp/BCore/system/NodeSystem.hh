@@ -1,16 +1,17 @@
 #ifndef BEMO_REGISTRYSYSTEM_HH
 #define BEMO_REGISTRYSYSTEM_HH
 
+#include <BCore/API.hh>
 #include <BCore/object/Plug.hh>
 #include <BCore/object/AbstractNode.hh>
 
 namespace bemo {
 
-class NodeRegistrySystem {
+class NodeSystem {
 public:
-    explicit NodeRegistrySystem( const NodeID& id ) : m_nodeID( id ) {}
+    explicit NodeSystem( const NodeID& id ) : m_nodeID( id ) {}
 
-    void addHeader( const std::string& name,
+    void setHeader( const std::string& name,
                     const std::string& description,
                     const std::string& icon ) {
         BMO_ERROR << "Adding header=" << name << ", to nodeID=" << m_nodeID;

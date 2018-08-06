@@ -6,7 +6,7 @@
 
 namespace bemo {
 
-using NodeID = Handle< u32, 16, 16 >;
+using NodeID = Handle< ObjectType::Node, u32, 16, 16 >;
 using NodeTypeID = std::string;
 
 class AbstractNode {
@@ -18,9 +18,12 @@ public:
         : m_nodeID( NodeID::INVALID_HANDLE ),
           m_typeID() { BMO_ERROR << "ctor"; }
     virtual ~AbstractNode() { BMO_ERROR << "dtor"; }
-    virtual int execute() { return -1; }
-    NodeID nodeID() const { return m_nodeID; }
-    NodeTypeID typeID() const { return m_typeID; }
+
+    inline NodeID nodeID() const { return m_nodeID; }
+    inline NodeTypeID typeID() const { return m_typeID; }
+    bool isValid() const;
+    virtual int execute();
+
 private:
     NodeID m_nodeID;
     NodeTypeID m_typeID;

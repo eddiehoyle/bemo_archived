@@ -1,8 +1,7 @@
 
 #include "pybemo.hh"
-#include "PyAbstractNode.hh"
+#include "PyNode.hh"
 #include "PyNodeManager.hh"
-#include "PyNodeRegistry.hh"
 
 #include <pybind11/stl.h>
 #include <pybind11/pybind11.h>
@@ -11,7 +10,7 @@
 #include <BCore/API.hh>
 #include <BCore/util/Log.hh>
 #include <BCore/managers/NodeManager.hh>
-#include <BCore/system/NodeRegistrySystem.hh>
+#include <BCore/system/NodeSystem.hh>
 
 #include <memory>
 #include <sstream>
@@ -24,7 +23,6 @@ using namespace bemo;
 
 void py_initialize() {
     BMO_PyNodeManager = new PyNodeManager();
-    BMO_PyNodeRegistry = new PyNodeRegistry();
 }
 
 
@@ -34,25 +32,48 @@ PYBIND11_MODULE(pybemo, m) {
         initialize();
         py_initialize();
     });
-    m.def("add", []( const std::string& type, CreatorFunc& creFunc, InitFunc& initFunc ){
-        BMO_PyNodeRegistry->add( type, creFunc, initFunc );
+    m.def("add", []( const std::string& type,
+                     FnCreate& fnCreate,
+                     FnLayout& fnLayout ){
+        BMO_PyNodeManager->addBlueprint( type, fnCreate, fnLayout );
     });
     m.def("create", []( const std::string& type ){
         return BMO_PyNodeManager->create( type );
     });
 
-    py::class_<NodeRegistrySystem>(m, "NodeRegistrySystem")
+    py::enum_<PlugDirection>(m, "PlugDirection")
+            .value("Input", PlugDirection::Input)
+            .value("Output", PlugDirection::Output)
+            .export_values();
+
+    py::enum_<PlugType>(m, "PlugType")
+            .value("Int", PlugType::Int)
+            .value("String", PlugType::String)
+            .value("Float", PlugType::Float)
+            .value("List", PlugType::List)
+            .value("Dict", PlugType::Dict)
+            .value("Variant", PlugType::Variant)
+            .export_values();
+
+    py::class_<NodeSystem>(m, "NodeRegistrySystem")
             .def(py::init<NodeID>())
-            .def("addHeader", &NodeRegistrySystem::addHeader)
-            .def("addPlug", &NodeRegistrySystem::addPlug);
+            .def("addHeader", &NodeSystem::setHeader)
+            .def( "addPlug",
+                  &NodeSystem::addPlug,
+                  py::arg( "name" ),
+                  py::arg( "direction" ),
+                  py::arg( "type" ) = PlugType::Variant,
+                  py::arg( "isRequired" ) = false,
+                  py::arg( "isStrict" ) = false );
 
     py::class_<NodeID>(m, "NodeID")
-            .def(py::init<>());
+            .def(py::init<NodeID::NumericType>());
 
-    py::class_<AbstractNode, PyAbstractNode>(m, "AbstractNode")
+    py::class_<AbstractNode, PyNode>(m, "AbstractNode")
             .def(py::init<>())
             .def("nodeID", &AbstractNode::nodeID)
             .def("typeID", &AbstractNode::typeID)
+            .def("isValid", &AbstractNode::isValid)
             .def("execute", &AbstractNode::execute)
             .def("__repr__", []( const AbstractNode& n ){
                 std::stringstream ss;

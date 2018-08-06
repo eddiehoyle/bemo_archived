@@ -5,6 +5,30 @@
 
 namespace bemo {
 
+enum class ObjectType {
+    Header,
+    Node,
+    Plug,
+
+    /// Must be last
+    Invalid,
+};
+
+
+enum class PlugDirection {
+    Input,
+    Output,
+};
+
+enum class PlugType {
+    Int,
+    String,
+    Float,
+    List,
+    Dict,
+    Variant,
+};
+
 class NodeRegistry;
 class NodeManager;
 class PlugManager;

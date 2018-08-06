@@ -6,20 +6,19 @@
 
 namespace bemo {
 
-using ObjectID = Handle< u32, 16, 16 >;
-
-class PlugManager;
-
-class AbstractObject {
-public:
-    ObjectID objectID() const { return m_objectID; }
-protected:
-    virtual ~AbstractObject() = default;
-    bool operator==( const AbstractObject& rhs ) { return this->m_objectID == rhs.objectID(); }
-protected:
-    ObjectID m_objectID;
-    PlugManager* m_manager;
-};
+//
+//class PlugManager;
+//
+//class AbstractObject {
+//public:
+//    ObjectID objectID() const { return m_objectID; }
+//protected:
+//    virtual ~AbstractObject() = default;
+//    bool operator==( const AbstractObject& rhs ) { return this->m_objectID == rhs.objectID(); }
+//protected:
+//    ObjectID m_objectID;
+//    PlugManager* m_manager;
+//};
 
 }
 
