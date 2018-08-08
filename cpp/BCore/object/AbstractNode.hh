@@ -14,6 +14,10 @@ class AbstractNode {
     friend class NodeManager;
 
 public:
+
+    static constexpr ObjectType OBJECT_TYPE_ID = { ObjectType::Node };
+
+public:
     AbstractNode()
         : m_nodeID( NodeID::INVALID_HANDLE ),
           m_typeID() { BMO_ERROR << "ctor"; }

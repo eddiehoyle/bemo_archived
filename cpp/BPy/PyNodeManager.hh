@@ -14,7 +14,7 @@ namespace py = pybind11;
 namespace bemo {
 
 using FnCreate = std::function< py::object() >;
-using FnLayout = std::function< py::object( py::object ) >;
+using FnLayout = std::function< py::object( NodeID ) >;
 
 class PyNodeManager {
 
@@ -31,8 +31,8 @@ public:
         FnLayout fnLayout;
         if ( findBlueprint( type, &fnCreate, &fnLayout ) ) {
             node = fnCreate();
-            BMO_NodeManager->acquire( type, node.cast< AbstractNode* >() );
-            fnLayout( node );
+            NodeID nodeID = BMO_NodeManager->acquire( type, node.cast< AbstractNode* >() );
+            fnLayout( nodeID );
         }
 
         return node;

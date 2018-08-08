@@ -9,6 +9,7 @@ enum class ObjectType {
     Header,
     Node,
     Plug,
+    Plugin,
 
     /// Must be last
     Invalid,

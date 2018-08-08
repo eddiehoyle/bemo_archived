@@ -5,18 +5,9 @@
 
 namespace bemo {
 
-using PluginID = Handle< u32, 16, 16 >;
+using PluginID = Handle< ObjectType::Plugin, u32, 16, 16 >;
 
 class Plugin {
-public:
-    void addPlug( const std::string& name,
-                  PlugDirection direction,
-                  PlugType type,
-                  bool mandatory,
-                  bool strict ) {
-    }
-private:
-    PluginID m_pluginID;
 };
 
 }
