@@ -62,6 +62,10 @@ public:
         return m_objects.at( handle.index() );
     }
 
+    std::size_t count() const {
+        return m_objects.size();
+    }
+
 private:
     std::deque< typename Handle::NumericType > m_indices;
     std::vector< typename Handle::NumericType > m_versions;

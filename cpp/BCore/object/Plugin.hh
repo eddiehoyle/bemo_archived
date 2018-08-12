@@ -6,8 +6,23 @@
 namespace bemo {
 
 using PluginID = Handle< ObjectType::Plugin, u32, 16, 16 >;
+using PluginHeaderID = Handle< ObjectType::PluginHeader, u32, 16, 16 >;
 
 class Plugin {
+
+    friend class PluginManager;
+
+public:
+    Plugin() : m_pluginID( PluginID::INVALID_HANDLE ),
+               m_pluginHeaderID( PluginID::INVALID_HANDLE ),
+               m_loaded( false ) {}
+    void load() { m_loaded = true; }
+    void unload() { m_loaded = false; }
+    bool isLoaded() const { return m_loaded; }
+private:
+    PluginID m_pluginID;
+    PluginHeaderID m_pluginHeaderID;
+    bool m_loaded;
 };
 
 }

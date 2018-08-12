@@ -9,6 +9,26 @@ namespace bemo {
 
 class PlugManager {
 
+public:
+
+    template< typename... Args >
+    PlugID create( Args&&... args ) {
+        PlugID id = m_table.acquire( new Plug( std::forward<Args>( args )... ) );
+        Plug* plug = m_table[ id ];
+        plug->m_id = id;
+        return id;
+    }
+
+    Plug* get( PlugID id ) const {
+        return m_table[ id ];
+    }
+
+    PlugID find( const PlugName& name ) {
+
+    }
+
+private:
+    HandleTable< Plug, PlugID > m_table;
 };
 
 

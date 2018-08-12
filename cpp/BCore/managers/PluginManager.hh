@@ -2,25 +2,26 @@
 #define BEMO_PLUGINMANAGER_HH
 
 #include <BCore/object/Plugin.hh>
-#include "AbstractManager.hh"
+#include <BCore/internal/Table.hh>
 
 namespace bemo {
 
-using PluginID = ObjectID;
-
 class PluginManager {
 
-    using PluginName = std::string;
-    using PluginMap = std::map< PluginName, PluginID >;
-
 public:
-    virtual ~PluginManager() = default;
-    PluginID acquire() {
-        return PluginID( 0 );
+    PluginID create() {
+        PluginID id = m_table.acquire( new Plugin() );
+        Plugin* plugin = m_table[ id ];
+        plugin->m_pluginID = id;
+        return id;
     }
-private:
-    PluginMap m_pluginMap;
 
+    Plugin* get( PluginID id ) const {
+        return m_table[ id ];
+    }
+
+private:
+    HandleTable< Plugin, PluginID > m_table;
 };
 
 }

@@ -12,7 +12,7 @@ def py_create():
 
 def py_layout(node_id):
     print "py_layout() : node_id=%s" % (node_id)
-    manager = pybemo.NodeRegistrySystem(node_id)
+    manager = pybemo.NodeSystem(node_id)
     manager.addHeader("PyNode", "Some description", "icons/PyNode.png")
     manager.addPlug("path", pybemo.PlugDirection.Input, pybemo.PlugType.String, isRequired=False, isStrict=False)
     manager.addPlug("frame", pybemo.PlugDirection.Input, pybemo.PlugType.Int, isRequired=False, isStrict=False)
@@ -21,5 +21,5 @@ def py_layout(node_id):
 def bmo_registerPlugin(pluginID):
     print "bmo_registerPlugin() : pluginID=%s" % (pluginID)
     system = pybemo.PluginSystem(pluginID)
-    system.setHeader("PyPlugin", "Some description.")
-    system.registerNode("PyNode", py_create, py_layout)
+    system.setHeader("PyPlugin", "Some description.", "icons/plugin32px.png")
+    system.registerNode("py", py_create, py_layout)

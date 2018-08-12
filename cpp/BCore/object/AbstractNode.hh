@@ -1,8 +1,10 @@
 #ifndef BEMO_ABSTRACTNODE_HH
 #define BEMO_ABSTRACTNODE_HH
 
+#include <BCore/API.hh>
 #include <BCore/Platform.hh>
 #include <BCore/internal/Handle.hh>
+#include <BCore/managers/PlugManager.hh>
 
 namespace bemo {
 
@@ -27,6 +29,9 @@ public:
     inline NodeTypeID typeID() const { return m_typeID; }
     bool isValid() const;
     virtual int execute();
+    PlugID getPlug( const PlugName& name ) const {
+        return BMO_PlugManager->find( name )
+    }
 
 private:
     NodeID m_nodeID;

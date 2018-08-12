@@ -4,6 +4,7 @@
 #include <BCore/API.hh>
 #include <BCore/object/Plug.hh>
 #include <BCore/object/AbstractNode.hh>
+#include <BCore/managers/PlugManager.hh>
 
 namespace bemo {
 
@@ -22,7 +23,12 @@ public:
             PlugType type,
             bool isRequired=false,
             bool isStrict=false ) {
-        BMO_ERROR << "Adding plug=" << name << ", to nodeID=" << m_nodeID;
+        PlugID id = BMO_PlugManager->create( name,
+                                             type,
+                                             direction,
+                                             isRequired,
+                                             isStrict );
+        Plug* plug = BMO_PlugManager->get( id );
     }
 private:
     NodeID m_nodeID;
