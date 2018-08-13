@@ -1,8 +1,6 @@
 #ifndef BEMO_PYNODEMANAGER_HH
 #define BEMO_PYNODEMANAGER_HH
 
-#include "pybemo.hh"
-
 #include <BCore/managers/NodeManager.hh>
 
 #include <pybind11/stl.h>

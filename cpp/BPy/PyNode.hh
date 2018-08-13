@@ -1,7 +1,6 @@
 #ifndef BEMO_PYABSTRACTNODE_HH
 #define BEMO_PYABSTRACTNODE_HH
 
-#include "pybemo.hh"
 #include "PyNodeManager.hh"
 #include <BCore/managers/NodeManager.hh>
 #include <BCore/object/AbstractNode.hh>

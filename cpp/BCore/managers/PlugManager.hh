@@ -24,7 +24,7 @@ public:
     }
 
     PlugID find( const PlugName& name ) {
-
+        return PlugID( 0 );
     }
 
 private:

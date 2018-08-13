@@ -1,7 +1,8 @@
 #ifndef BEMO_PYPLUGINMANAGER_HH
 #define BEMO_PYPLUGINMANAGER_HH
 
-#include "PyNodeManager.hh"
+#include <BPy/PyAPI.hh>
+#include <BPy/PyNodeManager.hh>
 
 #include <BCore/object/Plugin.hh>
 #include <BCore/system/PluginSystem.hh>
@@ -21,7 +22,7 @@ public:
    void registerNode( const std::string& type,
                       FnCreate fnCreate,
                       FnLayout fnLayout ) {
-       BMO_PyNodeManager->addBlueprint( type, fnCreate, fnLayout );
+//       BMO_PyNodeManager->addBlueprint( type, fnCreate, fnLayout );
    }
 
 };

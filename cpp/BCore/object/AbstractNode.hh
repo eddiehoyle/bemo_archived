@@ -30,7 +30,7 @@ public:
     bool isValid() const;
     virtual int execute();
     PlugID getPlug( const PlugName& name ) const {
-        return BMO_PlugManager->find( name )
+        return BMO_PlugManager->find( name );
     }
 
 private:
