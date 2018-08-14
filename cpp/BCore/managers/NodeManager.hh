@@ -23,5 +23,12 @@ private:
     std::set< NodeID > m_objectIDs;
 };
 
+template< typename T, typename C, typename L >
+class NodeManager2 {
+public:
+
+private:
+};
+
 }
 #endif // BEMO_NODEMANAGER_HH
