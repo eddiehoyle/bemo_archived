@@ -18,8 +18,8 @@ def py_layout(node_id):
     manager.addPlug("frame", pybemo.PlugDirection.Input, pybemo.PlugType.Int, isRequired=False, isStrict=False)
     manager.addPlug("output", pybemo.PlugDirection.Output, pybemo.PlugType.String, isRequired=False, isStrict=False)
 
-def bmo_registerPlugin(pluginID):
-    print "bmo_registerPlugin() : pluginID=%s" % (pluginID)
-    system = pybemo.PluginSystem(pluginID)
+def bmo_registerPlugin(plugin_id):
+    print "bmo_registerPlugin() : pluginID=%s" % (plugin_id)
+    system = pybemo.PluginSystem(plugin_id)
     system.setHeader("PyPlugin", "Some description.", "icons/plugin32px.png")
     system.registerNode("py", py_create, py_layout)

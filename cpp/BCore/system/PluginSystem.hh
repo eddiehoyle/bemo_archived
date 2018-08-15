@@ -10,7 +10,7 @@ using ObjectID = Handle< ObjectType::Invalid, u32, 16, 16 >;
 template< typename C, typename L >
 class PluginSystem {
 public:
-    explicit PluginSystem( const ObjectID& id ) : m_id( id ) {}
+    explicit PluginSystem( const PluginID& id ) : m_id( id ) {}
     void setHeader( const std::string& name,
                     const std::string& description,
                     const std::string& icon ) {}
@@ -18,7 +18,7 @@ public:
                        C& fnCreate,
                        L& fnLayout ) {}
 private:
-    ObjectID m_id;
+    PluginID m_id;
 
 };
 

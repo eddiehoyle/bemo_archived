@@ -24,7 +24,7 @@ void py_genSystemPluginSystem( py::module& m ) {
 //            .def( "registerNode", &PyPluginSystem::registerNode );
 
     py::class_<PluginSystem<FnCreate, FnLayout>>(m, "PluginSystem")
-            .def(py::init<ObjectID>())
+            .def(py::init<PluginID>())
             .def( "setHeader", &PluginSystem<FnCreate, FnLayout>::setHeader )
             .def( "registerNode", &PluginSystem<FnCreate, FnLayout>::registerNode );
 

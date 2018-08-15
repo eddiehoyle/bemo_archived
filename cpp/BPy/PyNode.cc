@@ -12,14 +12,15 @@ namespace py = pybind11;
 using namespace bemo;
 
 // Forward decl
-void py_genNodeAbstraceNode( py::module& m );
+void py_genNodeAbstractNode( py::module& m );
 
 void py_genNode( py::module& m ) {
 
-    py_genNodeAbstraceNode( m );
+    py_genNodeAbstractNode( m );
 }
 
 void py_genNodeAbstractNode( py::module& m ) {
+
     py::class_<AbstractNode, PyNode>(m, "AbstractNode")
             .def(py::init<>())
             .def_static("objectTypeID", []()->ObjectType{ return AbstractNode::OBJECT_TYPE_ID; } )

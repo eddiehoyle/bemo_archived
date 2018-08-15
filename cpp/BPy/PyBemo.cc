@@ -21,12 +21,14 @@ using namespace bemo;
 void py_genAPI( py::module & );
 void py_genEnum( py::module & );
 void py_genNode( py::module & );
+void py_genSystem( py::module & );
 
 PYBIND11_MODULE(pybemo, m) {
 
     py_genAPI( m );
     py_genEnum( m );
     py_genNode( m );
+    py_genSystem( m );
 
     py::class_<NodeID>(m, "NodeID")
             .def(py::init<NodeID::NumericType>());
