@@ -13,19 +13,17 @@
 
 namespace bemo {
 
-template< typename T, typename H >
+template< typename H >
 class HandleTable {
 
     using Handle = H;
 
 public:
-    HandleTable() = default;
-    ~HandleTable() = default;
 
-    Handle acquire( T* object ) {
+    Handle acquire() {
 
         typename Handle::NumericType index = 0;
-        if ( m_indices.size() >= Handle::MAX_INDICES ) {
+        if ( m_indices.size() >= Handle::MAX_INDEX ) {
 
             // Re-use first index
             index = m_indices.front();
@@ -40,8 +38,6 @@ public:
             m_indices.push_back( index );
         }
 
-        m_objects[ index ] = object;
-
         return Handle( index | m_versions[index] << Handle::NUM_INDEX_BITS );
     }
 
@@ -50,7 +46,6 @@ public:
             m_versions[handle.index()] = ( m_versions[handle.index()] + 1 > Handle::MAX_VERSION )
                     ? Handle::MIN_VERSION
                     : m_versions[handle.index()] + 1;
-            m_objects.erase( handle.index() );
         }
     }
 
@@ -58,18 +53,13 @@ public:
         return m_versions[ handle.index() ] != handle.version();
     }
 
-    inline T* operator[]( const Handle& handle ) const {
-        return m_objects.at( handle.index() );
-    }
-
     std::size_t count() const {
-        return m_objects.size();
+        return m_indices.size();
     }
 
 private:
     std::deque< typename Handle::NumericType > m_indices;
     std::vector< typename Handle::NumericType > m_versions;
-    std::map< typename Handle::NumericType, T* > m_objects;
 
 };
 

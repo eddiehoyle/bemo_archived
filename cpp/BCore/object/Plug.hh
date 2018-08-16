@@ -22,7 +22,7 @@ enum class PlugType {
 };
 
 using PlugName = std::string;
-using PlugID = Handle< ObjectType::Plug, u32, 16, 16 >;
+using PlugID = Handle< u32, 16, 16 >;
 
 class Plug {
 

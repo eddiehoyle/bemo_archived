@@ -5,8 +5,8 @@
 
 namespace bemo {
 
-using PluginID = Handle< ObjectType::Plugin, u32, 16, 16 >;
-using PluginHeaderID = Handle< ObjectType::PluginHeader, u32, 16, 16 >;
+using PluginID = Handle< u32, 16, 16 >;
+using PluginHeaderID = Handle< u32, 16, 16 >;
 
 class Plugin {
 

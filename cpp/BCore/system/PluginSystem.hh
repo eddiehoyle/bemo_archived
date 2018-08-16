@@ -5,7 +5,7 @@
 
 namespace bemo {
 
-using ObjectID = Handle< ObjectType::Invalid, u32, 16, 16 >;
+using ObjectID = Handle< u32, 16, 16 >;
 
 template< typename C, typename L >
 class PluginSystem {

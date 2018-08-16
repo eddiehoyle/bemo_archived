@@ -8,7 +8,7 @@
 
 namespace bemo {
 
-using NodeID = Handle< ObjectType::Node, u32, 16, 16 >;
+using NodeID = Handle< u32, 16, 16 >;
 using NodeTypeID = std::string;
 
 class AbstractNode {

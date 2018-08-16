@@ -28,7 +28,7 @@ public:
                                              direction,
                                              isRequired,
                                              isStrict );
-        Plug* plug = BMO_PlugManager->get( id );
+//        Plug* plug = BMO_PlugManager->get( id );
     }
 private:
     NodeID m_nodeID;

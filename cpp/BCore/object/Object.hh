@@ -2,7 +2,6 @@
 #define BEMO_CONTAINER_HH
 
 #include "AbstractObject.hh"
-#include <BCore/internal/ObjectType.hh>
 
 namespace bemo {
 

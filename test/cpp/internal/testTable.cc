@@ -55,7 +55,7 @@ TEST_F( BemoAPI, table_acquire_index_loop ) {
 //    // Use up all slots
 //    Table table;
 //    TinyHandy handleA = table.acquire( nullptr );
-//    for ( std::size_t i = 0; i < TinyHandy::MAX_INDICES * scalar -1; ++i ) {
+//    for ( std::size_t i = 0; i < TinyHandy::MAX_INDEX * scalar -1; ++i ) {
 //        table.acquire( nullptr );
 //    }
 //
@@ -75,7 +75,7 @@ TEST_F( BemoAPI, table_acquire_version_loop ) {
 //    Table table;
 //    TinyHandy handleA = table.acquire( nullptr );
 //    table.release( handleA );
-//    for ( std::size_t i = 0; i < TinyHandy::MAX_INDICES * scalar - 1; ++i ) {
+//    for ( std::size_t i = 0; i < TinyHandy::MAX_INDEX * scalar - 1; ++i ) {
 //        table.release( table.acquire( nullptr ) );
 //    }
 //

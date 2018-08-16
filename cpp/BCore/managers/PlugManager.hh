@@ -13,22 +13,22 @@ public:
 
     template< typename... Args >
     PlugID create( Args&&... args ) {
-        PlugID id = m_table.acquire( new Plug( std::forward<Args>( args )... ) );
-        Plug* plug = m_table[ id ];
-        plug->m_id = id;
-        return id;
+//        PlugID id = m_table.acquire( new Plug( std::forward<Args>( args )... ) );
+//        Plug* plug = m_table[ id ];
+//        plug->m_id = id;
+        return PlugID( 0 );
     }
 
-    Plug* get( PlugID id ) const {
-        return m_table[ id ];
-    }
+//    Plug* get( PlugID id ) const {
+//        return m_table[ id ];
+//    }
 
     PlugID find( const PlugName& name ) {
         return PlugID( 0 );
     }
 
 private:
-    HandleTable< Plug, PlugID > m_table;
+    HandleTable< PlugID > m_table;
 };
 
 
