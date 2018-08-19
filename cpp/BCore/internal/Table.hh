@@ -13,14 +13,16 @@
 
 namespace bemo {
 
-template< typename H >
+template< typename T, typename H >
 class HandleTable {
 
+    using Type = T;
     using Handle = H;
+
 
 public:
 
-    Handle acquire() {
+    Handle acquire( Type type ) {
 
         typename Handle::NumericType index = 0;
         if ( m_indices.size() >= Handle::MAX_INDEX ) {
@@ -38,19 +40,31 @@ public:
             m_indices.push_back( index );
         }
 
+        m_types.push_back( type );
+
         return Handle( index | m_versions[index] << Handle::NUM_INDEX_BITS );
     }
 
     void release( Handle handle ) {
-        if ( !isExpired( handle ) ) {
-            m_versions[handle.index()] = ( m_versions[handle.index()] + 1 > Handle::MAX_VERSION )
-                    ? Handle::MIN_VERSION
-                    : m_versions[handle.index()] + 1;
+        if ( exists( handle ) ) {
+
+            // Check bounds
+            typename Handle::NumericType version = m_versions[handle.index()];
+            if ( version + 1 < Handle::MAX_VERSION ) {
+                ++version;
+            } else {
+                version = Handle::MIN_VERSION;
+            }
+
+            // Increment
+            m_versions[ handle.index() ] = version;
         }
     }
 
-    bool isExpired( Handle handle ) {
-        return m_versions[ handle.index() ] != handle.version();
+    bool exists( Handle handle ) {
+        return ( handle.index() < m_versions.size() )
+                ? m_versions[ handle.index() ] == handle.version()
+                : false;
     }
 
     std::size_t count() const {
@@ -60,6 +74,7 @@ public:
 private:
     std::deque< typename Handle::NumericType > m_indices;
     std::vector< typename Handle::NumericType > m_versions;
+    std::vector< Type > m_types;
 
 };
 

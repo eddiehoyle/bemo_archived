@@ -20,13 +20,15 @@ enum class ObjectType {
     Invalid,
 };
 
-class NodeRegistry;
 class NodeManager;
 class PlugManager;
+class PluginManager;
+class ObjectManager;
 
-extern NodeRegistry* BMO_NodeRegistry;
 extern NodeManager* BMO_NodeManager;
 extern PlugManager* BMO_PlugManager;
+extern PluginManager* BMO_PluginManager;
+extern ObjectManager* BMO_ObjectManager;
 
 extern void send( const std::string& message );
 

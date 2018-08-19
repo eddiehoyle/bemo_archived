@@ -23,17 +23,17 @@ void py_genNodeAbstractNode( py::module& m ) {
 
     py::class_<AbstractNode, PyNode>(m, "AbstractNode")
             .def(py::init<>())
-            .def_static("objectTypeID", []()->ObjectType{ return AbstractNode::OBJECT_TYPE_ID; } )
-            .def("nodeID", &AbstractNode::nodeID)
-            .def("typeID", &AbstractNode::typeID)
+            .def("getID", &AbstractNode::getID)
+            .def("getType", &AbstractNode::getType)
+            .def("getName", &AbstractNode::getName)
+            .def("setName", &AbstractNode::setName)
             .def("isValid", &AbstractNode::isValid)
             .def("execute", &AbstractNode::execute)
             .def("__repr__", []( const AbstractNode& n ){
                 std::stringstream ss;
                 ss << "<AbstractNode(";
                 ss << "addr=" << (void*)&n;
-                ss << ", id=" << n.nodeID();
-                ss << ", type=" << n.typeID();
+                ss << ", id=" << n.getID();
                 ss << ")>";
                 return ss.str();
             });

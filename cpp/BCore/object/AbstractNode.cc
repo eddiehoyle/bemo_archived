@@ -5,12 +5,18 @@
 
 namespace bemo {
 
-bool AbstractNode::isValid() const {
-    return BMO_NodeManager->has( nodeID() );
+AbstractNode::AbstractNode()
+        : m_id(),
+          m_nodeType( "invalid" ) {}
+
+AbstractNode::~AbstractNode() {
+    BMO_NodeManager->remove( getID() );
 }
 
-int AbstractNode::execute() {
-    return -1;
+bool AbstractNode::isValid() const {
+    return m_id != ObjectID();
 }
+
+
 
 }

@@ -13,7 +13,6 @@ namespace bemo {
 
 class PyNode : public AbstractNode {
 public:
-
     int execute() override {
         PYBIND11_OVERLOAD(
                 int,

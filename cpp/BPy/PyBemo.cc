@@ -30,12 +30,6 @@ PYBIND11_MODULE(pybemo, m) {
     py_genNode( m );
     py_genSystem( m );
 
-    py::class_<NodeID>(m, "NodeID")
-            .def(py::init<NodeID::NumericType>());
-
-    py::class_<PluginID>(m, "PluginID")
-            .def(py::init<PluginID::NumericType>());
-
 
 }
 

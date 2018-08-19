@@ -4,30 +4,62 @@
 #include <BCore/API.hh>
 #include <BCore/internal/Table.hh>
 #include <BCore/object/AbstractNode.hh>
+#include <BCore/managers/ObjectManager.hh>
+#include <tuple>
 
 namespace bemo {
 
-class NodeManager {
+class AbstractCreateFunc {
 public:
-    NodeID acquire( const std::string& type, AbstractNode* node ) {
-        NodeID id( static_cast< u32 >( m_objectIDs.size() ) );
-        node->m_nodeID = id;
-        node->m_typeID = type;
-        m_objectIDs.insert( id );
-        return id;
-    }
-    inline bool has( const NodeID& id ) {
-        return m_objectIDs.find( id ) != m_objectIDs.end();
-    }
-private:
-    std::set< NodeID > m_objectIDs;
+    virtual AbstractNode* invoke() = 0;
 };
 
-template< typename T, typename C, typename L >
-class NodeManager2 {
+class AbstractLayoutFunc {
+public:
+    virtual void invoke( ObjectID id ) = 0;
+};
+
+template< typename F >
+class CreateFuncWrapper : public AbstractCreateFunc {
+public:
+    explicit CreateFuncWrapper( F func ) : m_func( func ) {}
+    AbstractNode* invoke() override { return m_func(); }
+public:
+    F m_func;
+};
+
+template< typename F >
+class LayoutFuncWrapper : public AbstractLayoutFunc {
+public:
+    explicit LayoutFuncWrapper( F func ) : m_func( func ) {}
+    void invoke( ObjectID id ) override { m_func( id ); }
+public:
+    F m_func;
+};
+
+
+class NodeManager {
 public:
 
+    AbstractNode* create( const NodeType& type, const NodeName& name = NodeName() );
+
+    void remove( const ObjectID& id );
+
+    AbstractNode* find( const NodeName& name ) const;
+
+    bool exists( const ObjectID& id ) const;
+
+    void addBlueprint( const std::string& type,
+                       AbstractCreateFunc* wrCreate,
+                       AbstractLayoutFunc* wrLayout );
+
+    AbstractCreateFunc* findCreate( const std::string& type ) const;
+
+    AbstractLayoutFunc* findLayout( const std::string& type ) const;
+
 private:
+    std::map< std::string, std::pair< AbstractCreateFunc*, AbstractLayoutFunc* > > m_funcs;
+    std::vector< AbstractNode* > m_nodes;
 };
 
 }

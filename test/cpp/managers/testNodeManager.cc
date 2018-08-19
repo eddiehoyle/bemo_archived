@@ -17,6 +17,6 @@ TEST_F( BemoAPI, nodemanager_ctor ) {
 TEST_F( BemoAPI, nodemanager_create ) {
 //    NodeManager manager;
 //    Node nodeA = manager.create();
-//    EXPECT_EQ( nodeA.objectID(), ObjectID::identity() );
+//    EXPECT_EQ( nodeA.objectID(), ObjectHandle::identity() );
 }
 

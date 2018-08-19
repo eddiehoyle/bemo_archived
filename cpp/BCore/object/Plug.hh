@@ -1,9 +1,8 @@
 #ifndef BEMO_PLUG_HH
 #define BEMO_PLUG_HH
 
-#include "Object.hh"
-
 #include <vector>
+#include <BCore/internal/Object.hh>
 
 namespace bemo {
 
@@ -22,7 +21,6 @@ enum class PlugType {
 };
 
 using PlugName = std::string;
-using PlugID = Handle< u32, 16, 16 >;
 
 class Plug {
 
@@ -34,7 +32,7 @@ public:
                    PlugDirection direction,
                    bool isRequired,
                    bool isStrict )
-                   : m_id( PlugID::INVALID_HANDLE ),
+                   : m_id(),
                      m_direction( direction ),
                      m_type( type ),
                      m_name( name ) {}
@@ -42,7 +40,7 @@ public:
     PlugType getDataType() const { return m_type; }
     PlugName getName() const { return m_name; }
 private:
-    PlugID m_id;
+    ObjectID m_id;
     PlugType m_type;
     PlugName m_name;
     PlugDirection m_direction;

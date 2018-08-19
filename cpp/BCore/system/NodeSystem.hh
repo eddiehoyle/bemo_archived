@@ -10,12 +10,11 @@ namespace bemo {
 
 class NodeSystem {
 public:
-    explicit NodeSystem( const NodeID& id ) : m_nodeID( id ) {}
+    explicit NodeSystem( const ObjectID& id ) : m_id( id ) {}
 
     void setHeader( const std::string& name,
                     const std::string& description,
                     const std::string& icon ) {
-        BMO_ERROR << "Adding header=" << name << ", to nodeID=" << m_nodeID;
 
     }
     void addPlug( const std::string& name,
@@ -23,15 +22,9 @@ public:
             PlugType type,
             bool isRequired=false,
             bool isStrict=false ) {
-        PlugID id = BMO_PlugManager->create( name,
-                                             type,
-                                             direction,
-                                             isRequired,
-                                             isStrict );
-//        Plug* plug = BMO_PlugManager->get( id );
     }
 private:
-    NodeID m_nodeID;
+    ObjectID m_id;
 
 };
 

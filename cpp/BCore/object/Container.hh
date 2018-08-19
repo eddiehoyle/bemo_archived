@@ -24,7 +24,7 @@ public:
 protected:
     virtual int execute() = 0;
 protected:
-    ObjectID m_layoutID;
+    ObjectHandle m_layoutID;
 };
 
 }

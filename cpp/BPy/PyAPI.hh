@@ -3,7 +3,7 @@
 
 namespace bemo {
 
-class PyNodeManager;
+//class PyNodeManager;
 
 //PyNodeManager* BMO_PyNodeManager;
 

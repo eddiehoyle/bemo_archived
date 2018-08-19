@@ -4,38 +4,35 @@
 #include <BCore/API.hh>
 #include <BCore/Platform.hh>
 #include <BCore/internal/Handle.hh>
-#include <BCore/managers/PlugManager.hh>
+#include <BCore/internal/Object.hh>
 
 namespace bemo {
 
-using NodeID = Handle< u32, 16, 16 >;
-using NodeTypeID = std::string;
+using NodeName = std::string;
+using NodeType = std::string;
 
 class AbstractNode {
 
     friend class NodeManager;
 
 public:
+    AbstractNode();
+    virtual ~AbstractNode();
 
-    static constexpr ObjectType OBJECT_TYPE_ID = { ObjectType::Node };
-
-public:
-    AbstractNode()
-        : m_nodeID( NodeID::INVALID_HANDLE ),
-          m_typeID() { BMO_ERROR << "ctor"; }
-    virtual ~AbstractNode() { BMO_ERROR << "dtor"; }
-
-    inline NodeID nodeID() const { return m_nodeID; }
-    inline NodeTypeID typeID() const { return m_typeID; }
     bool isValid() const;
-    virtual int execute();
-    PlugID getPlug( const PlugName& name ) const {
-        return BMO_PlugManager->find( name );
-    }
+    inline ObjectID getID() const { return m_id; }
+    inline NodeType getType() const { return m_nodeType; }
+
+    inline NodeName getName() const { return m_nodeName; }
+    inline void setName( const NodeName& name ) { m_nodeName = name; }
+
+    virtual int execute() { return -1; }
 
 private:
-    NodeID m_nodeID;
-    NodeTypeID m_typeID;
+    ObjectID m_id;
+    NodeName m_nodeName;
+    NodeType m_nodeType;
+
 };
 
 }

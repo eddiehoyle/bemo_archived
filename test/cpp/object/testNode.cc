@@ -7,16 +7,16 @@
 using namespace bemo;
 
 TEST_F( BemoAPI, node_ctor ) {
-//    Node nodeA( ObjectID::invalid() );
+//    Node nodeA( ObjectHandle::invalid() );
 //    EXPECT_TRUE( true );
 }
 
 TEST_F( BemoAPI, node_objectid ) {
-//    Node nodeA( ObjectID::invalid() );
-//    EXPECT_EQ( nodeA.objectID(), ObjectID::invalid() );
+//    Node nodeA( ObjectHandle::invalid() );
+//    EXPECT_EQ( nodeA.objectID(), ObjectHandle::invalid() );
 }
 
 TEST_F( BemoAPI, node_typeid ) {
-//    Node nodeA( ObjectID::invalid() );
+//    Node nodeA( ObjectHandle::invalid() );
 //    EXPECT_NE( nodeA.typeID(), INVALID_TYPE_ID );
 }

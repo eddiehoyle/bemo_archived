@@ -40,8 +40,8 @@ TEST_F( BemoAPI, table_release ) {
 //    table.release( handleA );
 //    TinyHandy handleB = table.acquire( nullptr );
 //
-//    EXPECT_TRUE( table.isExpired( handleA ) );
-//    EXPECT_FALSE( table.isExpired( handleB ) );
+//    EXPECT_TRUE( table.isAlive( handleA ) );
+//    EXPECT_FALSE( table.isAlive( handleB ) );
 //    EXPECT_NE( handleA.index(), handleB.index() );
 //    EXPECT_EQ( handleA.version(), handleB.version() );
 }
@@ -90,7 +90,7 @@ TEST_F( BemoAPI, table_access ) {
 
 //    using Table = HandleTable< Graph, TinyHandy >;
 //
-//    Graph* objectA = new Graph( ObjectID::invalid() );
+//    Graph* objectA = new Graph( ObjectHandle::invalid() );
 //    Graph* objectB = nullptr;
 //
 //    Table table;

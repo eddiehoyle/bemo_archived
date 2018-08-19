@@ -10,8 +10,18 @@ def main():
     pybemo.init();
 
     nodeA = pybemo.create("py")
-    print nodeA
-    print nodeA.execute()
+    print "nodeA:", nodeA
+    print "nodeA: %s" % nodeA.execute()
+
+    nodeB = pybemo.create("cpp")
+    print "nodeB:", nodeB
+    print "nodeB: %s" % nodeB.execute()
+
+    pybemo.remove(nodeA.getName());
+    pybemo.remove(nodeB.getName());
+
+    print nodeA;
+    print nodeB;
 
 if __name__ == '__main__':
     main()

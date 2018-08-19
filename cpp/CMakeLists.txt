@@ -24,14 +24,14 @@ add_custom_command(TARGET ${TARGET_PYLIB} POST_BUILD
 add_custom_command(TARGET ${TARGET_CORELIB}  POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${TARGET_CORELIB}> ${PYTHON_DIST_DIR})
 
-# Qt5
-set(CMAKE_PREFIX_PATH $ENV{HOME}/Qt/5.7/clang_64/lib/cmake ${CMAKE_PREFIX_PATH} )
-set(CMAKE_AUTOMOC ON)
-
-find_package(Qt5Widgets REQUIRED)
-
-add_executable(${TARGET_UI} ${UIBEMO_SOURCES})
-target_link_libraries(${TARGET_UI} PRIVATE
-        ${TARGET_CORELIB} pybind11::embed Qt5::Widgets)
-
-add_dependencies(${TARGET_UI} ${TARGET_PYLIB} ${TARGET_CORELIB})
+## Qt5
+#set(CMAKE_PREFIX_PATH $ENV{HOME}/Qt/5.7/clang_64/lib/cmake ${CMAKE_PREFIX_PATH} )
+#set(CMAKE_AUTOMOC ON)
+#
+#find_package(Qt5Widgets REQUIRED)
+#
+#add_executable(${TARGET_UI} ${UIBEMO_SOURCES})
+#target_link_libraries(${TARGET_UI} PRIVATE
+#        ${TARGET_CORELIB} pybind11::embed Qt5::Widgets)
+#
+#add_dependencies(${TARGET_UI} ${TARGET_PYLIB} ${TARGET_CORELIB})

@@ -17,7 +17,7 @@ namespace bemo {
 //    using NodeName = std::string;
 //
 //public:
-//    Node create( const std::string& name ) { return Node( ObjectID::invalid() ); }
+//    Node create( const std::string& name ) { return Node( ObjectHandle::invalid() ); }
 //    void release( const std::string& name ) { }
 //
 //private:

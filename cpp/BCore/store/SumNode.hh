@@ -21,7 +21,7 @@ namespace bemo {
 //
 //class AddHeader : public AbstractObject {
 //public:
-//    explicit AddHeader( ObjectID id )
+//    explicit AddHeader( ObjectHandle id )
 //            : AbstractObject( id ),
 //              m_name( "Add" ),
 //              m_icon( "add.png" ),
@@ -36,7 +36,7 @@ namespace bemo {
 //
 //class AddLayout : public AbstractObject {
 //public:
-//    explicit AddLayout( ObjectID id )
+//    explicit AddLayout( ObjectHandle id )
 //            : AbstractObject( id ) {
 //        BMO_PlugManager->create( "valueA", Plug.Direction.Input, Plug.Type.Int, objectID() );
 //        BMO_PlugManager->create( "valueB", Plug.Direction.Input, Plug.Type.Int, objectID() );

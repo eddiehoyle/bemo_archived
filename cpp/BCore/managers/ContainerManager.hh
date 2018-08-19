@@ -1,7 +1,7 @@
 #ifndef BEMO_CONTAINERMAINAGER_HH
 #define BEMO_CONTAINERMAINAGER_HH
 
-#include "AbstractManager.hh"
+#include "ObjectManager.hh"
 #include <BCore/util/Assert.hh>
 #include <BCore/util/Log.hh>
 #include <BCore/Platform.hh>

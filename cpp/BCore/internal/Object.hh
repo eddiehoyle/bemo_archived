@@ -1,27 +1,36 @@
 #ifndef BEMO_OBJECT_HH
 #define BEMO_OBJECT_HH
 
+#include <ostream>
+
 #include "Handle.hh"
 #include <BCore/Platform.hh>
 
 namespace bemo {
 
-using ObjectID = Handle< u32, 16, 16 >;
+using ObjectHandle = Handle< u64, 32, 32 >;
 
-class BObject {
+class ObjectID {
 
     friend class ObjectManager;
 
+//public:
+//    static const ObjectID INVALID_OBJECT_ID = ObjectID();
+
 public:
-    BObject() : m_handle( ObjectID::INVALID_HANDLE ),
-                m_type( ObjectType::Invalid ),
-                m_typeStr() {}
+    ObjectID() : m_handle( ObjectHandle::INVALID_HANDLE ),
+                 m_type( ObjectType::Invalid ) {}
     ObjectType type() const { return m_type; }
-    std::string typeStr() const { return m_typeStr; }
+    bool operator<( const ObjectID& rhs ) const { return this->m_handle < rhs.m_handle; }
+    bool operator>( const ObjectID& rhs ) const { return this->m_handle > rhs.m_handle; }
+    bool operator==( const ObjectID& rhs ) const { return this->m_handle == rhs.m_handle; }
+    bool operator!=( const ObjectID& rhs ) const { return this->m_handle != rhs.m_handle; }
+
+    friend std::ostream& operator<<( std::ostream& stream, const ObjectID& object );
+
 private:
-    ObjectID m_handle;
+    ObjectHandle m_handle;
     ObjectType m_type;
-    std::string m_typeStr;
 };
 
 }
