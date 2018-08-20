@@ -29,6 +29,12 @@ public:
     inline void setName( const NodeName& name ) { m_nodeName = name; }
 
     Plug* getPlug( const std::string& name );
+    std::vector< Plug* > getPlugs() const { return std::vector< Plug* >(); }
+    std::vector< Plug* > getInputPlugs() const { return std::vector< Plug* >(); }
+    std::vector< Plug* > getOutputPlugs() const { return std::vector< Plug* >(); }
+
+    void setInput( const std::string& name, const ObjectID& data ) {}
+    void setOutput( const std::string& name, const ObjectID& data ) {}
 
     virtual int execute() { return -1; }
 

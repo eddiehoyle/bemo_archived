@@ -40,6 +40,9 @@ public:
                      m_isStrict( false ),
                      m_isRequired( false ) {}
 
+    inline ObjectID getID() const { return m_id; }
+    inline ObjectID getOwnerID() const { return m_owner; }
+
     inline bool isValid() const { return ( m_id != ObjectID() ) && ( m_owner != ObjectID() ); }
     inline void setStrict( bool state ) { m_isStrict = state; }
     inline void setRequired( bool state ) { m_isRequired = state; }

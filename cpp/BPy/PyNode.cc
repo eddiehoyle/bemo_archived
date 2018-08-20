@@ -29,6 +29,8 @@ void py_genNodeAbstractNode( py::module& m ) {
             .def("setName", &AbstractNode::setName)
             .def("isValid", &AbstractNode::isValid)
             .def("execute", &AbstractNode::execute)
+            .def("setInput", []( const std::string& name,
+                                 py::object data ){})
             .def("__repr__", []( const AbstractNode& n ){
                 std::stringstream ss;
                 ss << "<AbstractNode(";

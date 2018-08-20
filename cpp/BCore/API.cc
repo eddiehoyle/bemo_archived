@@ -1,9 +1,11 @@
 #include "API.hh"
 #include <BCore/util/Log.hh>
+
 #include <BCore/managers/NodeManager.hh>
 #include <BCore/managers/PlugManager.hh>
 #include <BCore/managers/PluginManager.hh>
 #include <BCore/managers/ObjectManager.hh>
+
 #include <BCore/system/PluginSystem.hh>
 #include <BCore/system/NodeSystem.hh>
 
@@ -40,7 +42,6 @@ void initialize() {
     if ( BMO_ObjectManager == nullptr ) {
         BMO_ObjectManager = new ObjectManager();
     }
-
     if ( BMO_NodeManager == nullptr ) {
         BMO_NodeManager = new NodeManager();
     }
