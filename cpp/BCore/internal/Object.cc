@@ -9,4 +9,9 @@ std::ostream& operator<<( std::ostream& stream, const ObjectID& object ) {
                   << ")";
 }
 
+ObjectID ObjectID::invalid() {
+    static ObjectID invalid;
+    return invalid;
+}
+
 }

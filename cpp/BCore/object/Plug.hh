@@ -24,26 +24,42 @@ using PlugName = std::string;
 
 class Plug {
 
+    friend class NodeSystem;
     friend class PlugManager;
 
 public:
     explicit Plug( const PlugName& name,
-                   PlugType type,
                    PlugDirection direction,
-                   bool isRequired,
-                   bool isStrict )
+                   PlugType type )
                    : m_id(),
+                     m_owner(),
+                     m_data(),
                      m_direction( direction ),
                      m_type( type ),
-                     m_name( name ) {}
-    PlugDirection getDirection() const { return m_direction; }
-    PlugType getDataType() const { return m_type; }
-    PlugName getName() const { return m_name; }
+                     m_name( name ),
+                     m_isStrict( false ),
+                     m_isRequired( false ) {}
+
+    inline bool isValid() const { return ( m_id != ObjectID() ) && ( m_owner != ObjectID() ); }
+    inline void setStrict( bool state ) { m_isStrict = state; }
+    inline void setRequired( bool state ) { m_isRequired = state; }
+
+    inline PlugName getName() const { return m_name; }
+    inline PlugDirection getDirection() const { return m_direction; }
+    inline PlugType getType() const { return m_type; }
+
+    void connect() {}
+    void disconnect() {}
+    bool isConnected() const { return false; }
+
 private:
     ObjectID m_id;
-    PlugType m_type;
+    ObjectID m_owner;
+    ObjectID m_data;
+
     PlugName m_name;
     PlugDirection m_direction;
+    PlugType m_type;
 
     bool m_isStrict;
     bool m_isRequired;

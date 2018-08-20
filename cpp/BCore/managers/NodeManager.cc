@@ -30,6 +30,18 @@ void NodeManager::remove( const ObjectID& id ) {
     }
 }
 
+AbstractNode* NodeManager::find( const ObjectID& id ) const {
+    auto iter = std::find_if( m_nodes.begin(),
+                              m_nodes.end(),
+                              [&]( AbstractNode* n )->bool{
+                                  return n->getID() == id;
+                              });
+    if ( iter != m_nodes.end() ) {
+        return *iter;
+    }
+    return nullptr;
+}
+
 AbstractNode* NodeManager::find( const NodeName& name ) const {
     auto iter = std::find_if( m_nodes.begin(),
                               m_nodes.end(),

@@ -45,6 +45,7 @@ public:
 
     void remove( const ObjectID& id );
 
+    AbstractNode* find( const ObjectID& name ) const;
     AbstractNode* find( const NodeName& name ) const;
 
     bool exists( const ObjectID& id ) const;

@@ -14,8 +14,8 @@ class ObjectID {
 
     friend class ObjectManager;
 
-//public:
-//    static const ObjectID INVALID_OBJECT_ID = ObjectID();
+public:
+    static ObjectID invalid();
 
 public:
     ObjectID() : m_handle( ObjectHandle::INVALID_HANDLE ),
