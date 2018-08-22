@@ -13,7 +13,7 @@ public:
 
     ObjectID create( const std::string& name,
                      PlugDirection direction,
-                     PlugType type,
+                     VariantType type,
                      bool isRequired=false,
                      bool isStrict=false ) {
         ObjectID id = BMO_ObjectManager->acquire( ObjectType::Plug );

@@ -18,7 +18,7 @@ public:
 
     void addPlug( const std::string& name,
             PlugDirection direction,
-            PlugType type,
+            VariantType type,
             bool isRequired=false,
             bool isStrict=false ) {
         ObjectID plugID = BMO_PlugManager->create( name,
@@ -28,9 +28,6 @@ public:
                                                    isStrict );
         Plug* plug = BMO_PlugManager->find( plugID );
         plug->m_owner = m_id;
-
-        AbstractNode* node = BMO_NodeManager->find( m_id );
-        node->m_plugs.push_back( plugID );
     }
 private:
     ObjectID m_id;

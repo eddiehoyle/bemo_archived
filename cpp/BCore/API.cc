@@ -31,8 +31,8 @@ CppFnCreate a = [](){ return new CppNode(); };
 CppFnLayout b = [](ObjectID id ){
     NodeSystem sys( id );
     sys.setHeader("Some description", "icons/PyNode.png");
-    sys.addPlug("cpp_valueA", PlugDirection::Input, PlugType::Int, false, false);
-    sys.addPlug("cpp_valueB", PlugDirection::Input, PlugType::Int, false, false);
+    sys.addPlug("cpp_valueA", PlugDirection::Input, VariantType::Int, false, false);
+    sys.addPlug("cpp_valueB", PlugDirection::Input, VariantType::Int, false, false);
 };
 
 void initialize() {

@@ -29,8 +29,21 @@ void py_genNodeAbstractNode( py::module& m ) {
             .def("setName", &AbstractNode::setName)
             .def("isValid", &AbstractNode::isValid)
             .def("execute", &AbstractNode::execute)
-            .def("setInput", []( const std::string& name,
-                                 py::object data ){})
+            .def("setInput", []( AbstractNode* self,
+                                 const std::string& name,
+                                 const py::object& value ) {
+                if ( py::isinstance< py::int_ >( value ) ) {
+                    BMO_ERROR << "Setting '" << name << "', value (int): " << value.cast< int >();
+                } else if ( py::isinstance< py::float_ >( value ) ) {
+                    BMO_ERROR << "Setting '" << name << "', value (float): " << value.cast< float >();
+                } else if ( py::isinstance< py::str >( value ) ) {
+                    BMO_ERROR << "Setting '" << name << "', value (string): " << value.cast< std::string >();
+                } else if ( py::isinstance< py::object >( value ) ) {
+                    py::module cp = py::module::import( "cPickle" );
+                    py::object pickled = cp.attr( "dumps" )( value );
+                    /*Load into string variant*/
+                }
+            })
             .def("__repr__", []( const AbstractNode& n ){
                 std::stringstream ss;
                 ss << "<AbstractNode(";
