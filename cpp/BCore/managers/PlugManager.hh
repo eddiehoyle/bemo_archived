@@ -25,11 +25,12 @@ public:
         return id;
     }
 
-    Plug* find( const std::string& name ) const {
+    Plug* find( const ObjectID& owner, const PlugName& name ) const {
         auto iter = std::find_if( m_plugs.begin(),
                                   m_plugs.end(),
-                                  [&]( Plug* plugin ) {
-                                      return plugin->m_name == name;
+                                  [&]( Plug* plug ) {
+                                      return ( owner == plug->getOwnerID() ) &&
+                                             ( plug->m_name == name );
                                   });
         return iter != m_plugs.end() ? *iter : nullptr;
     }
@@ -37,8 +38,8 @@ public:
     Plug* find( const ObjectID& id ) const {
         auto iter = std::find_if( m_plugs.begin(),
                                   m_plugs.end(),
-                                  [id]( Plug* plugin ) {
-                                      return plugin->m_id == id;
+                                  [id]( Plug* plug ) {
+                                      return plug->m_id == id;
                                   });
         return iter != m_plugs.end() ? *iter : nullptr;
     }

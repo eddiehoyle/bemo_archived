@@ -5,6 +5,8 @@
 #include <BCore/Platform.hh>
 #include <BCore/internal/Handle.hh>
 #include <BCore/internal/Object.hh>
+#include <BCore/object/Plug.hh>
+#include <BCore/Variant.hh>
 
 namespace bemo {
 
@@ -28,13 +30,20 @@ public:
     inline NodeName getName() const { return m_nodeName; }
     inline void setName( const NodeName& name ) { m_nodeName = name; }
 
-    Plug* getPlug( const std::string& name );
-    std::vector< Plug* > getPlugs() const { return std::vector< Plug* >(); }
-    std::vector< Plug* > getInputPlugs() const { return std::vector< Plug* >(); }
-    std::vector< Plug* > getOutputPlugs() const { return std::vector< Plug* >(); }
+    void connect( const PlugName& sourcePlugName,
+                  const ObjectID& targetID,
+                  const PlugName& targetPlugName );
 
-    void setInput( const std::string& name, const ObjectID& data ) {}
-    void setOutput( const std::string& name, const ObjectID& data ) {}
+    void disconnect( const PlugName& sourcePlugName,
+                     const ObjectID& targetID,
+                     const PlugName& targetPlugName );
+
+//    std::vector< Plug* > getPlugs() const { return std::vector< Plug* >(); }
+//    std::vector< Plug* > getInputPlugs() const { return std::vector< Plug* >(); }
+//    std::vector< Plug* > getOutputPlugs() const { return std::vector< Plug* >(); }
+
+    void setInput( const std::string& name, const Variant& var );
+    void setOutput( const std::string& name, const Variant& var );
 
     virtual int execute() { return -1; }
 
@@ -45,6 +54,8 @@ private:
     std::vector< ObjectID > m_plugs;
 
 };
+
+
 
 }
 

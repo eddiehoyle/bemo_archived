@@ -12,9 +12,9 @@ enum class ObjectType {
     Plug,
     Plugin,
 
-    /// Headers
-    NodeHeader,
-    PluginHeader,
+    /// Data
+    Data,
+    DataArray,
 
     /// Must be last
     Invalid,
@@ -24,11 +24,15 @@ class NodeManager;
 class PlugManager;
 class PluginManager;
 class ObjectManager;
+class DataBlockManager;
+class ConnectionManager;
 
 extern NodeManager* BMO_NodeManager;
 extern PlugManager* BMO_PlugManager;
 extern PluginManager* BMO_PluginManager;
 extern ObjectManager* BMO_ObjectManager;
+extern DataBlockManager* BMO_DataBlockManager;
+extern ConnectionManager* BMO_ConnectionManager;
 
 extern void send( const std::string& message );
 

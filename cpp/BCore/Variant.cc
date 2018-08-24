@@ -10,7 +10,7 @@ Variant::Variant()
 Variant::Variant( int value )
     : m_type( VariantType::Int ),
       m_data( nullptr ) {
-  m_data = static_cast< void* >( new int( value ) );
+    m_data = static_cast< void* >( new int( value ) );
 }
 
 Variant::Variant( float value )
@@ -37,10 +37,22 @@ Variant::Variant( const Variant& var ) {
         case VariantType::String:
             m_data = static_cast< void* >( new std::string( var.toString( &result ) ) );
             break;
+        case VariantType::Null:
+        default:
+            ;
     }
 }
 
 Variant::~Variant() {
+    clear();
+}
+
+void Variant::clear() {
+
+    if ( m_data == nullptr ) {
+        m_type = VariantType::Null;
+    }
+
     switch ( m_type ) {
         case VariantType::Int:
             delete static_cast< int* >( m_data );
@@ -54,7 +66,33 @@ Variant::~Variant() {
             delete static_cast< std::string* >( m_data );
             m_data = nullptr;
             break;
+        case VariantType::Null:
+        default:
+            ;
     }
+}
+
+void Variant::reset( const Variant& var ) {
+
+    clear();
+
+    bool result;
+    switch( var.type() ) {
+        case VariantType::Int:
+            m_data = new int( var.toInt( &result ) );
+            break;
+        case VariantType::Float:
+            m_data = new float( var.toFloat( &result ) );
+            break;
+        case VariantType::String:
+            m_data = new std::string( var.toString( &result ) );
+            break;
+        case VariantType::Null:
+        default:
+            ;
+    }
+
+    m_type = var.m_type;
 }
 
 VariantType Variant::type() const {
@@ -75,6 +113,9 @@ int Variant::toInt( bool* result ) const {
                 *result = true;
             } catch ( ... ) {}
             break;
+        case VariantType::Null:
+        default:
+            ;
     }
     return value;
 }
@@ -93,6 +134,9 @@ float Variant::toFloat( bool* result ) const {
                 *result = true;
             } catch ( ... ) {}
             break;
+        case VariantType::Null:
+        default:
+            ;
     }
     return value;
 }
@@ -110,8 +154,12 @@ std::string Variant::toString( bool* result ) const {
         case VariantType::String:
             value = *static_cast< std::string* >( m_data );
             break;
+        case VariantType::Null:
+        default:
+            ;
     }
     return value;
 }
+
 
 }

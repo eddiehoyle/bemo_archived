@@ -22,6 +22,9 @@ public:
 
     Variant( const Variant& var );
 
+    void clear();
+    void reset( const Variant& var );
+
     VariantType type() const;
 
     int toInt( bool* result ) const;

@@ -5,6 +5,8 @@
 #include <BCore/managers/PlugManager.hh>
 #include <BCore/managers/PluginManager.hh>
 #include <BCore/managers/ObjectManager.hh>
+#include <BCore/managers/DataBlockManager.hh>
+#include <BCore/managers/ConnectionManager.hh>
 
 #include <BCore/system/PluginSystem.hh>
 #include <BCore/system/NodeSystem.hh>
@@ -15,6 +17,8 @@ NodeManager* BMO_NodeManager = nullptr;
 PlugManager* BMO_PlugManager = nullptr;
 PluginManager* BMO_PluginManager = nullptr;
 ObjectManager* BMO_ObjectManager = nullptr;
+DataBlockManager* BMO_DataBlockManager = nullptr;
+ConnectionManager* BMO_ConnectionManager = nullptr;
 
 class CppNode : public AbstractNode {
 public:
@@ -42,11 +46,17 @@ void initialize() {
     if ( BMO_ObjectManager == nullptr ) {
         BMO_ObjectManager = new ObjectManager();
     }
+    if ( BMO_DataBlockManager == nullptr ) {
+        BMO_DataBlockManager = new DataBlockManager();
+    }
     if ( BMO_NodeManager == nullptr ) {
         BMO_NodeManager = new NodeManager();
     }
     if ( BMO_PlugManager == nullptr ) {
         BMO_PlugManager = new PlugManager();
+    }
+    if ( BMO_ConnectionManager == nullptr ) {
+        BMO_ConnectionManager = new ConnectionManager();
     }
     if ( BMO_PluginManager == nullptr ) {
         BMO_PluginManager = new PluginManager();

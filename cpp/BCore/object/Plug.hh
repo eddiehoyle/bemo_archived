@@ -25,7 +25,7 @@ public:
                    VariantType type )
                    : m_id(),
                      m_owner(),
-                     m_data( 0 ),
+                     m_var(),
                      m_direction( direction ),
                      m_name( name ),
                      m_isStrict( false ),
@@ -33,7 +33,9 @@ public:
 
     inline ObjectID getID() const { return m_id; }
     inline ObjectID getOwnerID() const { return m_owner; }
-    const Variant& getData() const { return m_data; }
+    const Variant& getData() const { return m_var; }
+
+    void setValue( const Variant& var ) { m_var.reset( var ); }
 
     inline bool isValid() const { return ( m_id != ObjectID() ) && ( m_owner != ObjectID() ); }
     inline void setStrict( bool state ) { m_isStrict = state; }
@@ -43,6 +45,7 @@ public:
     inline PlugDirection getDirection() const { return m_direction; }
     inline VariantType getType() const { return m_type; }
 
+
     void connect() {}
     void disconnect() {}
     bool isConnected() const { return false; }
@@ -50,7 +53,7 @@ public:
 private:
     ObjectID m_id;
     ObjectID m_owner;
-    Variant m_data;
+    Variant m_var;
 
     PlugName m_name;
     PlugDirection m_direction;
