@@ -31,6 +31,13 @@ void py_genNodeAbstractNode( py::module& m ) {
             .def("setName", &AbstractNode::setName)
             .def("isValid", &AbstractNode::isValid)
             .def("execute", &AbstractNode::execute)
+            .def("connect", []( AbstractNode* self,
+                                const PlugName& sourcePlugName,
+                                AbstractNode* targetNode,
+                                const PlugName& targetPlugName ) {
+                self->connect( sourcePlugName, targetNode->getID(), targetPlugName );
+            })
+            .def("disconnect", &AbstractNode::disconnect)
             .def("setInput", []( AbstractNode* self,
                                  const std::string& name,
                                  const py::object& value ) {

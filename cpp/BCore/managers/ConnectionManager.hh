@@ -20,7 +20,33 @@ public:
         return id;
     }
 
-    Connection* find( const ObjectID& sourceID, const ObjectID& targetID ) const {
+    void remove( const ObjectID& id ) {
+        auto iter = std::find_if( m_connections.begin(),
+                                  m_connections.end(),
+                                  [&]( Connection* connection )->bool{
+                                      return connection->getID() == id;
+                                  });
+        if ( iter != m_connections.end() ) {
+            BMO_ObjectManager->release( ( *iter )->getID() );
+            ( *iter )->m_id = ObjectID();
+            m_connections.erase( iter );
+        }
+    }
+
+    /// Find all connections connected to the plugID
+    std::vector< Connection* > find( const ObjectID& plugID ) {
+        std::vector< Connection* > connections;
+        for ( Connection* connection : m_connections ) {
+            if ( ( connection->getSourceID() == plugID ) ||
+                 ( connection->getTargetID() == plugID ) ) {
+                connections.push_back( connection );
+            }
+        }
+        return connections;
+    }
+
+    Connection* find( const ObjectID& sourceID,
+                      const ObjectID& targetID ) const {
         auto iter = std::find_if( m_connections.begin(),
                                   m_connections.end(),
                                   [&]( Connection* connection ) {

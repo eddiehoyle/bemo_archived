@@ -16,10 +16,6 @@ AbstractNode::~AbstractNode() {
     BMO_NodeManager->remove( getID() );
 }
 
-//Plug* AbstractNode::getPlug( const std::string& name ) {
-//    return BMO_PlugManager->find( name );
-//}
-
 void AbstractNode::setInput( const std::string& name,
                              const Variant& var ) {
     Plug * plug = BMO_PlugManager->find( m_id, name );
