@@ -39,7 +39,8 @@ void py_genAPI( py::module& m ) {
     m.def("terminate", &terminate);
 
     py::class_<ObjectID>(m, "ObjectID")
-            .def(py::init<>());
+            .def(py::init<>())
+            .def_static("invalid", &ObjectID::invalid);
 
     m.def("create", []( const NodeType& type, const NodeName& name )->AbstractNode*{
         return BMO_NodeManager->create( type, name );

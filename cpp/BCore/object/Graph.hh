@@ -1,13 +1,21 @@
 #ifndef BEMO_GRAPH_HH
 #define BEMO_GRAPH_HH
 
-#include "Container.hh"
+#include <vector>
+#include <BCore/internal/Object.hh>
 
 namespace bemo {
 
-class Graph : public Container {
+class Graph {
+
+    friend class GraphManager;
+
 public:
-    int execute() override { return 0; }
+    Graph() = default;
+    int execute() { return -1; }
+private:
+    ObjectID m_id;
+    std::vector< ObjectID > m_nodes;
 };
 
 }

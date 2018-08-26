@@ -6,9 +6,23 @@
 
 namespace bemo {
 
-class GraphManager : public AbstractManager< Graph > {
 
+class GraphManager {
+
+public:
+
+    ObjectID create() {
+        ObjectID id = BMO_ObjectManager->acquire( ObjectType::Graph );
+        Graph* graph = new Graph();
+        graph->m_id = id;
+        m_Graphs.push_back( graph );
+        return id;
+    }
+
+private:
+    std::vector< Graph* > m_Graphs;
 };
 
 }
+
 #endif // BEMO_GRAPHMANAGER_HH

@@ -25,11 +25,14 @@ public:
         return id;
     }
 
-    Plug* find( const ObjectID& owner, const PlugName& name ) const {
+    Plug* find( const ObjectID& owner,
+                const PlugName& name,
+                PlugDirection direction ) const {
         auto iter = std::find_if( m_plugs.begin(),
                                   m_plugs.end(),
                                   [&]( Plug* plug ) {
-                                      return ( owner == plug->getOwnerID() ) &&
+                                      return ( plug->getOwnerID() == owner ) &&
+                                             ( plug->getDirection() == direction ) &&
                                              ( plug->m_name == name );
                                   });
         return iter != m_plugs.end() ? *iter : nullptr;

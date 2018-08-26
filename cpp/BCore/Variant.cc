@@ -1,7 +1,13 @@
 #include <cmath>
 #include "Variant.hh"
+#include <BCore/util/Log.hh>
 
 namespace bemo {
+
+Variant Variant::invalid() {
+    static Variant var;
+    return var;
+}
 
 Variant::Variant()
     : m_type( VariantType::Null ),
@@ -26,21 +32,58 @@ Variant::Variant( const std::string& value )
 }
 
 Variant::Variant( const Variant& var ) {
+
+    if ( this == &var ) {
+        return;
+    }
+
     bool result;
     switch ( var.type() ) {
         case VariantType::Int:
             m_data = static_cast< void* >( new int( var.toInt( &result ) ) );
+            m_type = var.type();
             break;
         case VariantType::Float:
             m_data = static_cast< void* >( new float( var.toFloat( &result ) ) );
+            m_type = var.type();
             break;
         case VariantType::String:
             m_data = static_cast< void* >( new std::string( var.toString( &result ) ) );
+            m_type = var.type();
             break;
         case VariantType::Null:
         default:
-            ;
+            m_type = VariantType::Null;
+            break;
     }
+}
+
+Variant& Variant::operator=( const Variant& var ) {
+
+    if ( this == &var ) {
+        return *this;
+    }
+
+    bool result;
+    switch ( var.type() ) {
+        case VariantType::Int:
+            m_data = static_cast< void* >( new int( var.toInt( &result ) ) );
+            m_type = var.type();
+            break;
+        case VariantType::Float:
+            m_data = static_cast< void* >( new float( var.toFloat( &result ) ) );
+            m_type = var.type();
+            break;
+        case VariantType::String:
+            m_data = static_cast< void* >( new std::string( var.toString( &result ) ) );
+            m_type = var.type();
+            break;
+        case VariantType::Null:
+        default:
+            m_type = VariantType::Null;
+            break;
+    }
+    return *this;
 }
 
 Variant::~Variant() {
@@ -48,10 +91,6 @@ Variant::~Variant() {
 }
 
 void Variant::clear() {
-
-    if ( m_data == nullptr ) {
-        m_type = VariantType::Null;
-    }
 
     switch ( m_type ) {
         case VariantType::Int:
@@ -69,6 +108,10 @@ void Variant::clear() {
         case VariantType::Null:
         default:
             ;
+    }
+
+    if ( m_data == nullptr ) {
+        m_type = VariantType::Null;
     }
 }
 

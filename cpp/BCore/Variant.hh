@@ -13,6 +13,11 @@ enum class VariantType {
 };
 
 class Variant {
+
+public:
+
+    static Variant invalid();
+
 public:
     Variant();
     explicit Variant( int value );
@@ -21,6 +26,7 @@ public:
     ~Variant();
 
     Variant( const Variant& var );
+    Variant& operator=( const Variant& var );
 
     void clear();
     void reset( const Variant& var );

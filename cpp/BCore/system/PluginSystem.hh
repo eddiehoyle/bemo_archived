@@ -21,7 +21,6 @@ public:
         BMO_NodeManager->addBlueprint( name,
                                        new CreateFuncWrapper< C >( fnCreate ),
                                        new LayoutFuncWrapper< L >( fnLayout ) );
-        BMO_ERROR << "Registered node=" << name;
     }
 private:
     ObjectID m_id;

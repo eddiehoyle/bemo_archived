@@ -8,6 +8,7 @@ namespace bemo {
 enum class ObjectType {
 
     /// Objects
+    Graph,
     Node,
     Plug,
     Plugin,
@@ -22,16 +23,16 @@ enum class ObjectType {
 
 class NodeManager;
 class PlugManager;
+class GraphManager;
 class PluginManager;
 class ObjectManager;
-class DataBlockManager;
 class ConnectionManager;
 
 extern NodeManager* BMO_NodeManager;
 extern PlugManager* BMO_PlugManager;
+extern GraphManager* BMO_GraphManager;
 extern PluginManager* BMO_PluginManager;
 extern ObjectManager* BMO_ObjectManager;
-extern DataBlockManager* BMO_DataBlockManager;
 extern ConnectionManager* BMO_ConnectionManager;
 
 extern void send( const std::string& message );

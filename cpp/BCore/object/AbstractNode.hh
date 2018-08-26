@@ -10,8 +10,6 @@
 
 namespace bemo {
 
-class Plug;
-
 using NodeName = std::string;
 using NodeType = std::string;
 
@@ -28,7 +26,7 @@ public:
     inline ObjectID getID() const { return m_id; }
     inline NodeType getType() const { return m_nodeType; }
     inline NodeName getName() const { return m_nodeName; }
-    inline void setName( const NodeName& name ) { m_nodeName = name; }
+    void setName( const NodeName& name );
 
     void connect( const PlugName& sourcePlugName,
                   const ObjectID& targetID,
@@ -44,6 +42,9 @@ public:
 
     void setInput( const std::string& name, const Variant& var );
     void setOutput( const std::string& name, const Variant& var );
+
+    ObjectID getInput( const PlugName& name );
+    Variant getOutput( const PlugName& name );
 
     virtual int execute() { return -1; }
 
