@@ -21,6 +21,7 @@ class TestSumNode(unittest.TestCase):
         self.assertIsNotNone(self.nodeA)
 
     def test_remove(self):
+        self.assertTrue(self.nodeA.isValid())
         pybemo.remove(self.nodeA)
         self.assertFalse(self.nodeA.isValid())
 

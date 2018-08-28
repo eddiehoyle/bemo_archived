@@ -13,6 +13,8 @@
 
 namespace bemo {
 
+BemoEngine* BMO = nullptr;
+
 NodeManager* BMO_NodeManager = nullptr;
 PlugManager* BMO_PlugManager = nullptr;
 GraphManager* BMO_GraphManager = nullptr;

@@ -21,6 +21,10 @@ enum class ObjectType {
     Invalid,
 };
 
+class BemoEngine;
+
+extern BemoEngine* BMO;
+
 class NodeManager;
 class PlugManager;
 class GraphManager;
