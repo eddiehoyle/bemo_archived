@@ -17,8 +17,8 @@ public:
     void connect( const PlugName& sourceName,
                   const ObjectID& targetID,
                   const PlugName& targetName ) {
-        Plug* sourcePlug = BMO_PlugManager->find( m_id, sourceName, PlugDirection::Output );
-        Plug* targetPlug = BMO_PlugManager->find( targetID, targetName, PlugDirection::Input );
+        Plug* sourcePlug = BMO_PlugManager->find( m_id, sourceName, PlugDirectionPolicy::Output );
+        Plug* targetPlug = BMO_PlugManager->find( targetID, targetName, PlugDirectionPolicy::Input );
         if ( sourcePlug && targetPlug ) {
             BMO_ConnectionManager->create( sourcePlug->getID(),
                                            targetPlug->getID() );
@@ -29,8 +29,8 @@ public:
                      const ObjectID& targetID,
                      const PlugName& targetName ) {
         BMO_ERROR << "disconnecting " << sourceName;
-        Plug* sourcePlug = BMO_PlugManager->find( m_id, sourceName, PlugDirection::Output );
-        Plug* targetPlug = BMO_PlugManager->find( targetID, targetName, PlugDirection::Input );
+        Plug* sourcePlug = BMO_PlugManager->find( m_id, sourceName, PlugDirectionPolicy::Output );
+        Plug* targetPlug = BMO_PlugManager->find( targetID, targetName, PlugDirectionPolicy::Input );
         if ( sourcePlug && targetPlug ) {
             Connection* connection = BMO_ConnectionManager->find( sourcePlug->getID(), targetPlug->getID() );
             if ( connection ) {

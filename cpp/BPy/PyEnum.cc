@@ -20,9 +20,20 @@ void py_genEnum( py::module& m ) {
             .value( "Plugin", ObjectType::Plugin )
             .export_values();
 
-    py::enum_<PlugDirection>( m, "PlugDirection" )
-            .value( "Input", PlugDirection::Input )
-            .value( "Output", PlugDirection::Output )
+    py::enum_<PlugDirectionPolicy>( m, "PlugDirectionPolicy" )
+            .value( "Input", PlugDirectionPolicy::Input )
+            .value( "Output", PlugDirectionPolicy::Output )
+            .export_values();
+
+    py::enum_<PlugAccessPolicy>( m, "PlugAccessPolicy" )
+            .value( "Single", PlugAccessPolicy::Single )
+            .value( "Multiple", PlugAccessPolicy::Multiple )
+            .export_values();
+
+    py::enum_<PlugCastPolicy>( m, "PlugCastPolicy" )
+            .value( "Strict", PlugCastPolicy::Strict )
+            .value( "Similar", PlugCastPolicy::Similar )
+            .value( "Anything", PlugCastPolicy::Anything )
             .export_values();
 
     py::enum_<VariantType>(m, "VariantType")

@@ -43,10 +43,13 @@ public:
     void setInput( const std::string& name, const Variant& var );
     void setOutput( const std::string& name, const Variant& var );
 
-    ObjectID getInput( const PlugName& name );
+    Variant getInput( const PlugName& name );
     Variant getOutput( const PlugName& name );
 
-    virtual int execute() { return -1; }
+    bool hasInput( const PlugName& name ) const;
+    bool hasOutput( const PlugName& name ) const;
+
+    virtual int execute();
 
 private:
     ObjectID m_id;

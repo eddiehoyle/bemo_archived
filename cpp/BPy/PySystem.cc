@@ -47,8 +47,9 @@ void py_genSystemPluginSystem( py::module& m ) {
                   &NodeSystem::addPlug,
                   py::arg( "name" ),
                   py::arg( "direction" ),
+                  py::arg( "access" ),
+                  py::arg( "cast" ),
                   py::arg( "type" ) = VariantType::Null,
-                  py::arg( "isRequired" ) = false,
-                  py::arg( "isStrict" ) = false );
+                  py::arg( "isRequired" ) = false );
 
 }

@@ -20,47 +20,37 @@ void py_genNode( py::module& m ) {
     py_genNodeAbstractNode( m );
 }
 
-static py::object castValue( const Variant& var, VariantType strictType, bool strict ) {
-
+static py::object castToPy( const Variant& var ) {
     bool result;
     py::object value;
-
-    BMO_ERROR << "strictType=" << (int)strictType << ", strict=" << strict;
-
-    if ( strict ) {
-        switch ( strictType ) {
-            case VariantType::Int:
-                value = py::int_( var.toInt( &result ) );
-                break;
-            case VariantType::Float:
-                value = py::float_( var.toFloat( &result ) );
-                break;
-            case VariantType::String:
-                value = py::str( var.toString( &result ) );
-                break;
-            case VariantType::Null:
-            default:
-                value = py::none();
-        }
-
-    } else {
-        switch ( var.type() ) {
-            case VariantType::Int:
-                value = py::int_( var.toInt( &result ) );
-                break;
-            case VariantType::Float:
-                value = py::float_( var.toFloat( &result ) );
-                break;
-            case VariantType::String:
-                value = py::str( var.toString( &result ) );
-                break;
-            case VariantType::Null:
-            default:
-                value = py::none();
-        }
-
+    switch ( var.type() ) {
+        case VariantType::Int:
+            value = py::int_( var.toInt( &result ) );
+            break;
+        case VariantType::Float:
+            value = py::float_( var.toFloat( &result ) );
+            break;
+        case VariantType::String:
+            value = py::str( var.toString( &result ) );
+            break;
+        case VariantType::Null:
+        default:
+            value = py::none();
     }
+    return value;
+}
 
+static Variant castFromPy( const py::object& obj ) {
+    Variant value;
+    if ( py::isinstance< py::int_ >( obj ) ) {
+        value.reset( Variant( obj.cast< int >() ) );
+    } else if ( py::isinstance< py::float_ >( obj ) ) {
+        value.reset( Variant( obj.cast< float >() ) );
+    } else if ( py::isinstance< py::str >( obj ) ) {
+        value.reset( Variant( obj.cast< std::string >() ) );
+    } else if ( py::isinstance< py::none >( obj ) ) {
+    } else {
+    }
     return value;
 }
 
@@ -84,114 +74,23 @@ void py_genNodeAbstractNode( py::module& m ) {
             .def("setInput", []( AbstractNode* self,
                                  const std::string& name,
                                  const py::object& value ) {
-                ObjectID plugID = self->getInput( name );
-                Plug* plug = BMO_PlugManager->find( plugID );
-                if ( plug && plug->isValid() ) {
-                    if ( plug->isStrict() ) {
-                        switch ( plug->getType() ) {
-                            case VariantType::Int:
-                                if ( py::isinstance< py::int_ >( value ) ) {
-                                    self->setInput( name, Variant( value.cast< int >() ) );
-                                }
-                                break;
-                            case VariantType::Float:
-                                if ( py::isinstance< py::float_ >( value ) ) {
-                                    self->setInput( name, Variant( value.cast< float >() ) );
-                                }
-                                break;
-                            case VariantType::Null:
-                            default:
-                                ;
-                        }
-                    } else {
-                        if ( py::isinstance< py::int_ >( value ) ) {
-                            BMO_ERROR << "Setting Input '" << name << "', value (int): " << value.cast< int >();
-                            self->setInput( name, Variant( value.cast< int >() ) );
-                        } else if ( py::isinstance< py::float_ >( value ) ) {
-                            BMO_ERROR << "Setting Input '" << name << "', value (float): " << value.cast< float >();
-                            self->setInput( name, Variant( value.cast< float >() ) );
-                        } else if ( py::isinstance< py::str >( value ) ) {
-                            BMO_ERROR << "Setting Input '" << name << "', value (string): " << value.cast< std::string >();
-                            self->setInput( name, Variant( value.cast< std::string >() ) );
-                        } else if ( py::isinstance< py::none >( value ) ) {
-                            BMO_ERROR << "Setting Input '" << name << "', value (none)";
-                            self->setInput( name, Variant() );
-                        } else {
-                            BMO_ERROR << "Unrecognised Output '" << name << "', value (\?\?\?)";
-                        }
-                    }
-                }
-
+                self->setInput( name, castFromPy( value ) );
             })
             .def("setOutput", []( AbstractNode* self,
                                   const std::string& name,
                                   const py::object& value ) {
-
-//                ObjectID plugID = self->getOutput( name );
-//                Plug* plug = BMO_PlugManager->find( plugID );
-//                if ( plug && plug->isValid() ) {
-//                    if ( plug->isStrict() ) {
-//                        switch ( plug->getType() ) {
-//                            case VariantType::Int:
-//                                if ( py::isinstance< py::int_ >( value ) ) {
-//                                    self->setOutput( name, Variant( value.cast< int >() ) );
-//                                }
-//                                break;
-//                            case VariantType::Float:
-//                                if ( py::isinstance< py::float_ >( value ) ) {
-//                                    self->setOutput( name, Variant( value.cast< float >() ) );
-//                                }
-//                                break;
-//                            case VariantType::Null:
-//                            default:
-//                                ;
-//                        }
-//                    } else {
-//                        if ( py::isinstance< py::int_ >( value ) ) {
-//                            BMO_ERROR << "Setting Output '" << name << "', value (int): " << value.cast< int >();
-//                            self->setOutput( name, Variant( value.cast< int >() ) );
-//                        } else if ( py::isinstance< py::float_ >( value ) ) {
-//                            BMO_ERROR << "Setting Output '" << name << "', value (float): " << value.cast< float >();
-//                            self->setOutput( name, Variant( value.cast< float >() ) );
-//                        } else if ( py::isinstance< py::str >( value ) ) {
-//                            BMO_ERROR << "Setting Output '" << name << "', value (string): " << value.cast< std::string >();
-//                            self->setOutput( name, Variant( value.cast< std::string >() ) );
-//                        } else if ( py::isinstance< py::none >( value ) ) {
-//                            BMO_ERROR << "Setting Output '" << name << "', value (none)";
-//                            self->setOutput( name, Variant() );
-//                        } else {
-//                            BMO_ERROR << "Unrecognised Output '" << name << "', value (\?\?\?)";
-//                        }
-//                    }
-//                }
+                self->setOutput( name, castFromPy( value ) );
             })
             .def("getInput", []( AbstractNode* self,
                                  const PlugName& name )->py::object{
-
-                py::object value;
-
-                ObjectID plugID = self->getInput( name );
-                Plug* plug = BMO_PlugManager->find( plugID );
-                if ( plug && plug->isValid() ) {
-                    value = castValue( plug->getValue(),
-                                       plug->getType(),
-                                       plug->isStrict() );
-                }
-                return value;
+                return castToPy( self->getInput( name ) );
             })
             .def("getOutput", []( AbstractNode* self,
                                  const PlugName& name ){
-                py::object value;
-
-                ObjectID plugID = self->getInput( name );
-                Plug* plug = BMO_PlugManager->find( plugID );
-                if ( plug && plug->isValid() ) {
-                    value = castValue( plug->getValue(),
-                                       plug->getType(),
-                                       plug->isStrict() );
-                }
-                return value;
+                return castToPy( self->getOutput( name ) );
             })
+            .def("hasInput", &AbstractNode::hasInput)
+            .def("hasOutput", &AbstractNode::hasOutput)
             .def("__repr__", []( const AbstractNode& n ){
                 std::stringstream ss;
                 ss << "<AbstractNode(";

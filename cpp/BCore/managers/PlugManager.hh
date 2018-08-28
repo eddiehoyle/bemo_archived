@@ -12,22 +12,23 @@ class PlugManager {
 public:
 
     ObjectID create( const std::string& name,
-                     PlugDirection direction,
+                     PlugDirectionPolicy direction,
+                     PlugAccessPolicy access,
+                     PlugCastPolicy cast,
                      VariantType type,
                      bool isRequired=false,
                      bool isStrict=false ) {
         ObjectID id = BMO_ObjectManager->acquire( ObjectType::Plug );
-        Plug* plug = new Plug( name, direction, type );
+        Plug* plug = new Plug( name, direction, access, cast, type );
         plug->m_id = id;
         plug->setRequired( isRequired );
-        plug->setStrict( isStrict );
         m_plugs.push_back( plug );
         return id;
     }
 
     Plug* find( const ObjectID& owner,
                 const PlugName& name,
-                PlugDirection direction ) const {
+                PlugDirectionPolicy direction ) const {
         auto iter = std::find_if( m_plugs.begin(),
                                   m_plugs.end(),
                                   [&]( Plug* plug ) {

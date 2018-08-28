@@ -20,10 +20,25 @@ def py_create():
 
 def py_layout(node_id):
     system = pybemo.NodeSystem(node_id)
-    system.addHeader("Add two values together.", "icons/PyNode.png")
-    system.addPlug("valueA", pybemo.PlugDirection.Input,  pybemo.VariantType.Int, isRequired=True, isStrict=True)
-    system.addPlug("valueB", pybemo.PlugDirection.Input,  pybemo.VariantType.Int, isRequired=True, isStrict=True)
-    system.addPlug("result", pybemo.PlugDirection.Output, pybemo.VariantType.Int)
+    system.addHeader("Add two values together.", "icons/SumNode.png")
+    system.addPlug("valueA",
+                   pybemo.PlugDirectionPolicy.Input,
+                   pybemo.PlugAccessPolicy.Single,
+                   pybemo.PlugCastPolicy.Anything,
+                   pybemo.VariantType.Int,
+                   isRequired=True)
+    system.addPlug("valueB",
+                   pybemo.PlugDirectionPolicy.Input,
+                   pybemo.PlugAccessPolicy.Single,
+                   pybemo.PlugCastPolicy.Anything,
+                   pybemo.VariantType.Int,
+                   isRequired=True)
+    system.addPlug("result",
+                   pybemo.PlugDirectionPolicy.Output,
+                   pybemo.PlugAccessPolicy.Single,
+                   pybemo.PlugCastPolicy.Anything,
+                   pybemo.VariantType.Int,
+                   isRequired=True)
 
 def bmo_registerPlugin(plugin_id):
     system = pybemo.PluginSystem(plugin_id)

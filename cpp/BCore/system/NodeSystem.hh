@@ -17,15 +17,17 @@ public:
                     const std::string& icon ) {}
 
     void addPlug( const std::string& name,
-            PlugDirection direction,
-            VariantType type,
-            bool isRequired=false,
-            bool isStrict=false ) {
+                  PlugDirectionPolicy direction,
+                  PlugAccessPolicy access,
+                  PlugCastPolicy cast,
+                  VariantType type,
+                  bool isRequired=false ) {
         ObjectID plugID = BMO_PlugManager->create( name,
                                                    direction,
+                                                   access,
+                                                   cast,
                                                    type,
-                                                   isRequired,
-                                                   isStrict );
+                                                   isRequired );
         Plug* plug = BMO_PlugManager->find( plugID );
         plug->m_owner = m_id;
     }
