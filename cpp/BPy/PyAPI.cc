@@ -44,6 +44,9 @@ void py_genAPI( py::module& m ) {
             .def_static("invalid", &ObjectID::invalid);
 
     m.def("create", []( const NodeType& type, const NodeName& name )->AbstractNode*{
+        if ( !BMO ) {
+            throw std::runtime_error( "Bemo not initialised!" );
+        }
         return BMO->getNodeManager()->create( type, name );
     }, py::arg("type"), py::arg("name") = "");
 
