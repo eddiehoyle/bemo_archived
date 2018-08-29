@@ -1,6 +1,6 @@
 #include "PyNode.hh"
 
-#include <BCore/API.hh>
+#include <BCore/Bemo.hh>
 #include <BCore/object/Plug.hh>
 #include <BCore/managers/PlugManager.hh>
 

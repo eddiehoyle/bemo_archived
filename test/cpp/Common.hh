@@ -3,7 +3,7 @@
 
 #include <gtest/gtest.h>
 
-#include <BCore/API.hh>
+#include <BCore/Bemo.hh>
 
 class BemoAPI : public ::testing::Test {
 protected:

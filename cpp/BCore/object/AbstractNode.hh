@@ -1,7 +1,7 @@
 #ifndef BEMO_ABSTRACTNODE_HH
 #define BEMO_ABSTRACTNODE_HH
 
-#include <BCore/API.hh>
+#include <BCore/Bemo.hh>
 #include <BCore/Platform.hh>
 #include <BCore/internal/Handle.hh>
 #include <BCore/internal/Object.hh>

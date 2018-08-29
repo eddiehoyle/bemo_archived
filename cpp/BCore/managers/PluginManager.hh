@@ -1,10 +1,11 @@
 #ifndef BEMO_PLUGINMANAGER_HH
 #define BEMO_PLUGINMANAGER_HH
 
+#include <BCore/Bemo.hh>
+#include <BCore/managers/ObjectManager.hh>
 #include <BCore/object/Plugin.hh>
 #include <BCore/internal/Table.hh>
 #include <BCore/internal/Object.hh>
-#include <BCore/managers/ObjectManager.hh>
 
 namespace bemo {
 
@@ -12,7 +13,7 @@ class PluginManager {
 
 public:
     ObjectID create() {
-        ObjectID id = BMO_ObjectManager->acquire( ObjectType::Plugin );
+        ObjectID id = BMO->getObjectManager()->acquire( ObjectType::Plugin );
         Plugin* plugin = new Plugin();
         plugin->m_id = id;
         m_plugins.push_back( plugin );

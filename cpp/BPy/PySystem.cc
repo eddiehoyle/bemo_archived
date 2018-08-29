@@ -1,4 +1,4 @@
-#include <BCore/API.hh>
+#include <BCore/Bemo.hh>
 #include <BCore/object/Plug.hh>
 #include <BCore/system/NodeSystem.hh>
 #include <BCore/system/PluginSystem.hh>

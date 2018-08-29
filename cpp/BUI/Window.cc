@@ -11,7 +11,7 @@
 #include <QTreeWidgetItem>
 
 #include <iostream>
-#include <BCore/API.hh>
+#include <BCore/Bemo.hh>
 #include <BCore/node/Graph.hh>
 #include <BCore/util/Log.hh>
 

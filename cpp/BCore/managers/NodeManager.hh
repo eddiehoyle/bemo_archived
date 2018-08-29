@@ -1,10 +1,9 @@
 #ifndef BEMO_NODEMANAGER_HH
 #define BEMO_NODEMANAGER_HH
 
-#include <BCore/API.hh>
+#include <BCore/Bemo.hh>
 #include <BCore/internal/Table.hh>
 #include <BCore/object/AbstractNode.hh>
-#include <BCore/managers/ObjectManager.hh>
 #include <tuple>
 
 namespace bemo {

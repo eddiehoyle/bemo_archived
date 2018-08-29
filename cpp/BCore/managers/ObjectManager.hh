@@ -4,6 +4,7 @@
 #include <BCore/internal/Handle.hh>
 #include <BCore/internal/Object.hh>
 #include <BCore/internal/Table.hh>
+#include <BCore/internal/Type.hh>
 
 namespace bemo {
 

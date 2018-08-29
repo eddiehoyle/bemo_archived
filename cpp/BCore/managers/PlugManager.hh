@@ -1,7 +1,8 @@
 #ifndef BEMO_PLUGMANAGER_HH
 #define BEMO_PLUGMANAGER_HH
 
-#include "ObjectManager.hh"
+#include <BCore/Bemo.hh>
+#include <BCore/managers/ObjectManager.hh>
 #include <BCore/object/Plug.hh>
 #include <BCore/internal/Object.hh>
 
@@ -18,7 +19,7 @@ public:
                      VariantType type,
                      bool isRequired=false,
                      bool isStrict=false ) {
-        ObjectID id = BMO_ObjectManager->acquire( ObjectType::Plug );
+        ObjectID id = BMO->getObjectManager()->acquire( ObjectType::Plug );
         Plug* plug = new Plug( name, direction, access, cast, type );
         plug->m_id = id;
         plug->setRequired( isRequired );

@@ -1,7 +1,8 @@
 #ifndef BEMO_CONTAINERMAINAGER_HH
 #define BEMO_CONTAINERMAINAGER_HH
 
-#include "ObjectManager.hh"
+#include <BCore/Bemo.hh>
+
 #include <BCore/util/Assert.hh>
 #include <BCore/util/Log.hh>
 #include <BCore/Platform.hh>
@@ -24,23 +25,23 @@ namespace bemo {
  *      Plug:        [0, 1, ..., n],
  *   }
  */
-
-
-template< typename T, typename H >
-class ContainerManager : public AbstractManager< T, H > {
-
-    using ObjectType = T;
-    using HandleType = H;
-
-public:
-    ObjectType create() override {
-        HandleType id = this->m_table.acquire( nullptr );
-        return ObjectType( id );
-    }
-    void destroy( const ObjectType& graph ) override {
-        this->m_table.release( graph.objectID() );
-    }
-};
+//
+//
+//template< typename T, typename H >
+//class ContainerManager : public AbstractManager< T, H > {
+//
+//    using ObjectType = T;
+//    using HandleType = H;
+//
+//public:
+//    ObjectType create() override {
+//        HandleType id = this->m_table.acquire( nullptr );
+//        return ObjectType( id );
+//    }
+//    void destroy( const ObjectType& graph ) override {
+//        this->m_table.release( graph.objectID() );
+//    }
+//};
 
 //class ContainerManager {
 //

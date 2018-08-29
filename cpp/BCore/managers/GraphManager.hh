@@ -1,7 +1,8 @@
 #ifndef BEMO_GRAPHMANAGER_HH
 #define BEMO_GRAPHMANAGER_HH
 
-#include "ObjectManager.hh"
+#include <BCore/Bemo.hh>
+#include <BCore/managers/ObjectManager.hh>
 #include <BCore/object/Graph.hh>
 
 namespace bemo {
@@ -12,7 +13,7 @@ class GraphManager {
 public:
 
     ObjectID create() {
-        ObjectID id = BMO_ObjectManager->acquire( ObjectType::Graph );
+        ObjectID id = BMO->getObjectManager()->acquire( ObjectType::Graph );
         Graph* graph = new Graph();
         graph->m_id = id;
         m_Graphs.push_back( graph );

@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <utility>
 
-#include <BCore/API.hh>
+#include <BCore/Bemo.hh>
 #include <BCore/util/Log.hh>
 #include <BCore/container/Graph.hh>
 #include <BCore/managers/ContainerManager.hh>

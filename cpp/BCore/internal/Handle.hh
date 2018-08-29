@@ -1,13 +1,13 @@
 #ifndef BEMO_HANDLE_HH
 #define BEMO_HANDLE_HH
 
-#include <BCore/util/Log.hh>
 #include <climits>
 #include <ostream>
-#include <BCore/API.hh>
+#include <BCore/Bemo.hh>
+#include <BCore/util/Log.hh>
+#include <BCore/internal/Type.hh>
 
 namespace bemo {
-
 
 template< typename N, std::size_t I, std::size_t V >
 class Handle;

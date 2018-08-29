@@ -4,7 +4,7 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/functional.h>
 
-#include <BCore/API.hh>
+#include <BCore/Bemo.hh>
 #include <BCore/util/Log.hh>
 #include <BCore/managers/NodeManager.hh>
 #include <BCore/system/NodeSystem.hh>

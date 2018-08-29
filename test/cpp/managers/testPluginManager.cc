@@ -3,7 +3,7 @@
 
 #include "../Common.hh"
 
-#include <BCore/API.hh>
+#include <BCore/Bemo.hh>
 #include <BCore/util/Log.hh>
 //#include <BCore/managers/PluginManager.hh>
 //#include <BCore/managers/NodeManager.hh>

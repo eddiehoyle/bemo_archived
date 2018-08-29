@@ -1,9 +1,10 @@
 #include "PyAPI.hh"
 #include "PyNodeManager.hh"
 
-#include <BCore/API.hh>
+#include <BCore/Bemo.hh>
 #include <BCore/object/Plug.hh>
 #include <BCore/object/Plugin.hh>
+#include <BCore/managers/NodeManager.hh>
 #include <BCore/managers/PluginManager.hh>
 
 #include <pybind11/stl.h>
@@ -24,7 +25,7 @@ void py_initialize() {
     if ( globals.contains ( "bmo_registerPlugin" ) ) {
         py::object init = globals[ "bmo_registerPlugin" ];
         if ( py::hasattr( init, "__call__" ) ) {
-            init( BMO_PluginManager->create() );
+            init( BMO->getPluginManager()->create() );
         }
     }
 }
@@ -43,17 +44,17 @@ void py_genAPI( py::module& m ) {
             .def_static("invalid", &ObjectID::invalid);
 
     m.def("create", []( const NodeType& type, const NodeName& name )->AbstractNode*{
-        return BMO_NodeManager->create( type, name );
+        return BMO->getNodeManager()->create( type, name );
     }, py::arg("type"), py::arg("name") = "");
 
     m.def("remove", []( AbstractNode* node ){
-        BMO_NodeManager->remove( node->getID() );
+        BMO->getNodeManager()->remove( node->getID() );
     });
 
     m.def("ls", []( const std::vector< NodeName >& names ){
         std::vector< AbstractNode* > nodes;
         for ( auto name : names ) {
-            AbstractNode* node = BMO_NodeManager->find( name );
+            AbstractNode* node = BMO->getNodeManager()->find( name );
             if ( node && ( std::find( nodes.begin(), nodes.end(), node ) == nodes.end() ) ) {
                 nodes.push_back( node );
             }

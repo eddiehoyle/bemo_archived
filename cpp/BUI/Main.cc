@@ -1,5 +1,5 @@
 #include "Window.hh"
-#include <BCore/API.hh>
+#include <BCore/Bemo.hh>
 #include <QApplication>
 #include <BCore/util/Log.hh>
 

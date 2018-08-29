@@ -1,7 +1,9 @@
 #ifndef BEMO_CONNECTIONMANAGER_HH
 #define BEMO_CONNECTIONMANAGER_HH
 
-#include "ObjectManager.hh"
+#include <BCore/Bemo.hh>
+#include <BCore/managers/ObjectManager.hh>
+
 #include <BCore/object/Plug.hh>
 #include <BCore/object/Connection.hh>
 #include <BCore/internal/Object.hh>
@@ -13,7 +15,7 @@ class ConnectionManager {
 public:
 
     ObjectID create( const ObjectID& sourceID, const ObjectID& targetID ) {
-        ObjectID id = BMO_ObjectManager->acquire( ObjectType::Plug );
+        ObjectID id = BMO->getObjectManager()->acquire( ObjectType::Plug );
         Connection* connection = new Connection( sourceID, targetID );
         connection->m_id = id;
         m_connections.push_back( connection );
@@ -27,7 +29,7 @@ public:
                                       return connection->getID() == id;
                                   });
         if ( iter != m_connections.end() ) {
-            BMO_ObjectManager->release( ( *iter )->getID() );
+            BMO->getObjectManager()->release( ( *iter )->getID() );
             ( *iter )->m_id = ObjectID();
             m_connections.erase( iter );
         }

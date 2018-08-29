@@ -1,9 +1,9 @@
 #ifndef BEMO_PLUGINSYSTEM_HH
 #define BEMO_PLUGINSYSTEM_HH
 
-#include <BCore/object/Plugin.hh>
-#include <BCore/API.hh>
+#include <BCore/Bemo.hh>
 #include <BCore/managers/NodeManager.hh>
+#include <BCore/object/Plugin.hh>
 
 namespace bemo {
 
@@ -18,7 +18,7 @@ public:
     void registerNode( const std::string& name,
                        C fnCreate,
                        L fnLayout ) {
-        BMO_NodeManager->addBlueprint( name,
+        BMO->getNodeManager()->addBlueprint( name,
                                        new CreateFuncWrapper< C >( fnCreate ),
                                        new LayoutFuncWrapper< L >( fnLayout ) );
     }

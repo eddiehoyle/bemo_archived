@@ -1,11 +1,10 @@
 #ifndef BEMO_REGISTRYSYSTEM_HH
 #define BEMO_REGISTRYSYSTEM_HH
 
-#include <BCore/API.hh>
+#include <BCore/Bemo.hh>
+#include <BCore/managers/PlugManager.hh>
 #include <BCore/object/Plug.hh>
 #include <BCore/object/AbstractNode.hh>
-#include <BCore/managers/PlugManager.hh>
-#include <BCore/managers/NodeManager.hh>
 
 namespace bemo {
 
@@ -21,16 +20,17 @@ public:
                   PlugAccessPolicy access,
                   PlugCastPolicy cast,
                   VariantType type,
-                  bool isRequired=false ) {
-        ObjectID plugID = BMO_PlugManager->create( name,
-                                                   direction,
-                                                   access,
-                                                   cast,
-                                                   type,
-                                                   isRequired );
-        Plug* plug = BMO_PlugManager->find( plugID );
+                  bool isRequired = false ) {
+        ObjectID plugID = BMO->getPlugManager()->create( name,
+                                                         direction,
+                                                         access,
+                                                         cast,
+                                                         type,
+                                                         isRequired );
+        Plug* plug = BMO->getPlugManager()->find( plugID );
         plug->m_owner = m_id;
     }
+
 private:
     ObjectID m_id;
 
