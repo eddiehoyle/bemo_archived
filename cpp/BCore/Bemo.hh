@@ -9,6 +9,8 @@ class GraphManager;
 class PluginManager;
 class ObjectManager;
 class ConnectionManager;
+class EventManager;
+class DependencyGraph;
 
 class BemoEngine {
 public:
@@ -21,6 +23,8 @@ public:
     PluginManager* getPluginManager();
     ObjectManager* getObjectManager();
     ConnectionManager* getConnectionManager();
+    EventManager* getEventManager();
+    DependencyGraph* getDependencyGraph();
 
 private:
     NodeManager* m_nodeManager;
@@ -29,6 +33,8 @@ private:
     PluginManager* m_pluginManager;
     ObjectManager* m_objectManager;
     ConnectionManager* m_connectionManager;
+    EventManager* m_eventManager;
+    DependencyGraph* m_dependencyGraph;
 };
 
 extern void initialize();

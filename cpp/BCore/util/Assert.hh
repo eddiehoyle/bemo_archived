@@ -3,7 +3,7 @@
 
 #include "Log.hh"
 
-#if BEMO_ASSERT_ENABLED
+#if BMO_ASSERT_ENABLED
 #define STR(exp) #exp
 #define BMO_ASSERT(exp)                                         \
 do {                                                            \

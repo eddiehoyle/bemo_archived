@@ -9,6 +9,9 @@
 
 #include <BCore/system/PluginSystem.hh>
 #include <BCore/system/NodeSystem.hh>
+#include <BCore/event/EventManager.hh>
+
+#include <BCore/dag/DependencyGraph.hh>
 
 #include <BCore/util/Log.hh>
 #include <BCore/node/Sum.hh>
@@ -23,7 +26,14 @@ BemoEngine::BemoEngine()
           m_graphManager( nullptr ),
           m_pluginManager( new PluginManager() ),
           m_objectManager( new ObjectManager() ),
-          m_connectionManager( new ConnectionManager() ) {}
+          m_connectionManager( new ConnectionManager() ),
+          m_eventManager( new EventManager() ),
+          m_dependencyGraph( new DependencyGraph() ) {
+
+    // Needs to be broken up into two stage initialisation
+    // 1. instantiation
+    // 2. callback subscriptions
+}
 
 BemoEngine::~BemoEngine() {}
 
@@ -49,6 +59,15 @@ ObjectManager* BemoEngine::getObjectManager() {
 
 ConnectionManager* BemoEngine::getConnectionManager() {
     return m_connectionManager;
+}
+
+EventManager* BemoEngine::getEventManager() {
+    BMO_ASSERT(m_eventManager)
+    return m_eventManager;
+}
+
+DependencyGraph* BemoEngine::getDependencyGraph() {
+    return m_dependencyGraph;
 }
 
 

@@ -13,13 +13,7 @@ using namespace bemo;
 using FnCreate = std::function< py::object() >;
 using FnLayout = std::function< py::object( ObjectID ) >;
 
-void py_genSystemPluginSystem( py::module& m );
-
-
-void py_genSystem( py::module& m ) {
-
-    py_genSystemPluginSystem( m );
-}
+namespace bemo {
 
 template<>
 AbstractNode* CreateFuncWrapper< FnCreate >::invoke() {
@@ -32,6 +26,17 @@ template<>
 void LayoutFuncWrapper< FnLayout >::invoke( ObjectID id ) {
     m_func( id );
 }
+
+}
+
+void py_genSystemPluginSystem( py::module& m );
+
+
+void py_genSystem( py::module& m ) {
+
+    py_genSystemPluginSystem( m );
+}
+
 
 void py_genSystemPluginSystem( py::module& m ) {
 

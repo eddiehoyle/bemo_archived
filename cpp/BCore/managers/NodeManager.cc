@@ -1,4 +1,6 @@
 #include "NodeManager.hh"
+#include <BCore/Bemo.hh>
+#include <BCore/event/EventManager.hh>
 #include <BCore/managers/ObjectManager.hh>
 
 namespace bemo {
@@ -13,6 +15,7 @@ AbstractNode* NodeManager::create( const NodeType& type, const NodeName& name ) 
         node->m_nodeName = !name.empty() ? name : ( type + std::to_string( m_nodes.size() ) );
         fnLayout->invoke( node->m_id );
         m_nodes.push_back( node );
+        BMO->getEventManager()->send< NodeCreatedEvent >( node->getID() );
         return node;
     }
     return nullptr;
