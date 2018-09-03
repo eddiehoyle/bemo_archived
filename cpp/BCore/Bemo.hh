@@ -9,37 +9,20 @@ class GraphManager;
 class PluginManager;
 class ObjectManager;
 class ConnectionManager;
-class EventManager;
-class DependencyGraph;
+class EventHandler;
+class DagManager;
 
-class BemoEngine {
-public:
-    BemoEngine();
-    ~BemoEngine();
-
-    NodeManager* getNodeManager();
-    PlugManager* getPlugManager();
-    GraphManager* getGraphManager();
-    PluginManager* getPluginManager();
-    ObjectManager* getObjectManager();
-    ConnectionManager* getConnectionManager();
-    EventManager* getEventManager();
-    DependencyGraph* getDependencyGraph();
-
-private:
-    NodeManager* m_nodeManager;
-    PlugManager* m_plugManager;
-    GraphManager* m_graphManager;
-    PluginManager* m_pluginManager;
-    ObjectManager* m_objectManager;
-    ConnectionManager* m_connectionManager;
-    EventManager* m_eventManager;
-    DependencyGraph* m_dependencyGraph;
-};
+extern NodeManager* BMO_NodeManager;
+extern PlugManager* BMO_PlugManager;
+extern GraphManager* BMO_GraphManager;
+extern PluginManager* BMO_PluginManager;
+extern ObjectManager* BMO_ObjectManager;
+extern ConnectionManager* BMO_ConnectionManager;
+extern EventHandler* BMO_EventHandler;
+extern DagManager* BMO_DependencyGraph;
 
 extern void initialize();
 extern void terminate();
-extern BemoEngine* BMO;
 
 }
 

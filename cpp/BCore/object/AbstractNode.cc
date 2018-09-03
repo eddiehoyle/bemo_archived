@@ -14,7 +14,7 @@ static void setPlugValue( AbstractNode* node,
                           const PlugName& name,
                           PlugDirectionPolicy direction,
                           const Variant& var ) {
-    Plug* plug = BMO->getPlugManager()->find( node->getID(), name, direction );
+    Plug* plug = BMO_PlugManager->find( node->getID(), name, direction );
     if ( plug && plug->isValid() ) {
 //        // TODO: Implement plug type policies
 //        if ( plug->isStrict() && ( plug->getType() == var.type() ) ) {
@@ -27,7 +27,7 @@ static void setPlugValue( AbstractNode* node,
 static const Variant& getPlugValue( AbstractNode const* node,
                                     const PlugName& name,
                                     PlugDirectionPolicy direction ) {
-    Plug* plug = BMO->getPlugManager()->find( node->getID(), name, direction );
+    Plug* plug = BMO_PlugManager->find( node->getID(), name, direction );
     if ( plug && plug->isValid() ) {
         return plug->getValue();
     }
@@ -37,7 +37,7 @@ static const Variant& getPlugValue( AbstractNode const* node,
 static bool hasPlug( AbstractNode const* node,
                      const PlugName& name,
                      PlugDirectionPolicy direction ) {
-    return BMO->getPlugManager()->find( node->getID(), name, direction ) != nullptr;
+    return BMO_PlugManager->find( node->getID(), name, direction ) != nullptr;
 }
 
 AbstractNode::AbstractNode()
@@ -45,17 +45,17 @@ AbstractNode::AbstractNode()
           m_nodeType( "invalid" ) {}
 
 AbstractNode::~AbstractNode() {
-    BMO->getNodeManager()->remove( getID() );
+    BMO_NodeManager->remove( getID() );
 }
 
 void AbstractNode::setName( const NodeName& name ) {
-    if ( BMO->getNodeManager()->find( name ) != nullptr ) {
+    if ( BMO_NodeManager->find( name ) != nullptr ) {
         std::size_t index = 0;
         NodeName uniqueName = name;
         bool exists = true;
         while ( exists ) {
             uniqueName = name + std::to_string( index++ );
-            exists = BMO->getNodeManager()->find( uniqueName ) != nullptr;
+            exists = BMO_NodeManager->find( uniqueName ) != nullptr;
         }
         m_nodeName = uniqueName;
     } else {

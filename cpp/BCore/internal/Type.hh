@@ -6,17 +6,17 @@ namespace bemo {
 enum class ObjectType {
 
     /// Objects
-            Graph,
+    Graph,
     Node,
     Plug,
     Plugin,
 
     /// Data
-            Data,
+    Data,
     DataArray,
 
     /// Must be last
-            Invalid,
+    Invalid,
 };
 
 }

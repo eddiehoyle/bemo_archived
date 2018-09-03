@@ -16,10 +16,10 @@ public:
     void connect( const PlugName& sourceName,
                   const ObjectID& targetID,
                   const PlugName& targetName ) {
-        Plug* sourcePlug = BMO->getPlugManager()->find( m_id, sourceName, PlugDirectionPolicy::Output );
-        Plug* targetPlug = BMO->getPlugManager()->find( targetID, targetName, PlugDirectionPolicy::Input );
+        Plug* sourcePlug = BMO_PlugManager->find( m_id, sourceName, PlugDirectionPolicy::Output );
+        Plug* targetPlug = BMO_PlugManager->find( targetID, targetName, PlugDirectionPolicy::Input );
         if ( sourcePlug && targetPlug ) {
-            BMO->getConnectionManager()->create( sourcePlug->getID(),
+            BMO_ConnectionManager->create( sourcePlug->getID(),
                                            targetPlug->getID() );
         }
     }
@@ -28,12 +28,12 @@ public:
                      const ObjectID& targetID,
                      const PlugName& targetName ) {
         BMO_ERROR << "disconnecting " << sourceName;
-        Plug* sourcePlug = BMO->getPlugManager()->find( m_id, sourceName, PlugDirectionPolicy::Output );
-        Plug* targetPlug = BMO->getPlugManager()->find( targetID, targetName, PlugDirectionPolicy::Input );
+        Plug* sourcePlug = BMO_PlugManager->find( m_id, sourceName, PlugDirectionPolicy::Output );
+        Plug* targetPlug = BMO_PlugManager->find( targetID, targetName, PlugDirectionPolicy::Input );
         if ( sourcePlug && targetPlug ) {
-            Connection* connection = BMO->getConnectionManager()->find( sourcePlug->getID(), targetPlug->getID() );
+            Connection* connection = BMO_ConnectionManager->find( sourcePlug->getID(), targetPlug->getID() );
             if ( connection ) {
-                BMO->getConnectionManager()->remove( connection->getID() );
+                BMO_ConnectionManager->remove( connection->getID() );
             }
         }
     }
@@ -42,9 +42,9 @@ public:
 
         bool result = false;
 
-//        Plug* plug = BMO->getPlugManager()->find( m_id, sourcePlugName,  );
+//        Plug* plug = BMO_PlugManager->find( m_id, sourcePlugName,  );
 //        if ( plug ) {
-//            const std::vector< Connection* > connections = BMO->getConnectionManager()->find( plug->getID() );
+//            const std::vector< Connection* > connections = BMO_ConnectionManager->find( plug->getID() );
 //            result = !connections.empty();
 //        }
 

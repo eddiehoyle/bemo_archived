@@ -21,13 +21,13 @@ public:
                   PlugCastPolicy cast,
                   VariantType type,
                   bool isRequired = false ) {
-        ObjectID plugID = BMO->getPlugManager()->create( name,
+        ObjectID plugID = BMO_PlugManager->create( name,
                                                          direction,
                                                          access,
                                                          cast,
                                                          type,
                                                          isRequired );
-        Plug* plug = BMO->getPlugManager()->find( plugID );
+        Plug* plug = BMO_PlugManager->find( plugID );
         plug->m_owner = m_id;
     }
 

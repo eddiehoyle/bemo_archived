@@ -1,6 +1,6 @@
 #include "NodeManager.hh"
 #include <BCore/Bemo.hh>
-#include <BCore/event/EventManager.hh>
+#include <BCore/event/EventHandler.hh>
 #include <BCore/managers/ObjectManager.hh>
 
 namespace bemo {
@@ -10,12 +10,12 @@ AbstractNode* NodeManager::create( const NodeType& type, const NodeName& name ) 
     auto fnLayout = findLayout( type );
     if ( fnCreate && fnLayout ) {
         AbstractNode* node = fnCreate->invoke();
-        node->m_id = BMO->getObjectManager()->acquire( ObjectType::Node );
+        node->m_id = BMO_ObjectManager->acquire( ObjectType::Node );
         node->m_nodeType = type;
         node->m_nodeName = !name.empty() ? name : ( type + std::to_string( m_nodes.size() ) );
         fnLayout->invoke( node->m_id );
         m_nodes.push_back( node );
-        BMO->getEventManager()->send< NodeCreatedEvent >( node->getID() );
+        BMO_EventHandler->send< NodeCreatedEvent >( node->getID() );
         return node;
     }
     return nullptr;
@@ -28,7 +28,7 @@ void NodeManager::remove( const ObjectID& id ) {
                                   return n->getID() == id;
                               });
     if ( iter != m_nodes.end() ) {
-        BMO->getObjectManager()->release( ( *iter )->getID() );
+        BMO_ObjectManager->release( ( *iter )->getID() );
         ( *iter )->m_id = ObjectID();
         m_nodes.erase( iter );
     }
@@ -57,7 +57,7 @@ AbstractNode* NodeManager::find( const NodeName& name ) const {
 
 
 bool NodeManager::exists( const ObjectID& id ) const {
-    return BMO->getObjectManager()->exists( id );
+    return BMO_ObjectManager->exists( id );
 }
 
 void NodeManager::addBlueprint( const std::string& type,

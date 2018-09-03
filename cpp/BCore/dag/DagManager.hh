@@ -2,6 +2,7 @@
 #define BEMO_DAG_HH
 
 #include <BCore/internal/Object.hh>
+#include "DagVertex.hh"
 
 namespace bemo {
 
@@ -10,31 +11,10 @@ class NodeRemovedEvent;
 class NodeConnectedEvent;
 class NodeDisconnectedEvent;
 
-class Vertex {
+class DagManager {
 public:
-    explicit Vertex( ObjectID value ) : m_value( value ), m_deps() {}
-    ObjectID value() const { return m_value; }
-    void add( Vertex* vtx ) { m_deps.insert( vtx ); }
-    bool has( Vertex* vtx ) const { return m_deps.find( vtx ) != m_deps.end(); }
-    bool has( ObjectID id ) const {
-        return std::find_if( m_deps.begin(),
-                             m_deps.end(),
-                             [&]( Vertex* vertex ) {
-                                 return vertex->value() == id;
-                             } ) != m_deps.end();
-    }
-    void remove( Vertex* vtx ) { m_deps.erase( vtx ); }
-    const std::set< Vertex* >& get() const { return m_deps; }
-
-private:
-    ObjectID m_value;
-    std::set< Vertex* > m_deps;
-};
-
-class DependencyGraph {
-public:
-    DependencyGraph();
-    ~DependencyGraph();
+    DagManager();
+    ~DagManager();
 
     bool canConnect( ObjectID u, ObjectID v ) {
         std::vector< bool > visited( m_vertices.size(), false );

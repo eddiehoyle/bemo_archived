@@ -29,7 +29,7 @@ namespace bemo {
 //        FnLayout fnLayout;
 //        if ( findBlueprint( type, &fnCreate, &fnLayout ) ) {
 //            node = fnCreate();
-//            ObjectID id = BMO->getObjectManager()->acquire( ObjectType::Node );
+//            ObjectID id = BMO_ObjectManager()->acquire( ObjectType::Node );
 //            fnLayout( id );
 //        }
 //

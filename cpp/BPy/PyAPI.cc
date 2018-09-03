@@ -25,7 +25,7 @@ void py_initialize() {
     if ( globals.contains ( "bmo_registerPlugin" ) ) {
         py::object init = globals[ "bmo_registerPlugin" ];
         if ( py::hasattr( init, "__call__" ) ) {
-            init( BMO->getPluginManager()->create() );
+            init( BMO_PluginManager->create() );
         }
     }
 }
@@ -44,20 +44,20 @@ void py_genAPI( py::module& m ) {
             .def_static("invalid", &ObjectID::invalid);
 
     m.def("create", []( const NodeType& type, const NodeName& name )->AbstractNode*{
-        if ( !BMO ) {
+        if ( BMO_NodeManager == nullptr ) {
             throw std::runtime_error( "Bemo not initialised!" );
         }
-        return BMO->getNodeManager()->create( type, name );
+        return BMO_NodeManager->create( type, name );
     }, py::arg("type"), py::arg("name") = "");
 
     m.def("remove", []( AbstractNode* node ){
-        BMO->getNodeManager()->remove( node->getID() );
+        BMO_NodeManager->remove( node->getID() );
     });
 
     m.def("ls", []( const std::vector< NodeName >& names ){
         std::vector< AbstractNode* > nodes;
         for ( auto name : names ) {
-            AbstractNode* node = BMO->getNodeManager()->find( name );
+            AbstractNode* node = BMO_NodeManager->find( name );
             if ( node && ( std::find( nodes.begin(), nodes.end(), node ) == nodes.end() ) ) {
                 nodes.push_back( node );
             }

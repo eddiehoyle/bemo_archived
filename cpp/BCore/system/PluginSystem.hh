@@ -18,7 +18,7 @@ public:
     void registerNode( const std::string& name,
                        C fnCreate,
                        L fnLayout ) {
-        BMO->getNodeManager()->addBlueprint( name,
+        BMO_NodeManager->addBlueprint( name,
                                        new CreateFuncWrapper< C >( fnCreate ),
                                        new LayoutFuncWrapper< L >( fnLayout ) );
     }

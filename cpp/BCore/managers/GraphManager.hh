@@ -13,7 +13,7 @@ class GraphManager {
 public:
 
     ObjectID create() {
-        ObjectID id = BMO->getObjectManager()->acquire( ObjectType::Graph );
+        ObjectID id = BMO_ObjectManager->acquire( ObjectType::Graph );
         Graph* graph = new Graph();
         graph->m_id = id;
         m_Graphs.push_back( graph );

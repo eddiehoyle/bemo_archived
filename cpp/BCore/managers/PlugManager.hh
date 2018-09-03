@@ -19,7 +19,7 @@ public:
                      VariantType type,
                      bool isRequired=false,
                      bool isStrict=false ) {
-        ObjectID id = BMO->getObjectManager()->acquire( ObjectType::Plug );
+        ObjectID id = BMO_ObjectManager->acquire( ObjectType::Plug );
         Plug* plug = new Plug( name, direction, access, cast, type );
         plug->m_id = id;
         plug->setRequired( isRequired );

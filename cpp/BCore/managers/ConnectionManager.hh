@@ -15,7 +15,7 @@ class ConnectionManager {
 public:
 
     ObjectID create( const ObjectID& sourceID, const ObjectID& targetID ) {
-        ObjectID id = BMO->getObjectManager()->acquire( ObjectType::Plug );
+        ObjectID id = BMO_ObjectManager->acquire( ObjectType::Plug );
         Connection* connection = new Connection( sourceID, targetID );
         connection->m_id = id;
         m_connections.push_back( connection );
@@ -29,7 +29,7 @@ public:
                                       return connection->getID() == id;
                                   });
         if ( iter != m_connections.end() ) {
-            BMO->getObjectManager()->release( ( *iter )->getID() );
+            BMO_ObjectManager->release( ( *iter )->getID() );
             ( *iter )->m_id = ObjectID();
             m_connections.erase( iter );
         }

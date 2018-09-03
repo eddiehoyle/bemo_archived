@@ -13,7 +13,7 @@ class PluginManager {
 
 public:
     ObjectID create() {
-        ObjectID id = BMO->getObjectManager()->acquire( ObjectType::Plugin );
+        ObjectID id = BMO_ObjectManager->acquire( ObjectType::Plugin );
         Plugin* plugin = new Plugin();
         plugin->m_id = id;
         m_plugins.push_back( plugin );

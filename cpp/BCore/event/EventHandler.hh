@@ -5,17 +5,15 @@
 #include <functional>
 
 #include "Event.hh"
-#include "Delegate.hh"
+#include "EventDelegate.hh"
 #include <BCore/util/Log.hh>
 #include <BCore/util/Assert.hh>
 
 
 namespace bemo {
 
-class EventManager {
+class EventHandler {
 public:
-    EventManager() = default;
-
     template< typename T, typename E >
     void subscribe( T* instance, void(T::*callback)( E* ) ) {
         BMO_ERROR << "Subscribing!";
