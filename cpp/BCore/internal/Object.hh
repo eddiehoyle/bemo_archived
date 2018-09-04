@@ -20,6 +20,13 @@ public:
 public:
     ObjectID() : m_handle( ObjectHandle::INVALID_HANDLE ),
                  m_type( ObjectType::Invalid ) {}
+    ObjectID( const ObjectID& obj ) : m_handle( obj.m_handle ), m_type( obj.m_type ) {}
+    ObjectID& operator=( const ObjectID& obj ) {
+        BMO_ERROR << "------------------------------------------------";
+        this->m_handle = obj.m_handle;
+        this->m_type = obj.m_type;
+        return *this;
+    }
     ObjectType type() const { return m_type; }
     bool operator<( const ObjectID& rhs ) const { return this->m_handle < rhs.m_handle; }
     bool operator>( const ObjectID& rhs ) const { return this->m_handle > rhs.m_handle; }

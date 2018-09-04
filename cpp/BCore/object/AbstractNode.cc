@@ -87,6 +87,14 @@ bool AbstractNode::hasOutput( const PlugName& name ) const {
     return hasPlug( this, name, PlugDirectionPolicy::Output );
 }
 
+std::vector< PlugName > AbstractNode::getInputs() const {
+    return BMO_PlugManager->getOwnedBy( getID(), PlugDirectionPolicy::Input );
+}
+
+std::vector< PlugName > AbstractNode::getOutputs() const {
+    return BMO_PlugManager->getOwnedBy( getID(), PlugDirectionPolicy::Output );
+}
+
 void AbstractNode::connect( const PlugName& sourcePlugName,
                             const ObjectID& targetID,
                             const PlugName& targetPlugName ) {

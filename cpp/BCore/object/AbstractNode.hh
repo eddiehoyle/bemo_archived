@@ -37,8 +37,8 @@ public:
                      const PlugName& targetPlugName );
 
 //    std::vector< Plug* > getPlugs() const { return std::vector< Plug* >(); }
-//    std::vector< Plug* > getInputPlugs() const { return std::vector< Plug* >(); }
-//    std::vector< Plug* > getOutputPlugs() const { return std::vector< Plug* >(); }
+    std::vector< PlugName > getInputs() const;
+    std::vector< PlugName > getOutputs() const;
 
     void setInput( const std::string& name, const Variant& var );
     void setOutput( const std::string& name, const Variant& var );

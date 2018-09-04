@@ -26,10 +26,9 @@ public:
 
     template< typename E, typename... Args >
     void sendEvent( Args... args ) {
-        BMO_ERROR << "E::EVENT_TYPE_ID=" << E::EVENT_TYPE_ID;
         for ( AbstractEventDelegate* delegate : m_delegates ) {
             if ( E::EVENT_TYPE_ID == delegate->getEventTypeID() ) {
-                delegate->invoke( new E( args... ) );
+                delegate->invoke( new E( std::forward< Args >( args )... ) );
             }
         }
     }

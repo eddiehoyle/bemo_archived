@@ -19,11 +19,11 @@ public:
                   const PlugName& targetName ) {
         Plug* sourcePlug = BMO_PlugManager->find( m_id, sourceName, PlugDirectionPolicy::Output );
         Plug* targetPlug = BMO_PlugManager->find( targetID, targetName, PlugDirectionPolicy::Input );
-        BMO_ERROR << "connecting?";
         if ( sourcePlug && targetPlug ) {
-            if ( BMO_DependencyGraph->canConnect( sourcePlug->getID(), targetPlug->getID() ) ) {
-                BMO_ConnectionManager->create( sourcePlug->getID(),
-                                               targetPlug->getID() );
+            bool safe = BMO_DependencyGraph->canConnect( sourcePlug->getID(), targetPlug->getID() );
+            BMO_ERROR << "safe=" << safe;
+            if ( safe ) {
+                BMO_ConnectionManager->create( sourcePlug->getID(), targetPlug->getID() );
             }
         }
     }

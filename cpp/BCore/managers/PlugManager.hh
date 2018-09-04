@@ -17,14 +17,26 @@ public:
                      PlugAccessPolicy access,
                      PlugCastPolicy cast,
                      VariantType type,
-                     bool isRequired=false,
-                     bool isStrict=false ) {
+                     bool isRequired = false,
+                     bool isStrict = false ) {
         ObjectID id = BMO_ObjectManager->acquire( ObjectType::Plug );
-        Plug* plug = new Plug( name, direction, access, cast, type );
+        Plug * plug = new Plug( name, direction, access, cast, type );
         plug->m_id = id;
         plug->setRequired( isRequired );
         m_plugs.push_back( plug );
         return id;
+    }
+
+    std::vector< PlugName > getOwnedBy( const ObjectID& owner,
+                                        PlugDirectionPolicy direction ) {
+        std::vector< PlugName > names;
+        for ( Plug* plug : m_plugs ) {
+            if ( plug->getOwnerID() == owner &&
+                 plug->getDirection() == direction ) {
+                names.push_back( plug->getName() );
+            }
+        }
+        return names;
     }
 
     Plug* find( const ObjectID& owner,
@@ -34,9 +46,10 @@ public:
                                   m_plugs.end(),
                                   [&]( Plug* plug ) {
                                       return ( plug->getOwnerID() == owner ) &&
-                                             ( plug->getDirection() == direction ) &&
+                                             ( plug->getDirection() ==
+                                               direction ) &&
                                              ( plug->m_name == name );
-                                  });
+                                  } );
         return iter != m_plugs.end() ? *iter : nullptr;
     }
 
@@ -45,7 +58,7 @@ public:
                                   m_plugs.end(),
                                   [id]( Plug* plug ) {
                                       return plug->m_id == id;
-                                  });
+                                  } );
         return iter != m_plugs.end() ? *iter : nullptr;
     }
 

@@ -19,9 +19,16 @@ public:
 
     bool canConnect( ObjectID u, ObjectID v ) {
         std::vector< bool > visited( m_vertices.size(), false );
+//        Vertex* uvert = m_vertices[m_indexMap[u]];
+//        Vertex* uvert = m_vertices[0];
+//        BMO_ERROR << "u index=" << m_indexMap[u] << ", u value=" << uvert->value();
+        BMO_ERROR << m_indexMap[v] << ", " << m_indexMap[u];
         return !isDependency( m_vertices[m_indexMap[v]],
                               m_vertices[m_indexMap[u]],
                               visited );
+//        return !isDependency( m_vertices[0],
+//                              m_vertices[1],
+//                              visited );
     }
 
 private:
@@ -35,6 +42,7 @@ private:
     void addVertex( ObjectID u ) {
         if ( m_indexMap.find( u ) == m_indexMap.end() ) {
             m_indexMap[u] = m_vertices.size();
+            BMO_ERROR << "u=" << u << ", index=" << m_indexMap[u];
             m_vertices.push_back( new Vertex( u ) );
         }
     }
@@ -62,6 +70,7 @@ private:
 
     bool isDependency( Vertex* source, Vertex* target,
                        std::vector< bool >& visited ) {
+        BMO_ERROR << source->value() << ", " << target->value();
         if ( source->value() == target->value() ) {
             return true;
         }

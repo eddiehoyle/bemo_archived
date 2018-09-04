@@ -17,8 +17,12 @@ class TestSumNode(unittest.TestCase):
         pybemo.terminate()
         self.nodeA = None
 
-    def test_create(self):
-        self.assertIsNotNone(self.nodeA)
+    def test_connect(self):
+        nodeB = pybemo.create("sum")
+        self.nodeA.connect("result", nodeB, "valueA")
+
+    # def test_create(self):
+    #     self.assertIsNotNone(self.nodeA)
     #
     # def test_remove(self):
     #     self.assertTrue(self.nodeA.isValid())

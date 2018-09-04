@@ -91,6 +91,8 @@ void py_genNodeAbstractNode( py::module& m ) {
             })
             .def("hasInput", &AbstractNode::hasInput)
             .def("hasOutput", &AbstractNode::hasOutput)
+            .def("getInputs", &AbstractNode::getInputs)
+            .def("getOutputs", &AbstractNode::getOutputs)
             .def("__repr__", []( const AbstractNode& n ){
                 std::stringstream ss;
                 ss << "<AbstractNode(";
