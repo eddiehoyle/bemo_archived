@@ -5,12 +5,13 @@
 
 namespace bemo {
 
-static int s_counter = 0;
+int increment();
 
 class AbstractEvent {
 public:
     explicit AbstractEvent( int typeID ) : m_eventTypeID( typeID ) {}
     virtual ~AbstractEvent() {}
+    virtual int getEventTypeID() const { return m_eventTypeID; }
 private:
     int m_eventTypeID;
 };
@@ -24,7 +25,7 @@ public:
 };
 
 template< typename E >
-const int Event< E >::EVENT_TYPE_ID = { s_counter++ };
+const int Event< E >::EVENT_TYPE_ID = { increment() };
 
 class NodeCreatedEvent : public Event< NodeCreatedEvent > {
 public:

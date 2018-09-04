@@ -14,7 +14,8 @@ class Handle;
 
 template< typename N, std::size_t I, std::size_t V >
 std::ostream& operator<<( std::ostream& stream, const Handle< N, I, V >& handle ) {
-    return stream << "Handle(index=" << handle.index() << ", version=" << handle.version() << ")";
+//    return stream << "Handle(index=" << handle.index() << ", version=" << handle.version() << ")";
+    return stream << "Handle(" << handle.index() << ")";
 }
 
 template< typename N, std::size_t I, std::size_t V >

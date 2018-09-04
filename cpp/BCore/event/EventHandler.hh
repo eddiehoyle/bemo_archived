@@ -15,21 +15,22 @@ namespace bemo {
 class EventHandler {
 public:
     template< typename T, typename E >
-    void subscribe( T* instance, void(T::*callback)( E* ) ) {
-        BMO_ERROR << "Subscribing!";
-        AbstractEventDelegate* delegate = new EventDelegate< T, E >( instance,
-                                                                     callback );
+    void subscribeEvent( T* instance, void(T::*callback)( E* ) ) {
+        BMO_ERROR << "E::EVENT_TYPE_ID=" << E::EVENT_TYPE_ID;
+        AbstractEventDelegate* delegate = new EventDelegate< T, E >( instance, callback );
         m_delegates.push_back( delegate );
     }
 
     template< typename T, typename E >
-    void unsubscribe( T* instance ) {}
+    void unsubscribeEvent( T* instance ) {}
 
     template< typename E, typename... Args >
-    void send( Args... args ) {
-        BMO_ERROR << "Sending event! Delegates=" << m_delegates.size();
+    void sendEvent( Args... args ) {
+        BMO_ERROR << "E::EVENT_TYPE_ID=" << E::EVENT_TYPE_ID;
         for ( AbstractEventDelegate* delegate : m_delegates ) {
-            delegate->invoke( new E( args... ) );
+            if ( E::EVENT_TYPE_ID == delegate->getEventTypeID() ) {
+                delegate->invoke( new E( args... ) );
+            }
         }
     }
 

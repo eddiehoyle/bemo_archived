@@ -4,6 +4,7 @@
 #include <BCore/Bemo.hh>
 #include <BCore/managers/ConnectionManager.hh>
 #include <BCore/managers/PlugManager.hh>
+#include <BCore/dag/DagManager.hh>
 #include <BCore/object/Plug.hh>
 #include <BCore/object/AbstractNode.hh>
 
@@ -18,9 +19,12 @@ public:
                   const PlugName& targetName ) {
         Plug* sourcePlug = BMO_PlugManager->find( m_id, sourceName, PlugDirectionPolicy::Output );
         Plug* targetPlug = BMO_PlugManager->find( targetID, targetName, PlugDirectionPolicy::Input );
+        BMO_ERROR << "connecting?";
         if ( sourcePlug && targetPlug ) {
-            BMO_ConnectionManager->create( sourcePlug->getID(),
-                                           targetPlug->getID() );
+            if ( BMO_DependencyGraph->canConnect( sourcePlug->getID(), targetPlug->getID() ) ) {
+                BMO_ConnectionManager->create( sourcePlug->getID(),
+                                               targetPlug->getID() );
+            }
         }
     }
 

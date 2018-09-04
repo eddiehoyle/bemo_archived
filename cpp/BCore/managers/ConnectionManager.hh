@@ -3,6 +3,8 @@
 
 #include <BCore/Bemo.hh>
 #include <BCore/managers/ObjectManager.hh>
+#include <BCore/event/Event.hh>
+#include <BCore/event/EventHandler.hh>
 
 #include <BCore/object/Plug.hh>
 #include <BCore/object/Connection.hh>
@@ -19,6 +21,7 @@ public:
         Connection* connection = new Connection( sourceID, targetID );
         connection->m_id = id;
         m_connections.push_back( connection );
+        BMO_EventHandler->sendEvent< NodeConnectedEvent >( sourceID, targetID );
         return id;
     }
 
@@ -29,8 +32,10 @@ public:
                                       return connection->getID() == id;
                                   });
         if ( iter != m_connections.end() ) {
+            BMO_EventHandler->sendEvent< NodeDisconnectedEvent >(
+                    ( *iter )->getSourceID(), ( *iter )->getTargetID() );
             BMO_ObjectManager->release( ( *iter )->getID() );
-            ( *iter )->m_id = ObjectID();
+            ( *iter )->m_id = ObjectID::invalid();
             m_connections.erase( iter );
         }
     }

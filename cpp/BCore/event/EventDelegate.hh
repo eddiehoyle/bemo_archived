@@ -7,25 +7,31 @@ namespace bemo {
 
 class AbstractEventDelegate {
 public:
+    explicit AbstractEventDelegate( int id ) : m_eventTypeID( id ) {}
+    virtual ~AbstractEventDelegate() = default;
+    virtual int getEventTypeID() const { return m_eventTypeID; }
     virtual void invoke( AbstractEvent* event ) = 0;
-    virtual ~AbstractEventDelegate() {}
+
+private:
+    int m_eventTypeID;
 };
 
 template< typename T, typename E >
 class EventDelegate : public AbstractEventDelegate {
 
     typedef void(T::*Callback)( E* );
+
     T* m_receiver;
     Callback m_callback;
 
 public:
-    EventDelegate( T* receiver, Callback& func) :
-            m_receiver( receiver ),
-            m_callback( func )
-    {}
+    EventDelegate( T* receiver, Callback& func )
+            : AbstractEventDelegate( E::EVENT_TYPE_ID ),
+              m_receiver( receiver ),
+              m_callback( func ) {}
 
     void invoke( AbstractEvent* event ) {
-        (m_receiver->*m_callback)( reinterpret_cast< E* >( event ) );
+        ( m_receiver->*m_callback )( reinterpret_cast< E* >( event ) );
     }
 };
 

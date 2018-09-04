@@ -15,7 +15,7 @@ AbstractNode* NodeManager::create( const NodeType& type, const NodeName& name ) 
         node->m_nodeName = !name.empty() ? name : ( type + std::to_string( m_nodes.size() ) );
         fnLayout->invoke( node->m_id );
         m_nodes.push_back( node );
-        BMO_EventHandler->send< NodeCreatedEvent >( node->getID() );
+        BMO_EventHandler->sendEvent< NodeCreatedEvent >( node->getID() );
         return node;
     }
     return nullptr;
@@ -28,6 +28,7 @@ void NodeManager::remove( const ObjectID& id ) {
                                   return n->getID() == id;
                               });
     if ( iter != m_nodes.end() ) {
+        BMO_EventHandler->sendEvent< NodeRemovedEvent >( ( *iter )->getID() );
         BMO_ObjectManager->release( ( *iter )->getID() );
         ( *iter )->m_id = ObjectID();
         m_nodes.erase( iter );

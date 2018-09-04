@@ -14,6 +14,7 @@ class NodeDisconnectedEvent;
 class DagManager {
 public:
     DagManager();
+
     ~DagManager();
 
     bool canConnect( ObjectID u, ObjectID v ) {
@@ -40,8 +41,8 @@ private:
 
     void removeVertex( ObjectID u ) {
         for ( Vertex* vertex : m_vertices ) {
-            if ( vertex->has( m_vertices[ m_indexMap[ u ] ] ) ) {
-                vertex->remove( m_vertices[ m_indexMap[ u ] ] );
+            if ( vertex->has( m_vertices[m_indexMap[u]] ) ) {
+                vertex->remove( m_vertices[m_indexMap[u]] );
             }
         }
         delete m_vertices[m_indexMap[u]];
@@ -53,6 +54,10 @@ private:
         if ( canConnect( u, v ) ) {
             m_vertices[m_indexMap[u]]->add( m_vertices[m_indexMap[v]] );
         }
+    }
+
+    void removeEdge( ObjectID u, ObjectID v ) {
+        m_vertices[m_indexMap[u]]->remove( m_vertices[m_indexMap[v]] );
     }
 
     bool isDependency( Vertex* source, Vertex* target,
