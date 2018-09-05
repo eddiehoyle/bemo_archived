@@ -8,22 +8,9 @@ import pybemo
 
 def main():
     pybemo.initialise();
-
-    nodeA = pybemo.create("py")
-    # print "nodeA:", nodeA
-    # print "nodeA: %s" % nodeA.execute()
-
-    nodeB = pybemo.create("cpp")
-    # print "nodeB:", nodeB
-    # print "nodeB: %s" % nodeB.execute()
-    #
-    # pybemo.remove(nodeA.getName());
-    # pybemo.remove(nodeB.getName());
-
-    nodeA.connect("output", nodeB, "cpp_valueA")
-
-    print nodeA;
-    print nodeB;
+    nodeA = pybemo.create("sum")
+    nodeB = pybemo.create("sum")
+    nodeA.connect("result", nodeB, "valueA")
 
 if __name__ == '__main__':
     main()

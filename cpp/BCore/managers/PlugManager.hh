@@ -27,44 +27,56 @@ public:
         return id;
     }
 
-    std::vector< PlugName > getOwnedBy( const ObjectID& owner,
-                                        PlugDirectionPolicy direction ) {
-        std::vector< PlugName > names;
-        for ( Plug* plug : m_plugs ) {
-            if ( plug->getOwnerID() == owner &&
-                 plug->getDirection() == direction ) {
-                names.push_back( plug->getName() );
-            }
-        }
-        return names;
-    }
-
-    Plug* find( const ObjectID& owner,
-                const PlugName& name,
-                PlugDirectionPolicy direction ) const {
+    ObjectID getOwner( ObjectID plugID ) const {
         auto iter = std::find_if( m_plugs.begin(),
                                   m_plugs.end(),
                                   [&]( Plug* plug ) {
-                                      return ( plug->getOwnerID() == owner ) &&
-                                             ( plug->getDirection() ==
-                                               direction ) &&
-                                             ( plug->m_name == name );
-                                  } );
-        return iter != m_plugs.end() ? *iter : nullptr;
+                                      return plug->getID() == plugID;
+                                  });
+        return iter != m_plugs.end() ? ( *iter )->getOwnerID() : ObjectID::invalid();
     }
 
-    Plug* find( const ObjectID& id ) const {
-        auto iter = std::find_if( m_plugs.begin(),
-                                  m_plugs.end(),
-                                  [id]( Plug* plug ) {
-                                      return plug->m_id == id;
-                                  } );
-        return iter != m_plugs.end() ? *iter : nullptr;
-    }
+        std::vector< PlugName > getOwnedBy( const ObjectID& owner,
+                                            PlugDirectionPolicy direction ) {
+            std::vector< PlugName > names;
+            for ( Plug* plug : m_plugs ) {
+                if ( plug->getOwnerID() == owner &&
+                     plug->getDirection() == direction ) {
+                    names.push_back( plug->getName() );
+                }
+            }
+            return names;
+        }
 
-private:
-    std::vector< Plug* > m_plugs;
-};
+        Plug * find(
+        const ObjectID& owner,
+        const PlugName& name,
+        PlugDirectionPolicy direction ) const {
+            auto iter = std::find_if( m_plugs.begin(),
+                                      m_plugs.end(),
+                                      [&]( Plug* plug ) {
+                                          return ( plug->getOwnerID() ==
+                                                   owner ) &&
+                                                 ( plug->getDirection() ==
+                                                   direction ) &&
+                                                 ( plug->m_name == name );
+                                      } );
+            return iter != m_plugs.end() ? *iter : nullptr;
+        }
+
+        Plug * find(
+        const ObjectID& id ) const {
+            auto iter = std::find_if( m_plugs.begin(),
+                                      m_plugs.end(),
+                                      [id]( Plug* plug ) {
+                                          return plug->m_id == id;
+                                      } );
+            return iter != m_plugs.end() ? *iter : nullptr;
+        }
+
+        private:
+        std::vector< Plug* > m_plugs;
+    };
 
 
 }

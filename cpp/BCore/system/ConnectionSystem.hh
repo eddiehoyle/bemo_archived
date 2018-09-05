@@ -20,9 +20,7 @@ public:
         Plug* sourcePlug = BMO_PlugManager->find( m_id, sourceName, PlugDirectionPolicy::Output );
         Plug* targetPlug = BMO_PlugManager->find( targetID, targetName, PlugDirectionPolicy::Input );
         if ( sourcePlug && targetPlug ) {
-            bool safe = BMO_DependencyGraph->canConnect( sourcePlug->getID(), targetPlug->getID() );
-            BMO_ERROR << "safe=" << safe;
-            if ( safe ) {
+            if ( BMO_DependencyGraph->canConnect( sourcePlug->getID(), targetPlug->getID() ) ) {
                 BMO_ConnectionManager->create( sourcePlug->getID(), targetPlug->getID() );
             }
         }

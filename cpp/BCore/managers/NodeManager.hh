@@ -42,7 +42,7 @@ public:
 
     AbstractNode* create( const NodeType& type, const NodeName& name = NodeName() );
 
-    void remove( const ObjectID& id );
+    void remove( const ObjectID& nodeID );
 
     AbstractNode* find( const ObjectID& name ) const;
     AbstractNode* find( const NodeName& name ) const;

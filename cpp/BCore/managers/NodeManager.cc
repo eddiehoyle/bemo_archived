@@ -15,18 +15,17 @@ AbstractNode* NodeManager::create( const NodeType& type, const NodeName& name ) 
         node->m_nodeName = !name.empty() ? name : ( type + std::to_string( m_nodes.size() ) );
         fnLayout->invoke( node->m_id );
         m_nodes.push_back( node );
-        BMO_ERROR << "Created node with id=" << node->getID();
         BMO_EventHandler->sendEvent< NodeCreatedEvent >( node->getID() );
         return node;
     }
     return nullptr;
 }
 
-void NodeManager::remove( const ObjectID& id ) {
+void NodeManager::remove( const ObjectID& nodeID ) {
     auto iter = std::find_if( m_nodes.begin(),
                               m_nodes.end(),
                               [&]( AbstractNode* n )->bool{
-                                  return n->getID() == id;
+                                  return n->getID() == nodeID;
                               });
     if ( iter != m_nodes.end() ) {
         BMO_EventHandler->sendEvent< NodeRemovedEvent >( ( *iter )->getID() );

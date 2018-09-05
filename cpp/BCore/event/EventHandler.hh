@@ -16,7 +16,6 @@ class EventHandler {
 public:
     template< typename T, typename E >
     void subscribeEvent( T* instance, void(T::*callback)( E* ) ) {
-        BMO_ERROR << "E::EVENT_TYPE_ID=" << E::EVENT_TYPE_ID;
         AbstractEventDelegate* delegate = new EventDelegate< T, E >( instance, callback );
         m_delegates.push_back( delegate );
     }

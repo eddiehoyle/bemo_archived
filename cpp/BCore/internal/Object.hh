@@ -22,7 +22,6 @@ public:
                  m_type( ObjectType::Invalid ) {}
     ObjectID( const ObjectID& obj ) : m_handle( obj.m_handle ), m_type( obj.m_type ) {}
     ObjectID& operator=( const ObjectID& obj ) {
-        BMO_ERROR << "------------------------------------------------";
         this->m_handle = obj.m_handle;
         this->m_type = obj.m_type;
         return *this;

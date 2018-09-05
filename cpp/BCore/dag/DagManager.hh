@@ -12,26 +12,19 @@ class NodeConnectedEvent;
 class NodeDisconnectedEvent;
 
 class DagManager {
+
+    using IndexMap = std::map< ObjectID, std::size_t >;
+    using Vertices = std::vector< Vertex* >;
+
 public:
     DagManager();
-
     ~DagManager();
 
-    bool canConnect( ObjectID u, ObjectID v ) {
-        std::vector< bool > visited( m_vertices.size(), false );
-//        Vertex* uvert = m_vertices[m_indexMap[u]];
-//        Vertex* uvert = m_vertices[0];
-//        BMO_ERROR << "u index=" << m_indexMap[u] << ", u value=" << uvert->value();
-        BMO_ERROR << m_indexMap[v] << ", " << m_indexMap[u];
-        return !isDependency( m_vertices[m_indexMap[v]],
-                              m_vertices[m_indexMap[u]],
-                              visited );
-//        return !isDependency( m_vertices[0],
-//                              m_vertices[1],
-//                              visited );
-    }
+    bool canConnect( ObjectID sourcePlugID, ObjectID targetPlugID ) const;
 
 private:
+
+    /// Signals
     void nodeCreated( NodeCreatedEvent* event );
     void nodeRemoved( NodeRemovedEvent* event );
     void nodeConnected( NodeConnectedEvent* event );
@@ -39,60 +32,18 @@ private:
 
 private:
 
-    void addVertex( ObjectID u ) {
-        if ( m_indexMap.find( u ) == m_indexMap.end() ) {
-            m_indexMap[u] = m_vertices.size();
-            BMO_ERROR << "u=" << u << ", index=" << m_indexMap[u];
-            m_vertices.push_back( new Vertex( u ) );
-        }
-    }
-
-    void removeVertex( ObjectID u ) {
-        for ( Vertex* vertex : m_vertices ) {
-            if ( vertex->has( m_vertices[m_indexMap[u]] ) ) {
-                vertex->remove( m_vertices[m_indexMap[u]] );
-            }
-        }
-        delete m_vertices[m_indexMap[u]];
-        m_vertices.erase( m_vertices.begin() + m_indexMap[u] );
-        m_indexMap.erase( u );
-    }
-
-    void addEdge( ObjectID u, ObjectID v ) {
-        if ( canConnect( u, v ) ) {
-            m_vertices[m_indexMap[u]]->add( m_vertices[m_indexMap[v]] );
-        }
-    }
-
-    void removeEdge( ObjectID u, ObjectID v ) {
-        m_vertices[m_indexMap[u]]->remove( m_vertices[m_indexMap[v]] );
-    }
-
-    bool isDependency( Vertex* source, Vertex* target,
-                       std::vector< bool >& visited ) {
-        BMO_ERROR << source->value() << ", " << target->value();
-        if ( source->value() == target->value() ) {
-            return true;
-        }
-
-        std::size_t index = m_indexMap[source->value()];
-        if ( visited[index] ) {
-            return false;
-        }
-        visited[index] = true;
-
-        for ( Vertex* vertex : source->get() ) {
-            bool result = isDependency( vertex, target, visited );
-            if ( result ) {
-                return result;
-            }
-        }
-        return false;
-    }
+    /// Private functions
+    void addVertex( ObjectID nodeID );
+    void removeVertex( ObjectID nodeID );
+    void addEdge( ObjectID sourceNodeID, ObjectID targetNodeID );
+    void removeEdge( ObjectID sourceNodeID, ObjectID targetNodeID );
+    bool isDependency( Vertex* sourceVertex,
+                       Vertex* targetVertex,
+                       std::vector< bool >& visited ) const;
 
 private:
-    std::map< ObjectID, std::size_t > m_indexMap;
-    std::vector< Vertex* > m_vertices;
+    IndexMap m_indexMap;
+    Vertices m_vertices;
 };
 
 }
