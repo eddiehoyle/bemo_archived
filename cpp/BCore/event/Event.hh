@@ -29,39 +29,39 @@ const int Event< E >::EVENT_TYPE_ID = { increment() };
 
 class NodeCreatedEvent : public Event< NodeCreatedEvent > {
 public:
-    explicit NodeCreatedEvent( ObjectID id );
+    explicit NodeCreatedEvent( ObjectID nodeID );
     ObjectID getNodeID() const;
 private:
-    ObjectID m_id;
+    ObjectID m_nodeID;
 };
 
 class NodeRemovedEvent : public Event< NodeRemovedEvent > {
 public:
-    explicit NodeRemovedEvent( ObjectID id );
+    explicit NodeRemovedEvent( ObjectID nodeID );
     ObjectID getNodeID() const;
 private:
-    ObjectID m_id;
+    ObjectID m_nodeID;
 };
 
-class NodeConnectedEvent : public Event< NodeConnectedEvent > {
+class PlugConnectedEvent : public Event< PlugConnectedEvent > {
 public:
-    explicit NodeConnectedEvent( ObjectID source, ObjectID target );
-    ObjectID getSourceNodeID() const;
-    ObjectID getTargetNodeID() const;
+    explicit PlugConnectedEvent( ObjectID sourcePlugID, ObjectID targetPlugID );
+    ObjectID getSourcePlugID() const;
+    ObjectID getTargetPlugID() const;
 private:
-    ObjectID m_source;
-    ObjectID m_target;
+    ObjectID m_sourcePlugID;
+    ObjectID m_targetPlugID;
 };
 
 
-class NodeDisconnectedEvent : public Event< NodeDisconnectedEvent > {
+class PlugDisconnectedEvent : public Event< PlugDisconnectedEvent > {
 public:
-    explicit NodeDisconnectedEvent( ObjectID source, ObjectID target );
-    ObjectID getSourceNodeID() const;
-    ObjectID getTargetNodeID() const;
+    explicit PlugDisconnectedEvent( ObjectID sourcePlugID, ObjectID targetPlugID );
+    ObjectID getSourcePlugID() const;
+    ObjectID getTargetPlugID() const;
 private:
-    ObjectID m_source;
-    ObjectID m_target;
+    ObjectID m_sourcePlugID;
+    ObjectID m_targetPlugID;
 };
 
 }

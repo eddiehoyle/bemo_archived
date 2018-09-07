@@ -48,10 +48,10 @@ namespace bemo {
 //    class Wrapper {
 //    public:
 //        virtual ~Wrapper() = default;
-//        ContainerID id() const { return m_id; }
+//        ContainerID id() const { return m_nodeID; }
 //        ContainerTypeID type() const { return m_type; }
 //    protected:
-//        ContainerID m_id;
+//        ContainerID m_nodeID;
 //        ContainerTypeID m_type;
 //    };
 //
@@ -59,7 +59,7 @@ namespace bemo {
 //    class ContainerWrapper : public Wrapper {
 //    public:
 //        ContainerWrapper( C container ) : m_container( container ) {
-//            this->m_id = container.id();
+//            this->m_nodeID = container.id();
 //            this->m_type = C::TYPEID;
 //        }
 //        C& get() { return m_container; }
@@ -78,7 +78,7 @@ namespace bemo {
 //
 //        ContainerID id = acquire< C >();
 //        auto wrapper = new ContainerWrapper< C >( C( id, std::forward<Args>(args)... ) );
-//        wrapper->get().m_id = id;
+//        wrapper->get().m_nodeID = id;
 //        wrapper->get().m_manager = this;
 //
 //        BMO_ERROR << "created: type=" << C::TYPEID << ", id=" << id;

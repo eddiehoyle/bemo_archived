@@ -14,7 +14,7 @@
 #include <BCore/dag/DagManager.hh>
 
 #include <BCore/util/Log.hh>
-#include <BCore/node/Sum.hh>
+#include <BCore/node/Pow.hh>
 
 namespace bemo {
 
@@ -42,8 +42,8 @@ void initialize() {
 
     // Initialise CPP nodes
     BMO_NodeManager->addBlueprint( "cpp",
-                                         new CreateFuncWrapper< CppFnCreate >( a ),
-                                         new LayoutFuncWrapper< CppFnLayout >( b ) );
+                                   new CreateFuncWrapper< CppFnCreate >( powCreate ),
+                                   new LayoutFuncWrapper< CppFnLayout >( powLayout ) );
 }
 
 void terminate() {

@@ -7,26 +7,26 @@ int increment() {
     return s_count++;
 }
 
-NodeCreatedEvent::NodeCreatedEvent( ObjectID id )
-    : Event< NodeCreatedEvent >(), m_id( id ) {
+NodeCreatedEvent::NodeCreatedEvent( ObjectID nodeID )
+    : Event< NodeCreatedEvent >(), m_nodeID( nodeID ) {
 }
-ObjectID NodeCreatedEvent::getNodeID() const { return m_id; }
+ObjectID NodeCreatedEvent::getNodeID() const { return m_nodeID; }
 
-NodeRemovedEvent::NodeRemovedEvent( ObjectID id )
-        : Event< NodeRemovedEvent >(), m_id( id ) {
+NodeRemovedEvent::NodeRemovedEvent( ObjectID nodeID )
+        : Event< NodeRemovedEvent >(), m_nodeID( nodeID ) {
 }
-ObjectID NodeRemovedEvent::getNodeID() const { return m_id; }
+ObjectID NodeRemovedEvent::getNodeID() const { return m_nodeID; }
 
-NodeConnectedEvent::NodeConnectedEvent( ObjectID source, ObjectID target )
-        : Event< NodeConnectedEvent >(), m_source( source ), m_target( target ) {
+PlugConnectedEvent::PlugConnectedEvent( ObjectID sourcePlugID, ObjectID targetPlugID )
+        : Event< PlugConnectedEvent >(), m_sourcePlugID( sourcePlugID ), m_targetPlugID( targetPlugID ) {
 }
-ObjectID NodeConnectedEvent::getSourceNodeID() const { return m_source; }
-ObjectID NodeConnectedEvent::getTargetNodeID() const { return m_target; }
+ObjectID PlugConnectedEvent::getSourcePlugID() const { return m_sourcePlugID; }
+ObjectID PlugConnectedEvent::getTargetPlugID() const { return m_targetPlugID; }
 
-NodeDisconnectedEvent::NodeDisconnectedEvent( ObjectID source, ObjectID target )
-        : Event< NodeDisconnectedEvent >(), m_source( source ), m_target( target ) {
+PlugDisconnectedEvent::PlugDisconnectedEvent( ObjectID sourcePlugID, ObjectID targetPlugID )
+        : Event< PlugDisconnectedEvent >(), m_sourcePlugID( sourcePlugID ), m_targetPlugID( targetPlugID ) {
 }
-ObjectID NodeDisconnectedEvent::getSourceNodeID() const { return m_source; }
-ObjectID NodeDisconnectedEvent::getTargetNodeID() const { return m_target; }
+ObjectID PlugDisconnectedEvent::getSourcePlugID() const { return m_sourcePlugID; }
+ObjectID PlugDisconnectedEvent::getTargetPlugID() const { return m_targetPlugID; }
 
 }

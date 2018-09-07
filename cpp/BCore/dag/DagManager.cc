@@ -9,10 +9,14 @@ namespace bemo {
 DagManager::DagManager()
         : m_indexMap(),
           m_vertices() {
-    BMO_EventHandler->subscribeEvent< DagManager, NodeCreatedEvent >( this, &DagManager::nodeCreated );
-    BMO_EventHandler->subscribeEvent< DagManager, NodeRemovedEvent >( this, &DagManager::nodeRemoved );
-    BMO_EventHandler->subscribeEvent< DagManager, NodeConnectedEvent >( this, &DagManager::nodeConnected );
-    BMO_EventHandler->subscribeEvent< DagManager, NodeDisconnectedEvent >( this, &DagManager::nodeDisconnected );
+    BMO_EventHandler->subscribeEvent< DagManager, NodeCreatedEvent >( this,
+                                                                      &DagManager::nodeCreated );
+    BMO_EventHandler->subscribeEvent< DagManager, NodeRemovedEvent >( this,
+                                                                      &DagManager::nodeRemoved );
+    BMO_EventHandler->subscribeEvent< DagManager, PlugConnectedEvent >( this,
+                                                                        &DagManager::nodeConnected );
+    BMO_EventHandler->subscribeEvent< DagManager, PlugDisconnectedEvent >( this,
+                                                                           &DagManager::nodeDisconnected );
 }
 
 DagManager::~DagManager() {
@@ -21,8 +25,10 @@ DagManager::~DagManager() {
     }
     BMO_EventHandler->unsubscribeEvent< DagManager, NodeCreatedEvent >( this );
     BMO_EventHandler->unsubscribeEvent< DagManager, NodeRemovedEvent >( this );
-    BMO_EventHandler->unsubscribeEvent< DagManager, NodeConnectedEvent >( this );
-    BMO_EventHandler->unsubscribeEvent< DagManager, NodeDisconnectedEvent >( this );
+    BMO_EventHandler->unsubscribeEvent< DagManager, PlugConnectedEvent >(
+            this );
+    BMO_EventHandler->unsubscribeEvent< DagManager, PlugDisconnectedEvent >(
+            this );
 }
 
 bool
@@ -45,18 +51,18 @@ void DagManager::nodeRemoved( NodeRemovedEvent* event ) {
     removeVertex( event->getNodeID() );
 }
 
-void DagManager::nodeConnected( NodeConnectedEvent* event ) {
+void DagManager::nodeConnected( PlugConnectedEvent* event ) {
     BMO_ERROR << "received node connected!"
-              << " source=" << event->getSourceNodeID()
-              << ", target=" << event->getTargetNodeID();
-    addEdge( event->getSourceNodeID(), event->getTargetNodeID() );
+              << " source=" << event->getSourcePlugID()
+              << ", target=" << event->getTargetPlugID();
+    addEdge( event->getSourcePlugID(), event->getTargetPlugID() );
 }
 
-void DagManager::nodeDisconnected( NodeDisconnectedEvent* event ) {
+void DagManager::nodeDisconnected( PlugDisconnectedEvent* event ) {
     BMO_ERROR << "received node disconnected!"
-              << " source=" << event->getSourceNodeID()
-              << ", target=" << event->getTargetNodeID();
-    removeEdge( event->getSourceNodeID(), event->getTargetNodeID() );
+              << " source=" << event->getSourcePlugID()
+              << ", target=" << event->getTargetPlugID();
+    removeEdge( event->getSourcePlugID(), event->getTargetPlugID() );
 }
 
 void DagManager::addVertex( ObjectID nodeID ) {
@@ -77,14 +83,18 @@ void DagManager::removeVertex( ObjectID nodeID ) {
     m_indexMap.erase( nodeID );
 }
 
-void DagManager::addEdge( ObjectID sourceNodeID, ObjectID targetNodeID ) {
-    if ( canConnect( sourceNodeID, targetNodeID ) ) {
+void DagManager::addEdge( ObjectID sourcePlugID, ObjectID targetPlugID ) {
+    if ( canConnect( sourcePlugID, targetPlugID ) ) {
+        ObjectID sourceNodeID = BMO_PlugManager->getOwner( sourcePlugID );
+        ObjectID targetNodeID = BMO_PlugManager->getOwner( targetPlugID );
         m_vertices[m_indexMap.at( sourceNodeID )]->add(
                 m_vertices[m_indexMap.at( targetNodeID )] );
     }
 }
 
-void DagManager::removeEdge( ObjectID sourceNodeID, ObjectID targetNodeID ) {
+void DagManager::removeEdge( ObjectID sourcePlugID, ObjectID targetPlugID ) {
+    ObjectID sourceNodeID = BMO_PlugManager->getOwner( sourcePlugID );
+    ObjectID targetNodeID = BMO_PlugManager->getOwner( targetPlugID );
     m_vertices[m_indexMap.at( sourceNodeID )]->remove(
             m_vertices[m_indexMap.at( targetNodeID )] );
 }

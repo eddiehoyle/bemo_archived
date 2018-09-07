@@ -21,7 +21,7 @@ public:
         Connection* connection = new Connection( sourceID, targetID );
         connection->m_id = id;
         m_connections.push_back( connection );
-        BMO_EventHandler->sendEvent< NodeConnectedEvent >( sourceID, targetID );
+        BMO_EventHandler->sendEvent< PlugConnectedEvent >( sourceID, targetID );
         return id;
     }
 
@@ -32,7 +32,7 @@ public:
                                       return connection->getID() == id;
                                   });
         if ( iter != m_connections.end() ) {
-            BMO_EventHandler->sendEvent< NodeDisconnectedEvent >(
+            BMO_EventHandler->sendEvent< PlugDisconnectedEvent >(
                     ( *iter )->getSourceID(), ( *iter )->getTargetID() );
             BMO_ObjectManager->release( ( *iter )->getID() );
             ( *iter )->m_id = ObjectID::invalid();

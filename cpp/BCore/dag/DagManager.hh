@@ -8,8 +8,8 @@ namespace bemo {
 
 class NodeCreatedEvent;
 class NodeRemovedEvent;
-class NodeConnectedEvent;
-class NodeDisconnectedEvent;
+class PlugConnectedEvent;
+class PlugDisconnectedEvent;
 
 class DagManager {
 
@@ -27,16 +27,16 @@ private:
     /// Signals
     void nodeCreated( NodeCreatedEvent* event );
     void nodeRemoved( NodeRemovedEvent* event );
-    void nodeConnected( NodeConnectedEvent* event );
-    void nodeDisconnected( NodeDisconnectedEvent* event );
+    void nodeConnected( PlugConnectedEvent* event );
+    void nodeDisconnected( PlugDisconnectedEvent* event );
 
 private:
 
     /// Private functions
     void addVertex( ObjectID nodeID );
     void removeVertex( ObjectID nodeID );
-    void addEdge( ObjectID sourceNodeID, ObjectID targetNodeID );
-    void removeEdge( ObjectID sourceNodeID, ObjectID targetNodeID );
+    void addEdge( ObjectID sourcePlugID, ObjectID targetPlugID );
+    void removeEdge( ObjectID sourcePlugID, ObjectID targetPlugID );
     bool isDependency( Vertex* sourceVertex,
                        Vertex* targetVertex,
                        std::vector< bool >& visited ) const;

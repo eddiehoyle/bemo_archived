@@ -44,7 +44,7 @@ public:
 
         bool result = false;
 
-//        Plug* plug = BMO_PlugManager->find( m_id, sourcePlugName,  );
+//        Plug* plug = BMO_PlugManager->find( m_nodeID, sourcePlugName,  );
 //        if ( plug ) {
 //            const std::vector< Connection* > connections = BMO_ConnectionManager->find( plug->getID() );
 //            result = !connections.empty();
