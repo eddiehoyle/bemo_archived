@@ -24,8 +24,8 @@ static py::object castToPy( const Variant& var ) {
     bool result;
     py::object value;
     switch ( var.type() ) {
-        case VariantType::Int:
-            value = py::int_( var.toInt( &result ) );
+        case VariantType::Long:
+            value = py::int_( var.toLong( &result ) );
             break;
         case VariantType::Float:
             value = py::float_( var.toFloat( &result ) );
@@ -43,7 +43,7 @@ static py::object castToPy( const Variant& var ) {
 static Variant castFromPy( const py::object& obj ) {
     Variant value;
     if ( py::isinstance< py::int_ >( obj ) ) {
-        value.reset( Variant( obj.cast< int >() ) );
+        value.reset( Variant( obj.cast< long >() ) );
     } else if ( py::isinstance< py::float_ >( obj ) ) {
         value.reset( Variant( obj.cast< float >() ) );
     } else if ( py::isinstance< py::str >( obj ) ) {

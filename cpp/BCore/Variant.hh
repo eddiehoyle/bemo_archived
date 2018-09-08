@@ -7,7 +7,7 @@ namespace bemo {
 
 enum class VariantType {
     Null,
-    Int,
+    Long,
     Float,
     String,
 };
@@ -20,7 +20,7 @@ public:
 
 public:
     Variant();
-    explicit Variant( int value );
+    explicit Variant( long value );
     explicit Variant( float value );
     explicit Variant( const std::string& value );
     ~Variant();
@@ -33,7 +33,7 @@ public:
 
     VariantType type() const;
 
-    int toInt( bool* result ) const;
+    long toLong( bool* result ) const;
     float toFloat( bool* result ) const;
     std::string toString( bool* result ) const;
 

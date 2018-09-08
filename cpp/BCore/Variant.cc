@@ -13,8 +13,8 @@ Variant::Variant()
     : m_type( VariantType::Null ),
       m_data( nullptr ) {}
 
-Variant::Variant( int value )
-    : m_type( VariantType::Int ),
+Variant::Variant( long value )
+    : m_type( VariantType::Long ),
       m_data( nullptr ) {
     m_data = static_cast< void* >( new int( value ) );
 }
@@ -39,8 +39,8 @@ Variant::Variant( const Variant& var ) {
 
     bool result;
     switch ( var.type() ) {
-        case VariantType::Int:
-            m_data = static_cast< void* >( new int( var.toInt( &result ) ) );
+        case VariantType::Long:
+            m_data = static_cast< void* >( new int( var.toLong( &result ) ) );
             m_type = var.type();
             break;
         case VariantType::Float:
@@ -66,8 +66,8 @@ Variant& Variant::operator=( const Variant& var ) {
 
     bool result;
     switch ( var.type() ) {
-        case VariantType::Int:
-            m_data = static_cast< void* >( new int( var.toInt( &result ) ) );
+        case VariantType::Long:
+            m_data = static_cast< void* >( new int( var.toLong( &result ) ) );
             m_type = var.type();
             break;
         case VariantType::Float:
@@ -93,7 +93,7 @@ Variant::~Variant() {
 void Variant::clear() {
 
     switch ( m_type ) {
-        case VariantType::Int:
+        case VariantType::Long:
             delete static_cast< int* >( m_data );
             m_data = nullptr;
             break;
@@ -121,8 +121,8 @@ void Variant::reset( const Variant& var ) {
 
     bool result;
     switch( var.type() ) {
-        case VariantType::Int:
-            m_data = new int( var.toInt( &result ) );
+        case VariantType::Long:
+            m_data = new long( var.toLong( &result ) );
             break;
         case VariantType::Float:
             m_data = new float( var.toFloat( &result ) );
@@ -142,12 +142,12 @@ VariantType Variant::type() const {
     return m_type;
 }
 
-int Variant::toInt( bool* result ) const {
+long Variant::toLong( bool* result ) const {
     int value = 0;
     switch ( m_type ) {
-        case VariantType::Int:
+        case VariantType::Long:
         case VariantType::Float:
-            value = *static_cast< int* >( m_data );
+            value = *static_cast< long* >( m_data );
             *result = true;
             break;
         case VariantType::String:
@@ -166,7 +166,7 @@ int Variant::toInt( bool* result ) const {
 float Variant::toFloat( bool* result ) const {
     float value = 0;
     switch ( m_type ) {
-        case VariantType::Int:
+        case VariantType::Long:
         case VariantType::Float:
             value = *static_cast< float* >( m_data );
             *result = true;
@@ -187,8 +187,8 @@ float Variant::toFloat( bool* result ) const {
 std::string Variant::toString( bool* result ) const {
     std::string value;
     switch ( m_type ) {
-        case VariantType::Int:
-            value = std::to_string( *static_cast< int* >( m_data ) );
+        case VariantType::Long:
+            value = std::to_string( *static_cast< long* >( m_data ) );
             *result = true;
         case VariantType::Float:
             value = std::to_string( *static_cast< float* >( m_data ) );

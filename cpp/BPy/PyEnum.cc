@@ -37,7 +37,7 @@ void py_genEnum( py::module& m ) {
             .export_values();
 
     py::enum_<VariantType>(m, "VariantType")
-            .value("Int", VariantType::Int)
+            .value("Long", VariantType::Long)
             .value("Float", VariantType::Float)
             .value("String", VariantType::String)
             .export_values();

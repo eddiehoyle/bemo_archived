@@ -42,8 +42,8 @@ void initialize() {
 
     // Initialise CPP nodes
     BMO_NodeManager->addBlueprint( "cpp",
-                                   new CreateFuncWrapper< CppFnCreate >( powCreate ),
-                                   new LayoutFuncWrapper< CppFnLayout >( powLayout ) );
+                                   new CreateFuncWrapper< std::function< AbstractNode*() > >( multiplyCreate ),
+                                   new LayoutFuncWrapper< std::function< void(ObjectID) > >( multiplyLayout ) );
 }
 
 void terminate() {

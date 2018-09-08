@@ -25,19 +25,19 @@ def py_layout(node_id):
                    pybemo.PlugDirectionPolicy.Input,
                    pybemo.PlugAccessPolicy.Single,
                    pybemo.PlugCastPolicy.Anything,
-                   pybemo.VariantType.Int,
+                   pybemo.VariantType.Long,
                    isRequired=True)
     system.addPlug("valueB",
                    pybemo.PlugDirectionPolicy.Input,
                    pybemo.PlugAccessPolicy.Single,
                    pybemo.PlugCastPolicy.Anything,
-                   pybemo.VariantType.Int,
+                   pybemo.VariantType.Long,
                    isRequired=True)
     system.addPlug("result",
                    pybemo.PlugDirectionPolicy.Output,
                    pybemo.PlugAccessPolicy.Single,
                    pybemo.PlugCastPolicy.Anything,
-                   pybemo.VariantType.Int,
+                   pybemo.VariantType.Long,
                    isRequired=True)
 
 def bmo_registerPlugin(plugin_id):
