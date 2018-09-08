@@ -1,5 +1,6 @@
 import pybemo
 
+
 class PySumNode(pybemo.AbstractNode):
     """A node that computes the sum of two values, then sets an output result.
     Inputs:
@@ -15,10 +16,10 @@ class PySumNode(pybemo.AbstractNode):
         self.setOutput("result", value_a + value_b)
         return 0
 
-def py_create():
+def py_PySumNodeCreate():
     return PySumNode()
 
-def py_layout(node_id):
+def py_PySumNodeLayout(node_id):
     system = pybemo.NodeSystem(node_id)
     system.addHeader("Add two values together.", "icons/SumNode.png")
     system.addPlug("valueA",
@@ -40,7 +41,37 @@ def py_layout(node_id):
                    pybemo.VariantType.Long,
                    isRequired=True)
 
+
+class PyEvalNode(pybemo.AbstractNode):
+    """A node that computes the sum of two values, then sets an output result.
+    Inputs:
+        value_a (int): The first value.
+        value_b (int): The second value.
+    Outputs:
+        result (int): The sum total of 'value_a' and 'value_b'.
+    """
+
+    def execute(self):
+        snippet = self.getInput("snippet")
+        eval(snippet)
+        return 0
+
+def py_PyEvalNodeCreate():
+    return PyEvalNode()
+
+def py_PyEvalNodeLayout(node_id):
+    system = pybemo.NodeSystem(node_id)
+    system.addHeader("Evaluate a Python snippet.", "icons/pyEvalNode16px.png")
+    system.addPlug("snippet",
+                   pybemo.PlugDirectionPolicy.Input,
+                   pybemo.PlugAccessPolicy.Single,
+                   pybemo.PlugCastPolicy.Anything,
+                   pybemo.VariantType.String,
+                   isRequired=True)
+
+
 def bmo_registerPlugin(plugin_id):
     system = pybemo.PluginSystem(plugin_id)
     system.setHeader("PyBemoNodes", "Core nodes.", "icons/bemocore_16px.png")
-    system.registerNode("sum", py_create, py_layout)
+    system.registerNode("sum", py_PySumNodeCreate, py_PySumNodeLayout)
+    system.registerNode("snippet", py_PyEvalNodeCreate, py_PyEvalNodeLayout)

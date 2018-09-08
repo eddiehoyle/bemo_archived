@@ -45,6 +45,7 @@ AbstractNode::AbstractNode()
           m_nodeType( "invalid" ) {}
 
 AbstractNode::~AbstractNode() {
+    BMO_ERROR << "dtor=" << (void*)this;
     BMO_NodeManager->remove( getID() );
 }
 

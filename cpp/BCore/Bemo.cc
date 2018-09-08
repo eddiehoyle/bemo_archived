@@ -14,7 +14,7 @@
 #include <BCore/dag/DagManager.hh>
 
 #include <BCore/util/Log.hh>
-#include <BCore/node/Pow.hh>
+#include <BCore/node/MultiplyNode.hh>
 
 namespace bemo {
 
@@ -41,7 +41,7 @@ void initialize() {
     BMO_DependencyGraph = new DagManager();
 
     // Initialise CPP nodes
-    BMO_NodeManager->addBlueprint( "cpp",
+    BMO_NodeManager->addBlueprint( "multiply",
                                    new CreateFuncWrapper< std::function< AbstractNode*() > >( multiplyCreate ),
                                    new LayoutFuncWrapper< std::function< void(ObjectID) > >( multiplyLayout ) );
 }

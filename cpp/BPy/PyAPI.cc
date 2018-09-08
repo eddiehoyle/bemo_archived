@@ -17,7 +17,7 @@ using namespace bemo;
 
 void py_initialize() {
 
-    const std::string modulePath = "/Users/eddiehoyle/Code/cpp/bemo/py/plugin/node.py";
+    const std::string modulePath = "/Users/eddiehoyle/Code/cpp/bemo/py/plugins/core.py";
 
     py::object scope = py::module::import( "__main__" ).attr( "__dict__" );
     py::eval_file( modulePath, scope );
@@ -48,7 +48,7 @@ void py_genAPI( py::module& m ) {
             throw std::runtime_error( "Bemo not initialised!" );
         }
         return BMO_NodeManager->create( type, name );
-    }, py::arg("type"), py::arg("name") = "");
+    }, py::arg("type"), py::arg("name") = "" );
 
     m.def("remove", []( AbstractNode* node ){
         BMO_NodeManager->remove( node->getID() );
