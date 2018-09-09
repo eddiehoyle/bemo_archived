@@ -1,11 +1,10 @@
-#include "PyAPI.hh"
-#include "PyNodeManager.hh"
-
 #include <BCore/Bemo.hh>
 #include <BCore/object/Plug.hh>
 #include <BCore/object/Plugin.hh>
 #include <BCore/managers/NodeManager.hh>
 #include <BCore/managers/PluginManager.hh>
+
+#include "PyAbstractNode.hh"
 
 #include <pybind11/stl.h>
 #include <pybind11/eval.h>
@@ -30,6 +29,21 @@ void py_initialize() {
     }
 }
 
+class AbstractTestNode {
+public:
+    virtual ~AbstractTestNode() {
+        BMO_ERROR << ": A : dtor=" << (void*)this;
+    }
+};
+
+
+class PyTestNode : public AbstractTestNode {
+public:
+    ~PyTestNode() override {
+        BMO_ERROR << ": B : dtor=" << (void*)this;
+    }
+};
+
 void py_genAPI( py::module& m ) {
 
     m.def("initialise", [](){
@@ -43,12 +57,23 @@ void py_genAPI( py::module& m ) {
             .def(py::init<>())
             .def_static("invalid", &ObjectID::invalid);
 
+    py::class_<AbstractTestNode, PyTestNode>(m, "TestNode")
+            .def(py::init<>());
+
+
+    m.def("test_create", []()->AbstractTestNode*{
+        return new AbstractTestNode();
+    });
+
     m.def("create", []( const NodeType& type, const NodeName& name )->AbstractNode*{
         if ( BMO_NodeManager == nullptr ) {
             throw std::runtime_error( "Bemo not initialised!" );
         }
-        return BMO_NodeManager->create( type, name );
-    }, py::arg("type"), py::arg("name") = "" );
+        AbstractNode* node = BMO_NodeManager->create( type, name );
+//        py::handle( node )
+        return node;
+    }, py::arg("type"), py::arg("name") = "",
+            py::return_value_policy::move );
 
     m.def("remove", []( AbstractNode* node ){
         BMO_NodeManager->remove( node->getID() );

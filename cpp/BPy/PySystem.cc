@@ -5,21 +5,27 @@
 #include <BCore/managers/PluginManager.hh>
 
 #include <pybind11/pybind11.h>
-#include "PyNodeManager.hh"
+#include <pybind11/functional.h>
 
 namespace py = pybind11;
 using namespace bemo;
 
-using FnCreate = std::function< py::object() >;
-using FnLayout = std::function< py::object( ObjectID ) >;
+//using FnCreate = std::function< py::object() >;
+//using FnLayout = std::function< py::object( ObjectID ) >;
+using FnCreate = std::function< AbstractNode*() >;
+using FnLayout = std::function< void( ObjectID ) >;
 
-//namespace bemo {
+namespace bemo {
 
 template<>
 AbstractNode* CreateFuncWrapper< FnCreate >::invoke() {
-    py::object obj = m_func();
-    obj.inc_ref();
-    return py::cast< AbstractNode* >( obj.ptr() );
+//    py::object obj = m_func();
+//    obj.inc_ref();
+//    BMO_ERROR << "invoke. count=" << obj.ref_count();
+//    return py::cast< AbstractNode* >( obj.ptr() );
+
+    // TODO: This is broken
+    return m_func();
 }
 
 template<>
@@ -27,7 +33,7 @@ void LayoutFuncWrapper< FnLayout >::invoke( ObjectID id ) {
     m_func( id );
 }
 
-//}
+}
 
 void py_genSystemPluginSystem( py::module& m );
 

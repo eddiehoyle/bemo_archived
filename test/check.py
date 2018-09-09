@@ -16,10 +16,18 @@ def main():
     # nodeB = pybemo.create("sum")
     # nodeA.connect("result", nodeB, "valueA")
 
-    nodeA = pybemo.create("snippet")
-    nodeC = pybemo.create("multiply")
-    print nodeA
-    print nodeC
+    # n = pybemo.test_create()
+
+    # nodeA = pybemo.AbstractNode()
+    nodeB = pybemo.create("snippet")
+    # nodeC = pybemo.create("multiply")
+
+    # nodeA.setInput("snippet", "1")
+    # nodeA.execute()
+
+    # nodeC = pybemo.create("multiply")
+    # print nodeA
+    # print nodeC
     # nodeA.setInput("snippet", SNIPPET)
     # nodeA.execute()
 
