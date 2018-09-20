@@ -15,11 +15,7 @@ class PyAbstractNode : public AbstractNode {
 public:
     using AbstractNode::AbstractNode;
 
-    ~PyAbstractNode() override {
-        BMO_ERROR << "dtor=" << (void*)this;
-    }
     int execute() override {
-        BMO_ERROR << "sdf";
         PYBIND11_OVERLOAD(
                 int,
                 AbstractNode,

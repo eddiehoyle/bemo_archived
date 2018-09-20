@@ -12,25 +12,12 @@ sys.stdout.write('hi\n')
 
 def main():
     pybemo.initialise();
-    # nodeA = pybemo.create("sum")
-    # nodeB = pybemo.create("sum")
-    # nodeA.connect("result", nodeB, "valueA")
 
-    # n = pybemo.test_create()
-
-    # nodeA = pybemo.AbstractNode()
-    nodeB = pybemo.create("snippet")
-    # nodeC = pybemo.create("multiply")
-
-    # nodeA.setInput("snippet", "1")
-    # nodeA.execute()
-
-    # nodeC = pybemo.create("multiply")
-    # print nodeA
-    # print nodeC
-    # nodeA.setInput("snippet", SNIPPET)
-    # nodeA.execute()
+    nodeA = pybemo.create("snippet")
+    nodeB = pybemo.create("multiply")
+    a = pybemo.ls()
+    # pybemo.remove(nodeA)
+    # pybemo.remove(nodeB)
 
 if __name__ == '__main__':
     main()
-    print 'sf'

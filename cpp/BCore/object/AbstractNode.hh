@@ -28,26 +28,7 @@ public:
     inline NodeName getName() const { return m_nodeName; }
     void setName( const NodeName& name );
 
-    void connect( const PlugName& sourcePlugName,
-                  const ObjectID& targetID,
-                  const PlugName& targetPlugName );
-
-    void disconnect( const PlugName& sourcePlugName,
-                     const ObjectID& targetID,
-                     const PlugName& targetPlugName );
-
 //    std::vector< Plug* > getPlugs() const { return std::vector< Plug* >(); }
-    std::vector< PlugName > getInputs() const;
-    std::vector< PlugName > getOutputs() const;
-
-    void setInput( const std::string& name, const Variant& var );
-    void setOutput( const std::string& name, const Variant& var );
-
-    Variant getInput( const PlugName& name );
-    Variant getOutput( const PlugName& name );
-
-    bool hasInput( const PlugName& name ) const;
-    bool hasOutput( const PlugName& name ) const;
 
     virtual int execute();
 

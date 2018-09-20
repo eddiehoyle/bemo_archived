@@ -25,10 +25,8 @@ DagManager::~DagManager() {
     }
     BMO_EventHandler->unsubscribeEvent< DagManager, NodeCreatedEvent >( this );
     BMO_EventHandler->unsubscribeEvent< DagManager, NodeRemovedEvent >( this );
-    BMO_EventHandler->unsubscribeEvent< DagManager, PlugConnectedEvent >(
-            this );
-    BMO_EventHandler->unsubscribeEvent< DagManager, PlugDisconnectedEvent >(
-            this );
+    BMO_EventHandler->unsubscribeEvent< DagManager, PlugConnectedEvent >( this );
+    BMO_EventHandler->unsubscribeEvent< DagManager, PlugDisconnectedEvent >( this );
 }
 
 bool
@@ -73,14 +71,14 @@ void DagManager::addVertex( ObjectID nodeID ) {
 }
 
 void DagManager::removeVertex( ObjectID nodeID ) {
-    for ( Vertex* vertex : m_vertices ) {
-        if ( vertex->has( m_vertices[m_indexMap.at( nodeID )] ) ) {
-            vertex->remove( m_vertices[m_indexMap.at( nodeID )] );
-        }
-    }
-    delete m_vertices[m_indexMap.at( nodeID )];
-    m_vertices.erase( m_vertices.begin() + m_indexMap.at( nodeID ) );
-    m_indexMap.erase( nodeID );
+//    for ( Vertex* vertex : m_vertices ) {
+//        if ( vertex->has( m_vertices[m_indexMap.at( nodeID )] ) ) {
+//            vertex->remove( m_vertices[m_indexMap.at( nodeID )] );
+//        }
+//    }
+//    delete m_vertices[m_indexMap.at( nodeID )];
+//    m_vertices.erase( m_vertices.begin() + m_indexMap.at( nodeID ) );
+//    m_indexMap.erase( nodeID );
 }
 
 void DagManager::addEdge( ObjectID sourcePlugID, ObjectID targetPlugID ) {

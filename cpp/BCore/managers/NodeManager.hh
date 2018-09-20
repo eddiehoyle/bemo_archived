@@ -47,6 +47,10 @@ public:
     AbstractNode* find( const ObjectID& name ) const;
     AbstractNode* find( const NodeName& name ) const;
 
+    std::vector< AbstractNode* > getNodes() const {
+        return m_nodes;
+    }
+
     bool exists( const ObjectID& id ) const;
 
     void addBlueprint( const std::string& type,

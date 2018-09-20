@@ -10,22 +10,17 @@
 namespace py = pybind11;
 using namespace bemo;
 
-//using FnCreate = std::function< py::object() >;
-//using FnLayout = std::function< py::object( ObjectID ) >;
-using FnCreate = std::function< AbstractNode*() >;
-using FnLayout = std::function< void( ObjectID ) >;
+using FnCreate = std::function< py::object() >;
+using FnLayout = std::function< py::object( ObjectID ) >;
+//using FnCreate = std::function< AbstractNode*() >;
+//using FnLayout = std::function< void( ObjectID ) >;
 
 namespace bemo {
 
 template<>
 AbstractNode* CreateFuncWrapper< FnCreate >::invoke() {
-//    py::object obj = m_func();
-//    obj.inc_ref();
-//    BMO_ERROR << "invoke. count=" << obj.ref_count();
-//    return py::cast< AbstractNode* >( obj.ptr() );
-
-    // TODO: This is broken
-    return m_func();
+    py::object obj = m_func();
+    return py::cast< AbstractNode* >( obj.release() );
 }
 
 template<>

@@ -9,44 +9,12 @@
 
 namespace bemo {
 
-
-static void setPlugValue( AbstractNode* node,
-                          const PlugName& name,
-                          PlugDirectionPolicy direction,
-                          const Variant& var ) {
-    Plug* plug = BMO_PlugManager->find( node->getID(), name, direction );
-    if ( plug && plug->isValid() ) {
-//        // TODO: Implement plug type policies
-//        if ( plug->isStrict() && ( plug->getType() == var.type() ) ) {
-//            plug->setValue( var );
-//        }
-        plug->setValue( var );
-    }
-}
-
-static const Variant& getPlugValue( AbstractNode const* node,
-                                    const PlugName& name,
-                                    PlugDirectionPolicy direction ) {
-    Plug* plug = BMO_PlugManager->find( node->getID(), name, direction );
-    if ( plug && plug->isValid() ) {
-        return plug->getValue();
-    }
-    return Plug::invalid().getValue();
-}
-
-static bool hasPlug( AbstractNode const* node,
-                     const PlugName& name,
-                     PlugDirectionPolicy direction ) {
-    return BMO_PlugManager->find( node->getID(), name, direction ) != nullptr;
-}
-
 AbstractNode::AbstractNode()
         : m_id(),
           m_nodeType( "invalid" ) {}
 
 AbstractNode::~AbstractNode() {
     BMO_ERROR << "dtor=" << (void*)this;
-    BMO_NodeManager->remove( getID() );
 }
 
 void AbstractNode::setName( const NodeName& name ) {
@@ -64,51 +32,37 @@ void AbstractNode::setName( const NodeName& name ) {
     }
 }
 
-void AbstractNode::setInput( const std::string& name, const Variant& var ) {
-    setPlugValue( this, name, PlugDirectionPolicy::Input, var );
-}
-
-void AbstractNode::setOutput( const std::string& name, const Variant& var ) {
-    setPlugValue( this, name, PlugDirectionPolicy::Output, var );
-}
-
-Variant AbstractNode::getInput( const PlugName& name ) {
-    return getPlugValue( this, name, PlugDirectionPolicy::Input );
-}
-
-Variant AbstractNode::getOutput( const PlugName& name ) {
-    return getPlugValue( this, name, PlugDirectionPolicy::Output );
-}
-
-bool AbstractNode::hasInput( const PlugName& name ) const {
-    return hasPlug( this, name, PlugDirectionPolicy::Input );
-}
-
-bool AbstractNode::hasOutput( const PlugName& name ) const {
-    return hasPlug( this, name, PlugDirectionPolicy::Output );
-}
-
-std::vector< PlugName > AbstractNode::getInputs() const {
-    return BMO_PlugManager->getOwnedBy( getID(), PlugDirectionPolicy::Input );
-}
-
-std::vector< PlugName > AbstractNode::getOutputs() const {
-    return BMO_PlugManager->getOwnedBy( getID(), PlugDirectionPolicy::Output );
-}
-
-void AbstractNode::connect( const PlugName& sourcePlugName,
-                            const ObjectID& targetID,
-                            const PlugName& targetPlugName ) {
-    ConnectionSystem fnCon( m_id );
-    fnCon.connect( sourcePlugName, targetID, targetPlugName );
-}
-
-void AbstractNode::disconnect( const PlugName& sourcePlugName,
-                               const ObjectID& targetID,
-                               const PlugName& targetPlugName ) {
-    ConnectionSystem fnCon( m_id );
-    fnCon.disconnect( sourcePlugName, targetID, targetPlugName );
-}
+//void AbstractNode::setInput( const std::string& name, const Variant& var ) {
+//    setPlugValue( this, name, PlugDirectionPolicy::Input, var );
+//}
+//
+//void AbstractNode::setOutput( const std::string& name, const Variant& var ) {
+//    setPlugValue( this, name, PlugDirectionPolicy::Output, var );
+//}
+//
+//Variant AbstractNode::getInput( const PlugName& name ) {
+//    return getPlugValue( this, name, PlugDirectionPolicy::Input );
+//}
+//
+//Variant AbstractNode::getOutput( const PlugName& name ) {
+//    return getPlugValue( this, name, PlugDirectionPolicy::Output );
+//}
+//
+//bool AbstractNode::hasInput( const PlugName& name ) const {
+//    return hasPlug( this, name, PlugDirectionPolicy::Input );
+//}
+//
+//bool AbstractNode::hasOutput( const PlugName& name ) const {
+//    return hasPlug( this, name, PlugDirectionPolicy::Output );
+//}
+//
+//std::vector< PlugName > AbstractNode::getInputs() const {
+//    return BMO_PlugManager->getOwnedBy( getID(), PlugDirectionPolicy::Input );
+//}
+//
+//std::vector< PlugName > AbstractNode::getOutputs() const {
+//    return BMO_PlugManager->getOwnedBy( getID(), PlugDirectionPolicy::Output );
+//}
 
 int AbstractNode::execute() {
     return -1;

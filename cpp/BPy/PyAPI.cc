@@ -57,36 +57,33 @@ void py_genAPI( py::module& m ) {
             .def(py::init<>())
             .def_static("invalid", &ObjectID::invalid);
 
-    py::class_<AbstractTestNode, PyTestNode>(m, "TestNode")
-            .def(py::init<>());
-
-
-    m.def("test_create", []()->AbstractTestNode*{
-        return new AbstractTestNode();
-    });
-
-    m.def("create", []( const NodeType& type, const NodeName& name )->AbstractNode*{
+    m.def("create", []( const NodeType& type, const NodeName& name )->py::object{
         if ( BMO_NodeManager == nullptr ) {
             throw std::runtime_error( "Bemo not initialised!" );
         }
         AbstractNode* node = BMO_NodeManager->create( type, name );
-//        py::handle( node )
-        return node;
+        std::unique_ptr< AbstractNode, py::nodelete > nPtr( node );
+        py::object obj = py::cast( nPtr );
+        while ( obj.ref_count() > 1 ) {
+            obj.dec_ref();
+        }
+//        BMO_ERROR << "created=" << (void*)node;
+        return obj;
     }, py::arg("type"), py::arg("name") = "",
-            py::return_value_policy::move );
-
+          py::return_value_policy::automatic );
     m.def("remove", []( AbstractNode* node ){
         BMO_NodeManager->remove( node->getID() );
     });
 
-    m.def("ls", []( const std::vector< NodeName >& names ){
-        std::vector< AbstractNode* > nodes;
-        for ( auto name : names ) {
-            AbstractNode* node = BMO_NodeManager->find( name );
-            if ( node && ( std::find( nodes.begin(), nodes.end(), node ) == nodes.end() ) ) {
-                nodes.push_back( node );
-            }
-        }
-        return nodes;
+//    m.def("ls", []( const std::vector< NodeName >& names )->std::vector< AbstractNode* >{
+    m.def("ls", []()->std::vector< AbstractNode* >{
+//        std::vector< AbstractNode* > nodes;
+//        for ( auto name : names ) {
+//            AbstractNode* node = BMO_NodeManager->find( name );
+//            if ( node && ( std::find( nodes.begin(), nodes.end(), node ) == nodes.end() ) ) {
+//                nodes.push_back( node );
+//            }
+//        }
+        return BMO_NodeManager->getNodes();
     });
 }

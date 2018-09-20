@@ -4,6 +4,7 @@
 #include <BCore/util/Log.hh>
 #include <BCore/object/AbstractNode.hh>
 #include <BCore/system/NodeSystem.hh>
+#include <BCore/system/PlugSystem.hh>
 
 
 namespace bemo {
@@ -12,9 +13,10 @@ class MultiplyNode : public AbstractNode {
 public:
     int execute() override {
         bool result;
-        long valueA = getInput( "valueA" ).toLong( &result );
-        long valueB = getInput( "valueB" ).toLong( &result );
-        setOutput( "result", Variant( valueA * valueB ) );
+        PlugSystem fnPlug( getID() );
+        long valueA = fnPlug.getInput( "valueA" ).toLong( &result );
+        long valueB = fnPlug.getInput( "valueB" ).toLong( &result );
+        fnPlug.setOutput( "result", Variant( valueA * valueB ) );
         return 0;
     }
 };
