@@ -68,11 +68,13 @@ bool PlugSystem::hasOutput( const PlugName& name ) const {
 }
 
 std::vector< PlugName > PlugSystem::getInputs() const {
-    return BMO_PlugManager->getOwnedBy( m_id, PlugDirectionPolicy::Input );
+    return BMO_PlugManager->getOwnerPlugNames( m_id,
+                                               PlugDirectionPolicy::Input );
 }
 
 std::vector< PlugName > PlugSystem::getOutputs() const {
-    return BMO_PlugManager->getOwnedBy( m_id, PlugDirectionPolicy::Output );
+    return BMO_PlugManager->getOwnerPlugNames( m_id,
+                                               PlugDirectionPolicy::Output );
 }
 
 }

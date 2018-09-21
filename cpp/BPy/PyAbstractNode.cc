@@ -57,11 +57,9 @@ static Variant castFromPy( const py::object& obj ) {
     return value;
 }
 
-
-
 void py_genNodeAbstractNode( py::module& m ) {
 
-    py::class_<AbstractNode, PyAbstractNode >(m, "AbstractNode")
+    py::class_<AbstractNode, PyAbstractNode, std::unique_ptr< AbstractNode, py::nodelete > >(m, "AbstractNode")
             .def(py::init<>())
             .def("getID", &AbstractNode::getID)
             .def("getType", &AbstractNode::getType)
@@ -105,10 +103,26 @@ void py_genNodeAbstractNode( py::module& m ) {
                 PlugSystem fnPlug( self->getID() );
                 return castToPy( fnPlug.getOutput( name ) );
             })
-            .def("hasInput", []()->bool{ return false; })
-            .def("hasOutput", []()->bool{ return false; })
-            .def("getInputs", []()->std::vector< PlugName >{ return std::vector< PlugName >(); })
-            .def("getOutputs", []()->std::vector< PlugName >{ return std::vector< PlugName >(); })
+            .def("hasInput", []( AbstractNode* self,
+                                 const PlugName& name )->bool{
+                PlugSystem fnPlug( self->getID() );
+                return fnPlug.hasInput( name );
+            })
+            .def("hasOutput", []( AbstractNode* self,
+                                  const PlugName& name )->bool{
+                PlugSystem fnPlug( self->getID() );
+                return fnPlug.hasOutput( name );
+            })
+            .def("getInputs", []( AbstractNode* self )->std::vector< PlugName >{
+                std::vector< PlugName > inputs =
+                        BMO_PlugManager->getOwnerPlugNames( self->getID(), PlugDirectionPolicy::Input );
+                return inputs;
+            })
+            .def("getOutputs", []( AbstractNode* self )->std::vector< PlugName >{
+                std::vector< PlugName > outputs =
+                        BMO_PlugManager->getOwnerPlugNames( self->getID(), PlugDirectionPolicy::Output );
+                return outputs;
+            })
             .def("__repr__", []( const AbstractNode& n ){
                 std::stringstream ss;
                 ss << "<AbstractNode(";

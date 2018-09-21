@@ -10,11 +10,13 @@ namespace bemo {
 
 class AbstractCreateFunc {
 public:
+    virtual ~AbstractCreateFunc() = default;
     virtual AbstractNode* invoke() = 0;
 };
 
 class AbstractLayoutFunc {
 public:
+    virtual ~AbstractLayoutFunc() = default;
     virtual void invoke( ObjectID id ) = 0;
 };
 
@@ -39,6 +41,7 @@ public:
 
 class NodeManager {
 public:
+    ~NodeManager();
 
     AbstractNode* create( const NodeType& type, const NodeName& name = NodeName() );
 
@@ -52,6 +55,8 @@ public:
     }
 
     bool exists( const ObjectID& id ) const;
+
+    std::size_t count() const { return m_nodes.size(); };
 
     void addBlueprint( const std::string& type,
                        AbstractCreateFunc* wrCreate,

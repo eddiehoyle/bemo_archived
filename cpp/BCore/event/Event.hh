@@ -10,7 +10,7 @@ int increment();
 class AbstractEvent {
 public:
     explicit AbstractEvent( int typeID ) : m_eventTypeID( typeID ) {}
-    virtual ~AbstractEvent() {}
+    virtual ~AbstractEvent() = default;
     virtual int getEventTypeID() const { return m_eventTypeID; }
 private:
     int m_eventTypeID;

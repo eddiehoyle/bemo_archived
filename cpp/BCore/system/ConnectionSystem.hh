@@ -29,7 +29,6 @@ public:
     void disconnect( const PlugName& sourceName,
                      const ObjectID& targetID,
                      const PlugName& targetName ) {
-        BMO_ERROR << "disconnecting " << sourceName;
         Plug* sourcePlug = BMO_PlugManager->find( m_id, sourceName, PlugDirectionPolicy::Output );
         Plug* targetPlug = BMO_PlugManager->find( targetID, targetName, PlugDirectionPolicy::Input );
         if ( sourcePlug && targetPlug ) {

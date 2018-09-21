@@ -28,8 +28,6 @@ public:
     inline NodeName getName() const { return m_nodeName; }
     void setName( const NodeName& name );
 
-//    std::vector< Plug* > getPlugs() const { return std::vector< Plug* >(); }
-
     virtual int execute();
 
 private:
@@ -39,8 +37,6 @@ private:
     std::vector< ObjectID > m_plugs;
 
 };
-
-
 
 }
 

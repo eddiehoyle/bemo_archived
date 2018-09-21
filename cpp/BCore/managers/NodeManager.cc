@@ -5,6 +5,18 @@
 
 namespace bemo {
 
+NodeManager::~NodeManager() {
+
+    for ( auto funcs : m_funcs ) {
+        delete funcs.second.first;
+        delete funcs.second.second;
+    }
+
+    for ( AbstractNode* node : m_nodes ) {
+        delete node;
+    }
+}
+
 AbstractNode* NodeManager::create( const NodeType& type, const NodeName& name ) {
     auto fnCreate = findCreate( type );
     auto fnLayout = findLayout( type );

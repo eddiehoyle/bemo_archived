@@ -11,13 +11,23 @@ sys.stdout.write('hi\n')
 """
 
 def main():
-    pybemo.initialise();
+    pybemo.initialise()
 
     nodeA = pybemo.create("snippet")
     nodeB = pybemo.create("multiply")
-    a = pybemo.ls()
-    # pybemo.remove(nodeA)
-    # pybemo.remove(nodeB)
+
+    print "A:", pybemo.count()
+
+    pybemo.remove(nodeA)
+    pybemo.remove(nodeB)
+
+    print "B:", pybemo.count()
+
+def test():
+
+    nodeA.connect("result", nodeB, "valueA")
+    pybemo.connect(nodeA, "result", nodeB, "valueA")
+
 
 if __name__ == '__main__':
     main()

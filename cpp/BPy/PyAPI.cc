@@ -29,21 +29,6 @@ void py_initialize() {
     }
 }
 
-class AbstractTestNode {
-public:
-    virtual ~AbstractTestNode() {
-        BMO_ERROR << ": A : dtor=" << (void*)this;
-    }
-};
-
-
-class PyTestNode : public AbstractTestNode {
-public:
-    ~PyTestNode() override {
-        BMO_ERROR << ": B : dtor=" << (void*)this;
-    }
-};
-
 void py_genAPI( py::module& m ) {
 
     m.def("initialise", [](){
@@ -57,25 +42,38 @@ void py_genAPI( py::module& m ) {
             .def(py::init<>())
             .def_static("invalid", &ObjectID::invalid);
 
-    m.def("create", []( const NodeType& type, const NodeName& name )->py::object{
+    m.def("create", []( const NodeType& type, const NodeName& name ) {
         if ( BMO_NodeManager == nullptr ) {
             throw std::runtime_error( "Bemo not initialised!" );
         }
         AbstractNode* node = BMO_NodeManager->create( type, name );
-        std::unique_ptr< AbstractNode, py::nodelete > nPtr( node );
-        py::object obj = py::cast( nPtr );
+        py::object obj = py::cast( node );
         while ( obj.ref_count() > 1 ) {
             obj.dec_ref();
         }
-//        BMO_ERROR << "created=" << (void*)node;
         return obj;
-    }, py::arg("type"), py::arg("name") = "",
-          py::return_value_policy::automatic );
-    m.def("remove", []( AbstractNode* node ){
-        BMO_NodeManager->remove( node->getID() );
+    }, py::arg("type"), py::arg("name") = "" );
+
+    m.def("remove", []( AbstractNode* node ) {
+        BMO_ERROR << "removing=" << node->getID();
+//        BMO_NodeManager->remove( node->getID() );
     });
 
-//    m.def("ls", []( const std::vector< NodeName >& names )->std::vector< AbstractNode* >{
+    m.def("remove", []( ObjectID id ) {
+        BMO_ERROR << "removing=" << id;
+//        BMO_NodeManager->remove( node->getID() );
+    });
+
+    m.def("remove", []( py::object obj ) {
+//        AbstractNode* node = py::cast< AbstractNode* >( obj );
+//        BMO_ERROR << "removing=" << node->getID();
+//        BMO_NodeManager->remove( node->getID() );
+    });
+
+    m.def("count", []()->long{
+        return BMO_NodeManager->count();
+    });
+
     m.def("ls", []()->std::vector< AbstractNode* >{
 //        std::vector< AbstractNode* > nodes;
 //        for ( auto name : names ) {
