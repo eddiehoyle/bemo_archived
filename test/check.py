@@ -13,21 +13,30 @@ sys.stdout.write('hi\n')
 def main():
     pybemo.initialise()
 
-    nodeA = pybemo.create("snippet")
-    nodeB = pybemo.create("multiply")
+    nodeA = pybemo.create2("sum")
+    nodeA.set_input("valueA", 2)
+    nodeA.set_input("valueB", 3)
 
-    print "A:", pybemo.count()
+    # nodeB = pybemo.create2("multiply")
+    # nodeB.set_input("valueA", 3)
+    # nodeB.set_input("valueB", 5)
 
-    pybemo.remove(nodeA)
-    pybemo.remove(nodeB)
+    pybemo.execute(nodeA)
+    # pybemo.execute(nodeB)
 
-    print "B:", pybemo.count()
+    # pybemo.remove2(nodeA)
+    # pybemo.remove2(nodeB)
 
-def test():
 
-    nodeA.connect("result", nodeB, "valueA")
-    pybemo.connect(nodeA, "result", nodeB, "valueA")
-
+    # nodeA = pybemo.create("snippet")
+    # nodeB = pybemo.create("multiply")
+    #
+    # print "A:", pybemo.count()
+    #
+    # pybemo.remove(nodeA)
+    # pybemo.remove(nodeB)
+    #
+    # print "B:", pybemo.count()
 
 if __name__ == '__main__':
     main()

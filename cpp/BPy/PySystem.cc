@@ -4,6 +4,8 @@
 #include <BCore/system/PluginSystem.hh>
 #include <BCore/managers/PluginManager.hh>
 
+#include "PyAbstractNode.hh"
+
 #include <pybind11/pybind11.h>
 #include <pybind11/functional.h>
 
@@ -20,7 +22,7 @@ namespace bemo {
 template<>
 AbstractNode* CreateFuncWrapper< FnCreate >::invoke() {
     py::object obj = m_func();
-    return py::cast< AbstractNode* >( obj.release() );
+    return py::cast< PyNode* >( obj.release() );
 }
 
 template<>

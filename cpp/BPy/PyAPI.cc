@@ -54,21 +54,31 @@ void py_genAPI( py::module& m ) {
         return obj;
     }, py::arg("type"), py::arg("name") = "" );
 
-    m.def("remove", []( AbstractNode* node ) {
-        BMO_ERROR << "removing=" << node->getID();
-//        BMO_NodeManager->remove( node->getID() );
+    m.def("create2", []( const NodeType& type, const NodeName& name ) {
+        if ( BMO_NodeManager == nullptr ) {
+            throw std::runtime_error( "Bemo not initialised!" );
+        }
+        AbstractNode* node = BMO_NodeManager->create( type, name );
+//        return std::shared_ptr< PyProxyNode >( new PyProxyNode( node->getID() ) );
+        return new PyProxyNode( node->getID() );
+//        return nullptr;
+    }, py::arg("type"), py::arg("name") = "", py::return_value_policy::reference );
+
+    m.def("remove2", []( PyProxyNode* node ) {
+        BMO_ERROR << "removing id=" << node->getID();
+        BMO_NodeManager->remove( node->getID() );
     });
 
-    m.def("remove", []( ObjectID id ) {
-        BMO_ERROR << "removing=" << id;
-//        BMO_NodeManager->remove( node->getID() );
+    m.def("execute", []( PyProxyNode* node ) {
+        AbstractNode* n = BMO_NodeManager->find( node->getID() );
+        n->execute();
     });
 
-    m.def("remove", []( py::object obj ) {
-//        AbstractNode* node = py::cast< AbstractNode* >( obj );
+//    m.def("remove", []( AbstractNode* node ) {
 //        BMO_ERROR << "removing=" << node->getID();
 //        BMO_NodeManager->remove( node->getID() );
-    });
+//    });
+
 
     m.def("count", []()->long{
         return BMO_NodeManager->count();

@@ -56,6 +56,7 @@ public:
     bool operator>( const Handle& rhs ) const { return this->index() > rhs.index(); }
     NumericType index() const { return m_id & MAX_INDEX; }
     NumericType version() const { return ( m_id >> NUM_INDEX_BITS) & MAX_VERSION; }
+    NumericType value() const { return m_id; }
     bool isValid() const { return m_id < INVALID_HANDLE; }
     inline operator NumericType() const { return m_id; }
 

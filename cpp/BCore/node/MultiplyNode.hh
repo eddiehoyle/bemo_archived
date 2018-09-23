@@ -17,6 +17,7 @@ public:
         long valueA = fnPlug.getInput( "valueA" ).toLong( &result );
         long valueB = fnPlug.getInput( "valueB" ).toLong( &result );
         fnPlug.setOutput( "result", Variant( valueA * valueB ) );
+        BMO_ERROR << "setting result=" << fnPlug.getOutput( "result" ).toLong( &result );
         return 0;
     }
 };

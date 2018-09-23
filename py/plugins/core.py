@@ -1,7 +1,7 @@
 import pybemo
 
 
-class PySumNode(pybemo.AbstractNode):
+class PySumNode(pybemo.PyNode):
     """A node that computes the sum of two values, then sets an output result.
     Inputs:
         value_a (int): The first value.
@@ -42,7 +42,7 @@ def py_PySumNodeLayout(node_id):
                    isRequired=True)
 
 
-class PyEvalNode(pybemo.AbstractNode):
+class PyEvalNode(pybemo.PyNode):
     """A node that computes the sum of two values, then sets an output result.
     Inputs:
         value_a (int): The first value.

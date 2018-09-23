@@ -34,6 +34,7 @@ AbstractNode* NodeManager::create( const NodeType& type, const NodeName& name ) 
 }
 
 void NodeManager::remove( const ObjectID& nodeID ) {
+    BMO_ERROR << "removing...?";
     auto iter = std::find_if( m_nodes.begin(),
                               m_nodes.end(),
                               [&]( AbstractNode* n )->bool{
@@ -42,7 +43,9 @@ void NodeManager::remove( const ObjectID& nodeID ) {
     if ( iter != m_nodes.end() ) {
         BMO_EventHandler->sendEvent< NodeRemovedEvent >( ( *iter )->getID() );
         BMO_ObjectManager->release( ( *iter )->getID() );
-        ( *iter )->m_id = ObjectID();
+        delete ( *iter );
+        ( *iter ) = nullptr;
+//        ( *iter )->m_id = ObjectID();
         m_nodes.erase( iter );
     }
 }

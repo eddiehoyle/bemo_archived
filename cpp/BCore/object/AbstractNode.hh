@@ -30,8 +30,10 @@ public:
 
     virtual int execute();
 
-private:
+protected:
     ObjectID m_id;
+
+private:
     NodeName m_nodeName;
     NodeType m_nodeType;
     std::vector< ObjectID > m_plugs;
