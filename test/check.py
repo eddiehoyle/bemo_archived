@@ -13,19 +13,19 @@ sys.stdout.write('hi\n')
 def main():
     pybemo.initialise()
 
-    nodeA = pybemo.create2("sum")
+    nodeA = pybemo.create("sum")
+    nodeB = pybemo.create("multiply")
     nodeA.set_input("valueA", 2)
     nodeA.set_input("valueB", 3)
+    print nodeA
+    print nodeB
 
-    # nodeB = pybemo.create2("multiply")
-    # nodeB.set_input("valueA", 3)
-    # nodeB.set_input("valueB", 5)
-
-    pybemo.execute(nodeA)
-    # pybemo.execute(nodeB)
-
-    # pybemo.remove2(nodeA)
-    # pybemo.remove2(nodeB)
+    print "Valid A1:", nodeA.valid()
+    print "Valid B1:", nodeB.valid()
+    pybemo.remove(nodeA)
+    pybemo.remove(nodeB)
+    print "Valid A2:", nodeA.valid()
+    print "Valid B2:", nodeB.valid()
 
 
     # nodeA = pybemo.create("snippet")

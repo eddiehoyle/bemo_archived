@@ -29,6 +29,33 @@ void py_initialize() {
     }
 }
 
+
+PyProxyNodePtr cpp_create( const NodeType& type, const NodeName& name ) {
+
+    if ( BMO_NodeManager == nullptr ) {
+        throw std::runtime_error( "Bemo not initialised!" );
+    }
+
+    AbstractNode* node = BMO_NodeManager->create( type, name );
+    return PyProxyNodePtr( new PyProxyNode( node->getID() ) );
+}
+
+void cpp_remove( PyProxyNode* node ) {
+    BMO_NodeManager->remove( node->getID() );
+}
+
+std::size_t cpp_count() {
+    return BMO_NodeManager->count();
+}
+
+std::vector< PyProxyNodePtr > cpp_ls() {
+    std::vector< PyProxyNodePtr > proxyNodes;
+    for( auto node: BMO_NodeManager->getNodes() ) {
+        proxyNodes.emplace_back( PyProxyNodePtr( new PyProxyNode( node->getID() ) ) );
+    }
+    return proxyNodes;
+}
+
 void py_genAPI( py::module& m ) {
 
     m.def("initialise", [](){
@@ -42,56 +69,12 @@ void py_genAPI( py::module& m ) {
             .def(py::init<>())
             .def_static("invalid", &ObjectID::invalid);
 
-    m.def("create", []( const NodeType& type, const NodeName& name ) {
-        if ( BMO_NodeManager == nullptr ) {
-            throw std::runtime_error( "Bemo not initialised!" );
-        }
-        AbstractNode* node = BMO_NodeManager->create( type, name );
-        py::object obj = py::cast( node );
-        while ( obj.ref_count() > 1 ) {
-            obj.dec_ref();
-        }
-        return obj;
-    }, py::arg("type"), py::arg("name") = "" );
+    m.def( "create",
+            &cpp_create,
+            py::arg("type"), py::arg("name") = "",
+            py::return_value_policy::take_ownership );
 
-    m.def("create2", []( const NodeType& type, const NodeName& name ) {
-        if ( BMO_NodeManager == nullptr ) {
-            throw std::runtime_error( "Bemo not initialised!" );
-        }
-        AbstractNode* node = BMO_NodeManager->create( type, name );
-//        return std::shared_ptr< PyProxyNode >( new PyProxyNode( node->getID() ) );
-        return new PyProxyNode( node->getID() );
-//        return nullptr;
-    }, py::arg("type"), py::arg("name") = "", py::return_value_policy::reference );
-
-    m.def("remove2", []( PyProxyNode* node ) {
-        BMO_ERROR << "removing id=" << node->getID();
-        BMO_NodeManager->remove( node->getID() );
-    });
-
-    m.def("execute", []( PyProxyNode* node ) {
-        AbstractNode* n = BMO_NodeManager->find( node->getID() );
-        n->execute();
-    });
-
-//    m.def("remove", []( AbstractNode* node ) {
-//        BMO_ERROR << "removing=" << node->getID();
-//        BMO_NodeManager->remove( node->getID() );
-//    });
-
-
-    m.def("count", []()->long{
-        return BMO_NodeManager->count();
-    });
-
-    m.def("ls", []()->std::vector< AbstractNode* >{
-//        std::vector< AbstractNode* > nodes;
-//        for ( auto name : names ) {
-//            AbstractNode* node = BMO_NodeManager->find( name );
-//            if ( node && ( std::find( nodes.begin(), nodes.end(), node ) == nodes.end() ) ) {
-//                nodes.push_back( node );
-//            }
-//        }
-        return BMO_NodeManager->getNodes();
-    });
+    m.def("remove", &cpp_remove );
+    m.def("count", &cpp_count);
+    m.def("ls", &cpp_ls);
 }

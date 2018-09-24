@@ -12,8 +12,6 @@ namespace py = pybind11;
 
 using namespace bemo;
 
-
-
 static py::object castToPy( const Variant& var ) {
     bool result;
     py::object value;
@@ -48,26 +46,16 @@ static Variant castFromPy( const py::object& obj ) {
     return value;
 }
 
+class PyProxyNode;
+class PyNode;
 
-class PyAbstractNode : public AbstractNode {
+typedef std::shared_ptr< PyProxyNode > PyProxyNodePtr;
+typedef std::shared_ptr< PyNode > PyNodePtr;
+
+class PyNode : public AbstractNode {
 public:
     using AbstractNode::AbstractNode;
-    void setInput( const std::string& name,
-                   const py::object& value ) {
-        PlugSystem fnPlug( this->getID() );
-        fnPlug.setInput( name, castFromPy( value ) );
-    }
-    py::object getOutput( const std::string& name ) {
-        PlugSystem fnPlug( this->getID() );
-        return castToPy( fnPlug.getOutput( name ) );
-    }
-};
-
-
-class PyNode : public PyAbstractNode {
-public:
-    using PyAbstractNode::PyAbstractNode;
-    virtual ~PyNode() { BMO_ERROR << "Deleting PyNode"; }
+    virtual ~PyNode() { BMO_ERROR << "PyNode dtor"; }
     int execute() override {
         PYBIND11_OVERLOAD(
                 int,
@@ -78,13 +66,13 @@ public:
 };
 
 
-class PyProxyNode : public PyAbstractNode {
+class PyProxyNode {
 public:
-    using PyAbstractNode::PyAbstractNode;
-    virtual ~PyProxyNode() { BMO_ERROR << "Deleting PyProxyNode"; }
-    explicit PyProxyNode( ObjectID id ) : PyAbstractNode() {
-        m_id = id;
-    }
+    explicit PyProxyNode( ObjectID id ) : m_id( id ) {}
+    virtual ~PyProxyNode() { BMO_ERROR << "PyProxyNode dtor"; }
+    ObjectID getID() const { return m_id; }
+private:
+    ObjectID m_id;
 };
 
 #endif // BEMO_PYABSTRACTNODE_HH
