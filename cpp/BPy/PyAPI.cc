@@ -37,6 +37,15 @@ PyProxyNodePtr cpp_create( const NodeType& type, const NodeName& name ) {
     }
 
     AbstractNode* node = BMO_NodeManager->create( type, name );
+    py::object obj = py::cast( static_cast< PyNode* >( node ) );
+
+    // TODO: Fix this
+    while( obj.ref_count() > 1 ) {
+        obj.dec_ref();
+        break;
+    }
+    BMO_ERROR << "count=" << obj.ref_count();
+
     return PyProxyNodePtr( new PyProxyNode( node->getID() ) );
 }
 

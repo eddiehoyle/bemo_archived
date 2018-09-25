@@ -17,15 +17,19 @@ def main():
     nodeB = pybemo.create("multiply")
     nodeA.set_input("valueA", 2)
     nodeA.set_input("valueB", 3)
-    print nodeA
-    print nodeB
+    # print nodeA
+    # print nodeB
 
-    print "Valid A1:", nodeA.valid()
-    print "Valid B1:", nodeB.valid()
-    pybemo.remove(nodeA)
-    pybemo.remove(nodeB)
-    print "Valid A2:", nodeA.valid()
-    print "Valid B2:", nodeB.valid()
+    # print "Valid A1:", nodeA.valid()
+    # print "Valid B1:", nodeB.valid()
+
+    # print "Removing sum (py)"
+    # pybemo.remove(nodeA)
+    # print "Removing multiply (cpp)"
+    # pybemo.remove(nodeB)
+
+    # print "Valid A2:", nodeA.valid()
+    # print "Valid B2:", nodeB.valid()
 
 
     # nodeA = pybemo.create("snippet")

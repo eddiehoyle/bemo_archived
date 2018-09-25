@@ -24,40 +24,44 @@ void py_genNode( py::module& m ) {
 }
 
 template< typename T >
-void py_genNodeImpl( py::module& m, const std::string& type ) {
-
-
+void py_connect( T* sourceNode,
+                 const PlugName& sourcePlugName,
+                 T* targetNode,
+                 const PlugName& targetPlugName ) {
+    ConnectionSystem fnConnection( sourceNode->getID() );
+    fnConnection.connect( sourcePlugName,
+                          targetNode->getID(),
+                          targetPlugName );
 }
 
-template< template< typename > typename S, typename T >
-void py_genNodeImpl2( py::class_< T, S< T > >& cls ) {
+template< typename T >
+void py_disconnect( T* sourceNode,
+                    const PlugName& sourcePlugName,
+                    T* targetNode,
+                    const PlugName& targetPlugName ) {
+    ConnectionSystem fnConnection( sourceNode->getID() );
+    fnConnection.disconnect( sourcePlugName,
+                             targetNode->getID(),
+                             targetPlugName );
+}
 
-    cls.def( "valid", []( T* self )->bool {
-        return BMO_NodeManager->exists( self->getID() );
-    })
-            .def( "connect", []( T* self,
-                            const PlugName& sourcePlugName,
-                            T* targetNode,
-                            const PlugName& targetPlugName ) {
+template< typename T >
+void py_setInput( T* sourceNode,
+                  const std::string& name,
+                  const py::object& value ) {
+    PlugSystem fnPlug( sourceNode->getID() );
+    fnPlug.setInput( name, castFromPy( value ) );
+}
 
-                ConnectionSystem fnConnection( self->getID() );
-                fnConnection.connect( sourcePlugName, targetNode->getID(),
-                                      targetPlugName );
+template< typename T, typename... S >
+void py_genNodeImpl2( py::class_< T, S... >& cls ) {
+
+    cls.def( "valid", []( T* self ) -> bool {
+                return BMO_NodeManager->exists( self->getID() );
             } )
-            .def( "disconnect", []( T* self,
-                                    const PlugName& sourcePlugName,
-                                    T* targetNode,
-                                    const PlugName& targetPlugName ) {
-                ConnectionSystem fnConnection( self->getID() );
-                fnConnection.disconnect( sourcePlugName, targetNode->getID(),
-                                         targetPlugName );
-            } )
-            .def( "set_input", []( T* self,
-                                   const std::string& name,
-                                   const py::object& value ) {
-                PlugSystem fnPlug( self->getID() );
-                fnPlug.setInput( name, castFromPy( value ) );
-            } )
+            .def( "connect", &py_connect< T > )
+            .def( "disconnect", &py_disconnect< T > )
+            .def( "set_input", &py_setInput< T > )
             .def( "set_output", []( T* self,
                                     const std::string& name,
                                     const py::object& value ) {
@@ -112,15 +116,15 @@ void py_genNodeImpl2( py::class_< T, S< T > >& cls ) {
 
 void py_genNodeAbstractNode( py::module& m ) {
 
+    using PyNodeCls = py::class_< PyNode, std::unique_ptr< PyNode, py::nodelete > >;
+    using PyProxyNodeCls = py::class_< PyProxyNode, std::shared_ptr< PyProxyNode > >;
 
-    py::class_< PyNode, std::unique_ptr< PyNode, py::nodelete > > node( m, "PyNode" );
+    PyNodeCls node( m, "PyNode" );
     node.def( py::init<>() );
 
-    py::class_< PyProxyNode, std::shared_ptr< PyProxyNode > > proxyNode( m,
-                                                                         "PyProxyNode" );
+    PyProxyNodeCls proxyNode( m, "PyProxyNode" );
     proxyNode.def( py::init< ObjectID >() );
 
-    /// TODO Fix this
-    py_genNodeImpl2< PyNode, std::unique_ptr< PyNode, py::nodelete > >( node );
-    py_genNodeImpl2< PyProxyNode, std::shared_ptr< PyProxyNode > >( proxyNode );
+    py_genNodeImpl2< PyNode, PyNodePtr >( node );
+    py_genNodeImpl2< PyProxyNode, PyProxyNodePtr >( proxyNode );
 }

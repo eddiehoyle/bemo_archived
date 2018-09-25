@@ -46,16 +46,16 @@ static Variant castFromPy( const py::object& obj ) {
     return value;
 }
 
-class PyProxyNode;
 class PyNode;
+class PyProxyNode;
 
+typedef std::unique_ptr< PyNode, py::nodelete > PyNodePtr;
 typedef std::shared_ptr< PyProxyNode > PyProxyNodePtr;
-typedef std::shared_ptr< PyNode > PyNodePtr;
 
 class PyNode : public AbstractNode {
 public:
     using AbstractNode::AbstractNode;
-    virtual ~PyNode() { BMO_ERROR << "PyNode dtor"; }
+    virtual ~PyNode() { BMO_ERROR << "PyNode dtor=" << (void*)this; }
     int execute() override {
         PYBIND11_OVERLOAD(
                 int,
@@ -69,7 +69,7 @@ public:
 class PyProxyNode {
 public:
     explicit PyProxyNode( ObjectID id ) : m_id( id ) {}
-    virtual ~PyProxyNode() { BMO_ERROR << "PyProxyNode dtor"; }
+    virtual ~PyProxyNode() { BMO_ERROR << "PyProxyNode dtor=" << (void*)this; }
     ObjectID getID() const { return m_id; }
 private:
     ObjectID m_id;
