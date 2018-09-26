@@ -8,99 +8,92 @@ class TestSumNode(unittest.TestCase):
     def __init__(self, *args, **kwargs):
         super(TestSumNode, self).__init__(*args, **kwargs)
         self.nodeA = None
-
-    def setUp(self):
-        pybemo.initialise()
-        self.nodeA = pybemo.create("sum")
-        print 'setUp', self.nodeA
-
-    def tearDown(self):
-        print 'teardown', self.nodeA
-        pybemo.terminate()
-        pybemo.remove(self.nodeA)
-        self.nodeA = None
-
-    def test_create(self):
-        print 'test_create', self.nodeA
-        self.assertIsNotNone(self.nodeA)
-
-    # def test_remove(self):
-    #     self.assertTrue(self.nodeA.isValid())
+    #
+    # def setUp(self):
+    #     pybemo.initialise()
+    #     self.nodeA = pybemo.create("sum")
+    #
+    # def tearDown(self):
+    #     pybemo.terminate()
     #     pybemo.remove(self.nodeA)
-    #     self.assertFalse(self.nodeA.isValid())
+    #     self.nodeA = None
     #
-    # def test_isValid(self):
-    #     self.assertTrue(self.nodeA.isValid())
+    # def test_create(self):
+    #     self.assertIsNotNone(self.nodeA)
     #
-    # def test_getID(self):
-    #     self.assertNotEqual(self.nodeA.getID(), pybemo.ObjectID.invalid())
+    # def test_remove(self):
+    #     self.assertTrue(self.nodeA.valid())
+    #     pybemo.remove(self.nodeA)
+    #     self.assertFalse(self.nodeA.valid())
     #
-    # def test_getType(self):
-    #     self.assertEqual(self.nodeA.getType(), "sum")
+    # def test_valid(self):
+    #     self.assertTrue(self.nodeA.valid())
     #
-    # def test_getName(self):
+    # def test_id(self):
+    #     self.assertNotEqual(self.nodeA.id(), pybemo.ObjectID.invalid())
+    #
+    # def test_type(self):
+    #     self.assertEqual(self.nodeA.type(), "sum")
+    #
+    # def test_name(self):
     #     nodeB = pybemo.create("sum")
     #     nodeC = pybemo.create("sum", name="custom")
-    #     self.assertEqual(self.nodeA.getName(), "sum0")
-    #     self.assertEqual(nodeB.getName(), "sum1")
-    #     self.assertEqual(nodeC.getName(), "custom")
+    #     self.assertEqual(self.nodeA.get_name(), "sum0")
+    #     self.assertEqual(nodeB.get_name(), "sum1")
+    #     self.assertEqual(nodeC.get_name(), "custom")
+    #     pybemo.remove(nodeB)
+    #     pybemo.remove(nodeC)
     #
-    # def test_setName(self):
+    # def test_set_name(self):
     #     nodeB = pybemo.create("sum", name="customB")
     #     nodeC = pybemo.create("sum", name="customC")
-    #     nodeB.setName("wizard")
-    #     nodeC.setName("wizard")
-    #     self.assertEqual(nodeB.getName(), "wizard")
-    #     self.assertEqual(nodeC.getName(), "wizard0")
+    #     nodeB.set_name("wizard")
+    #     nodeC.set_name("wizard")
+    #     self.assertEqual(nodeB.get_name(), "wizard")
+    #     self.assertEqual(nodeC.get_name(), "wizard0")
+    #     pybemo.remove(nodeB)
+    #     pybemo.remove(nodeC)
     #
-    # def test_hasInput(self):
-    #     self.assertTrue(self.nodeA.hasInput("valueA"))
-    #     self.assertFalse(self.nodeA.hasInput("butts"))
+    # def test_has_input(self):
+    #     self.assertTrue(self.nodeA.has_input("valueA"))
+    #     self.assertFalse(self.nodeA.has_input("butts"))
     #
-    # def test_hasOutput(self):
-    #     self.assertTrue(self.nodeA.hasOutput("result"))
-    #     self.assertFalse(self.nodeA.hasOutput("butts"))
+    # def test_has_output(self):
+    #     self.assertTrue(self.nodeA.has_output("result"))
+    #     self.assertFalse(self.nodeA.has_output("butts"))
     #
-    # def test_setInput_int(self):
-    #     self.nodeA.setInput("valueA", 5)
-    #     result = self.nodeA.getInput("valueA")
+    # def test_set_input_long(self):
+    #     self.nodeA.set_input("valueA", 5)
+    #     result = self.nodeA.get_input("valueA")
     #     self.assertIsInstance(result, long)
     #     self.assertEqual(result, 5)
     #
-    # def test_setOutput_int(self):
-    #     self.nodeA.setOutput("result", 5)
-    #     result = self.nodeA.getOutput("result")
+    # def test_set_output_long(self):
+    #     self.nodeA.set_output("result", 5)
+    #     result = self.nodeA.get_output("result")
     #     self.assertIsInstance(result, long)
     #     self.assertEqual(result, 5)
     #
-    # def test_getInputs(self):
-    #     inputs = self.nodeA.getInputs()
+    # def test_get_inputs(self):
+    #     inputs = self.nodeA.get_inputs()
     #     self.assertNotEqual(len(inputs), 0)
     #     self.assertTrue("valueA" in inputs)
     #
-    # def test_getOutputs(self):
-    #     outputs = self.nodeA.getOutputs()
+    # def test_get_outputs(self):
+    #     outputs = self.nodeA.get_outputs()
     #     self.assertNotEqual(len(outputs), 0)
     #     self.assertTrue("result" in outputs)
     #
     # @unittest.skip("Plug type policies not implemented yet.")
-    # def test_setInput_float(self):
-    #     self.nodeA.setInput("valueA", 3.0)
-    #     result = self.nodeA.getInput("valueA")
+    # def test_set_input_float(self):
+    #     self.nodeA.set_input("valueA", 3.0)
+    #     result = self.nodeA.set_input("valueA")
     #     self.assertIsInstance(result, long)
     #     self.assertEqual(result, 3)
     #
     # @unittest.skip("Plug type policies not implemented yet.")
-    # def test_setOutput_float(self):
-    #     self.nodeA.setOutput("result", 3.0)
-    #     result = self.nodeA.getOutput("result")
+    # def test_set_output_float(self):
+    #     self.nodeA.set_output("result", 3.0)
+    #     result = self.nodeA.get_output("result")
     #     self.assertIsInstance(result, int)
     #     self.assertEqual(result, 3)
-    #
-    # def test_execute(self):
-    #     self.nodeA.setInput("valueA", 2)
-    #     self.nodeA.setInput("valueB", 3)
-    #     self.nodeA.execute()
-    #     result = self.nodeA.getOutput("result")
-    #     self.assertEqual(result, 5)
-

@@ -74,43 +74,37 @@ void py_setOutput( T* sourceNode,
 
 
 template< typename T >
-py::object py_getInput( T* sourceNode,
-                        const PlugName& name ) {
+py::object py_getInput( T* sourceNode, const PlugName& name ) {
     PlugSystem fnPlug( sourceNode->getID() );
     return castToPy( fnPlug.getInput( name ) );
 }
 
 template< typename T >
-py::object py_getOutput( T* sourceNode,
-                         const PlugName& name ) {
+py::object py_getOutput( T* sourceNode, const PlugName& name ) {
     PlugSystem fnPlug( sourceNode->getID() );
     return castToPy( fnPlug.getOutput( name ) );
 }
 
 template< typename T >
-bool py_hasInput( T* sourceNode,
-                  const PlugName& name ) {
+bool py_hasInput( T* sourceNode, const PlugName& name ) {
     PlugSystem fnPlug( sourceNode->getID() );
     return fnPlug.hasInput( name );
 }
 
 template< typename T >
-bool py_hasOutput( T* sourceNode,
-                   const PlugName& name ) {
+bool py_hasOutput( T* sourceNode, const PlugName& name ) {
     PlugSystem fnPlug( sourceNode->getID() );
     return fnPlug.hasOutput( name );
 }
 
 template< typename T >
-std::vector< PlugName > py_getInputs( T* sourceNode,
-                                      const PlugName& name ) {
+std::vector< PlugName > py_getInputs( T* sourceNode ) {
     return BMO_PlugManager->getOwnerPlugNames( sourceNode->getID(),
                                                PlugDirectionPolicy::Input );
 }
 
 template< typename T >
-std::vector< PlugName > py_getOutputs( T* sourceNode,
-                                       const PlugName& name ) {
+std::vector< PlugName > py_getOutputs( T* sourceNode ) {
     return BMO_PlugManager->getOwnerPlugNames( sourceNode->getID(),
                                                PlugDirectionPolicy::Output );
 }
@@ -128,12 +122,30 @@ std::string py__repr__( T* node ) {
     return ss.str();
 }
 
+template< typename T >
+void py_setName( T* node, const std::string& name ) {
+    BMO_NodeManager->find( node->getID() )->setName( name );
+}
+
+template< typename T >
+std::string py_getName( T* node ) {
+    return BMO_NodeManager->find( node->getID() )->getName();
+}
+
+template< typename T >
+std::string py_getType( T* node ) {
+    return BMO_NodeManager->find( node->getID() )->getType();
+}
+
 
 template< typename T, typename... S >
 void py_genNodeImpl2( py::class_< T, S... >& cls ) {
 
     cls.def( "valid", &py_isValid< T > )
-            .def( "getID", &py_getID< T > )
+            .def( "id", &py_getID< T > )
+            .def( "type", &py_getType< T > )
+            .def( "set_name", &py_setName< T > )
+            .def( "get_name", &py_getName< T > )
             .def( "connect", &py_connect< T > )
             .def( "disconnect", &py_disconnect< T > )
             .def( "set_input", &py_setInput< T > )

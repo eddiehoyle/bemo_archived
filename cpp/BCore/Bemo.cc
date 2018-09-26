@@ -47,14 +47,14 @@ void initialize() {
 }
 
 void terminate() {
-    delete BMO_EventHandler;
-    delete BMO_NodeManager;
-    delete BMO_PlugManager;
-    delete BMO_GraphManager;
-    delete BMO_PluginManager;
-    delete BMO_ObjectManager;
-    delete BMO_ConnectionManager;
-    delete BMO_DependencyGraph;
+    if ( BMO_EventHandler ) { delete BMO_EventHandler; }
+    if ( BMO_NodeManager ) { delete BMO_NodeManager; }
+    if ( BMO_PlugManager ) { delete BMO_PlugManager; }
+    if ( BMO_GraphManager ) { delete BMO_GraphManager; }
+    if ( BMO_PluginManager ) { delete BMO_PluginManager; }
+    if ( BMO_ObjectManager ) { delete BMO_ObjectManager; }
+    if ( BMO_ConnectionManager ) { delete BMO_ConnectionManager; }
+    if ( BMO_DependencyGraph ) { delete BMO_DependencyGraph; }
 }
 
 void send( const std::string& message ) {}
