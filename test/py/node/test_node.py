@@ -12,11 +12,12 @@ class TestSumNode(unittest.TestCase):
     def setUp(self):
         pybemo.initialise()
         self.nodeA = pybemo.create("sum")
+        print 'setUp', self.nodeA
 
     def tearDown(self):
         print 'teardown', self.nodeA
         pybemo.terminate()
-        pybemo.remove(self.nodeA.getID())
+        pybemo.remove(self.nodeA)
         self.nodeA = None
 
     def test_create(self):

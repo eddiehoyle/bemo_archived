@@ -14,11 +14,13 @@ def main():
     pybemo.initialise()
 
     nodeA = pybemo.create("sum")
-    nodeB = pybemo.create("multiply")
-    nodeA.set_input("valueA", 2)
-    nodeA.set_input("valueB", 3)
+    # nodeB = pybemo.create("multiply")
+    # nodeA.set_input("valueA", 2)
+    # nodeA.set_input("valueB", 3)
     # print nodeA
     # print nodeB
+
+    nodeA = None
 
     # print "Valid A1:", nodeA.valid()
     # print "Valid B1:", nodeB.valid()

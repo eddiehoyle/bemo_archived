@@ -24,6 +24,17 @@ void py_genNode( py::module& m ) {
 }
 
 template< typename T >
+bool py_isValid( T* node ) {
+    return BMO_NodeManager->exists( node->getID() );
+}
+
+
+template< typename T >
+ObjectID py_getID( T* node ) {
+    return node->getID();
+}
+
+template< typename T >
 void py_connect( T* sourceNode,
                  const PlugName& sourcePlugName,
                  T* targetNode,
@@ -53,65 +64,87 @@ void py_setInput( T* sourceNode,
     fnPlug.setInput( name, castFromPy( value ) );
 }
 
+template< typename T >
+void py_setOutput( T* sourceNode,
+                   const std::string& name,
+                   const py::object& value ) {
+    PlugSystem fnPlug( sourceNode->getID() );
+    fnPlug.setOutput( name, castFromPy( value ) );
+}
+
+
+template< typename T >
+py::object py_getInput( T* sourceNode,
+                        const PlugName& name ) {
+    PlugSystem fnPlug( sourceNode->getID() );
+    return castToPy( fnPlug.getInput( name ) );
+}
+
+template< typename T >
+py::object py_getOutput( T* sourceNode,
+                         const PlugName& name ) {
+    PlugSystem fnPlug( sourceNode->getID() );
+    return castToPy( fnPlug.getOutput( name ) );
+}
+
+template< typename T >
+bool py_hasInput( T* sourceNode,
+                  const PlugName& name ) {
+    PlugSystem fnPlug( sourceNode->getID() );
+    return fnPlug.hasInput( name );
+}
+
+template< typename T >
+bool py_hasOutput( T* sourceNode,
+                   const PlugName& name ) {
+    PlugSystem fnPlug( sourceNode->getID() );
+    return fnPlug.hasOutput( name );
+}
+
+template< typename T >
+std::vector< PlugName > py_getInputs( T* sourceNode,
+                                      const PlugName& name ) {
+    return BMO_PlugManager->getOwnerPlugNames( sourceNode->getID(),
+                                               PlugDirectionPolicy::Input );
+}
+
+template< typename T >
+std::vector< PlugName > py_getOutputs( T* sourceNode,
+                                       const PlugName& name ) {
+    return BMO_PlugManager->getOwnerPlugNames( sourceNode->getID(),
+                                               PlugDirectionPolicy::Output );
+}
+
+template< typename T >
+std::string py__repr__( T* node ) {
+    AbstractNode* bNode = BMO_NodeManager->find( node->getID() );
+    std::stringstream ss;
+    ss << "<Node(";
+    ss << "name='" << bNode->getName();
+    ss << "', type=" << bNode->getType();
+    ss << ", id=" << bNode->getID();
+    ss << ", addr=" << ( void* )node;
+    ss << ")>";
+    return ss.str();
+}
+
+
 template< typename T, typename... S >
 void py_genNodeImpl2( py::class_< T, S... >& cls ) {
 
-    cls.def( "valid", []( T* self ) -> bool {
-                return BMO_NodeManager->exists( self->getID() );
-            } )
+    cls.def( "valid", &py_isValid< T > )
+            .def( "getID", &py_getID< T > )
             .def( "connect", &py_connect< T > )
             .def( "disconnect", &py_disconnect< T > )
             .def( "set_input", &py_setInput< T > )
-            .def( "set_output", []( T* self,
-                                    const std::string& name,
-                                    const py::object& value ) {
-                PlugSystem fnPlug( self->getID() );
-                fnPlug.setOutput( name, castFromPy( value ) );
-            } )
-            .def( "get_input", []( T* self,
-                                   const PlugName& name ) -> py::object {
-                PlugSystem fnPlug( self->getID() );
-                return castToPy( fnPlug.getInput( name ) );
-            } )
-            .def( "get_output", []( T* self,
-                                    const PlugName& name ) {
-                PlugSystem fnPlug( self->getID() );
-                return castToPy( fnPlug.getOutput( name ) );
-            } )
-            .def( "has_input", []( T* self,
-                                   const PlugName& name ) -> bool {
-                PlugSystem fnPlug( self->getID() );
-                return fnPlug.hasInput( name );
-            } )
-            .def( "has_output", []( T* self,
-                                    const PlugName& name ) -> bool {
-                PlugSystem fnPlug( self->getID() );
-                return fnPlug.hasOutput( name );
-            } )
-            .def( "get_inputs", []( T* self ) -> std::vector< PlugName > {
-                std::vector< PlugName > inputs =
-                        BMO_PlugManager->getOwnerPlugNames( self->getID(),
-                                                            PlugDirectionPolicy::Input );
-                return inputs;
-            } )
-            .def( "get_outputs", []( T* self ) -> std::vector< PlugName > {
-                std::vector< PlugName > outputs =
-                        BMO_PlugManager->getOwnerPlugNames( self->getID(),
-                                                            PlugDirectionPolicy::Output );
-                return outputs;
-            } )
-            .def( "__repr__", []( T* node ) {
-                AbstractNode* bNode = BMO_NodeManager->find( node->getID() );
-                std::stringstream ss;
-                ss << "<Node(";
-                ss << "name='" << bNode->getName();
-                ss << "', type=" << bNode->getType();
-                ss << ", id=" << bNode->getID();
-                ss << ", addr=" << ( void* )node;
-                ss << ")>";
-                return ss.str();
-            } );
-
+            .def( "set_output", &py_setOutput< T > )
+            .def( "get_input", &py_getInput< T > )
+            .def( "get_output", &py_getOutput< T > )
+            .def( "has_input", &py_hasInput< T > )
+            .def( "has_output", &py_hasOutput< T > )
+            .def( "get_inputs", &py_getInputs< T > )
+            .def( "get_outputs", &py_getOutputs< T > )
+            .def( "__repr__", &py__repr__< T > );
 }
 
 void py_genNodeAbstractNode( py::module& m ) {
