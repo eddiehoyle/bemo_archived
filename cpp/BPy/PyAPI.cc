@@ -11,6 +11,8 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/functional.h>
 
+#include <sstream>
+
 namespace py = pybind11;
 using namespace bemo;
 
@@ -37,6 +39,14 @@ PyProxyNodePtr cpp_create( const NodeType& type, const NodeName& name ) {
     }
 
     AbstractNode* node = BMO_NodeManager->create( type, name );
+    if ( node == nullptr ) {
+        std::stringstream ss;
+        ss << "Node type '";
+        ss << type;
+        ss << "' not a valid type.\n";
+        throw py::type_error( ss.str() );
+    }
+
     py::object obj = py::cast( static_cast< PyNode* >( node ) );
 
     // TODO: Fix this
@@ -44,8 +54,6 @@ PyProxyNodePtr cpp_create( const NodeType& type, const NodeName& name ) {
         obj.dec_ref();
         break;
     }
-    BMO_ERROR << "count=" << obj.ref_count();
-
     return PyProxyNodePtr( new PyProxyNode( node->getID() ) );
 }
 
@@ -53,8 +61,8 @@ void cpp_remove( PyProxyNode* node ) {
     BMO_NodeManager->remove( node->getID() );
 }
 
-std::size_t cpp_count() {
-    return BMO_NodeManager->count();
+bool cpp_exists( PyProxyNode* node ) {
+    return BMO_NodeManager->exists( node->getID() );
 }
 
 std::vector< PyProxyNodePtr > cpp_ls() {
@@ -84,6 +92,6 @@ void py_genAPI( py::module& m ) {
             py::return_value_policy::take_ownership );
 
     m.def("remove", &cpp_remove );
-    m.def("count", &cpp_count);
     m.def("ls", &cpp_ls);
+    m.def("exists", &cpp_exists);
 }

@@ -31,30 +31,70 @@ void initialize() {
 
     BMO_INITIALISE_LOG()
 
-    BMO_EventHandler = new EventHandler();
-    BMO_NodeManager = new NodeManager();
-    BMO_PlugManager = new PlugManager();
-    BMO_GraphManager = new GraphManager();
-    BMO_PluginManager = new PluginManager();
-    BMO_ObjectManager = new ObjectManager();
-    BMO_ConnectionManager = new ConnectionManager();
-    BMO_DependencyGraph = new DagManager();
+    if ( BMO_EventHandler == nullptr ) {
+        BMO_EventHandler = new EventHandler();
+    }
+    if ( BMO_ObjectManager == nullptr ) {
+        BMO_ObjectManager = new ObjectManager();
+    }
+    if ( BMO_NodeManager == nullptr ) {
+        BMO_NodeManager = new NodeManager();
 
-    // Initialise CPP nodes
-    BMO_NodeManager->addBlueprint( "multiply",
-                                   new CreateFuncWrapper< std::function< AbstractNode*() > >( multiplyCreate ),
-                                   new LayoutFuncWrapper< std::function< void(ObjectID) > >( multiplyLayout ) );
+        // Initialise CPP nodes
+        BMO_NodeManager->addBlueprint( "multiply",
+                                       new CreateFuncWrapper< std::function< AbstractNode*() > >( multiplyCreate ),
+                                       new LayoutFuncWrapper< std::function< void(ObjectID) > >( multiplyLayout ) );
+    }
+    if ( BMO_PlugManager == nullptr ) {
+        BMO_PlugManager = new PlugManager();
+    }
+    if ( BMO_GraphManager == nullptr ) {
+        BMO_GraphManager = new GraphManager();
+    }
+    if ( BMO_PluginManager == nullptr ) {
+        BMO_PluginManager = new PluginManager();
+    }
+    if ( BMO_ConnectionManager == nullptr ) {
+        BMO_ConnectionManager = new ConnectionManager();
+    }
+    if ( BMO_DependencyGraph == nullptr ) {
+        BMO_DependencyGraph = new DagManager();
+    }
 }
 
 void terminate() {
-    if ( BMO_EventHandler ) { delete BMO_EventHandler; }
-    if ( BMO_NodeManager ) { delete BMO_NodeManager; }
-    if ( BMO_PlugManager ) { delete BMO_PlugManager; }
-    if ( BMO_GraphManager ) { delete BMO_GraphManager; }
-    if ( BMO_PluginManager ) { delete BMO_PluginManager; }
-    if ( BMO_ObjectManager ) { delete BMO_ObjectManager; }
-    if ( BMO_ConnectionManager ) { delete BMO_ConnectionManager; }
-    if ( BMO_DependencyGraph ) { delete BMO_DependencyGraph; }
+    if ( BMO_EventHandler ) {
+        delete BMO_EventHandler;
+        BMO_EventHandler = nullptr;
+    }
+    if ( BMO_NodeManager ) {
+        delete BMO_NodeManager;
+        BMO_NodeManager = nullptr;
+    }
+    if ( BMO_PlugManager ) {
+        delete BMO_PlugManager;
+        BMO_PlugManager = nullptr;
+    }
+    if ( BMO_GraphManager ) {
+        delete BMO_GraphManager;
+        BMO_GraphManager = nullptr;
+    }
+    if ( BMO_PluginManager ) {
+        delete BMO_PluginManager;
+        BMO_PluginManager = nullptr;
+    }
+    if ( BMO_ObjectManager ) {
+        delete BMO_ObjectManager;
+        BMO_ObjectManager = nullptr;
+    }
+    if ( BMO_ConnectionManager ) {
+        delete BMO_ConnectionManager;
+        BMO_ConnectionManager = nullptr;
+    }
+    if ( BMO_DependencyGraph ) {
+        delete BMO_DependencyGraph;
+        BMO_DependencyGraph = nullptr;
+    }
 }
 
 void send( const std::string& message ) {}
