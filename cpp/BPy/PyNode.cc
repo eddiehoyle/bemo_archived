@@ -139,6 +139,15 @@ std::string py_getType( T* node ) {
 }
 
 
+template< typename N >
+std::string py_getName2( N* type ) {
+    return type->getManager()->find( type )->getName();
+}
+
+AbstractNode* n;
+std::string asd = py_getName2< AbstractNode >( n );
+
+
 template< typename T, typename... S >
 void py_genNodeImpl2( py::class_< T, S... >& cls ) {
 

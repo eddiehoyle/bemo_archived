@@ -1,5 +1,17 @@
 import pybemo
 
+class PySimpleGraph(pybemo.PyNode):
+    """"""
+
+    def expand(self):
+        pass
+
+
+def py_PySimpleGraphCreate():
+    return PySimpleGraph()
+
+def py_PySimpleGraphLayout(node_id):
+    pass
 
 class PySumNode(pybemo.PyNode):
     """A node that computes the sum of two values, then sets an output result.
@@ -73,5 +85,6 @@ def py_PyEvalNodeLayout(node_id):
 def bmo_registerPlugin(plugin_id):
     system = pybemo.PluginSystem(plugin_id)
     system.setHeader("PyBemoNodes", "Core nodes.", "icons/bemocore_16px.png")
+    system.registerGraph("simple", py_PySimpleGraphCreate, py_PySimpleGraphLayout)
     system.registerNode("sum", py_PySumNodeCreate, py_PySumNodeLayout)
     system.registerNode("snippet", py_PyEvalNodeCreate, py_PyEvalNodeLayout)

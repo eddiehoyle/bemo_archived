@@ -32,6 +32,10 @@ void AbstractNode::setName( const NodeName& name ) {
     }
 }
 
+NodeManager* AbstractNode::getManager() const {
+    retun m_manager;
+}
+
 //void AbstractNode::setInput( const std::string& name, const Variant& var ) {
 //    setPlugValue( this, name, PlugDirectionPolicy::Input, var );
 //}

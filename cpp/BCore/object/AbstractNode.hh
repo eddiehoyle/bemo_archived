@@ -26,6 +26,7 @@ public:
     inline ObjectID getID() const { return m_id; }
     inline NodeType getType() const { return m_nodeType; }
     inline NodeName getName() const { return m_objectName; }
+    inline NodeManager* getManager() const;
     void setName( const NodeName& name );
 
     virtual int execute();
@@ -36,6 +37,7 @@ protected:
 private:
     NodeName m_objectName;
     NodeType m_nodeType;
+    NodeManager* m_manager;
 };
 
 }

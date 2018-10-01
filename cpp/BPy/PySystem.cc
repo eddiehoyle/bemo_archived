@@ -14,8 +14,6 @@ using namespace bemo;
 
 using FnCreate = std::function< py::object() >;
 using FnLayout = std::function< py::object( ObjectID ) >;
-//using FnCreate = std::function< AbstractNode*() >;
-//using FnLayout = std::function< void( ObjectID ) >;
 
 namespace bemo {
 
