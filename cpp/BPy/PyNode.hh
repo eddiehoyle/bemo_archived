@@ -5,6 +5,8 @@
 #include <BCore/object/AbstractNode.hh>
 #include <BCore/system/PlugSystem.hh>
 
+#include "AbstractProxyObject.hh"
+
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 
@@ -66,13 +68,11 @@ public:
 };
 
 
-class PyProxyNode {
+class PyProxyNode : public AbstractProxyObject {
 public:
-    explicit PyProxyNode( ObjectID id ) : m_id( id ) {}
-    virtual ~PyProxyNode() { BMO_ERROR << "PyProxyNode dtor=" << (void*)this; }
-    ObjectID getID() const { return m_id; }
-private:
-    ObjectID m_id;
+    using AbstractProxyObject::AbstractProxyObject;
+    explicit PyProxyNode( ObjectID id ) : AbstractProxyObject( id ) {}
+    virtual ~PyProxyNode() override = default;
 };
 
 #endif // BEMO_PYABSTRACTNODE_HH

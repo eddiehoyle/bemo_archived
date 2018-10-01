@@ -30,15 +30,15 @@ namespace bemo {
 //template< typename T, typename H >
 //class ContainerManager : public AbstractManager< T, H > {
 //
-//    using ObjectType = T;
+//    using NodeType = T;
 //    using HandleType = H;
 //
 //public:
-//    ObjectType create() override {
+//    NodeType create() override {
 //        HandleType id = this->m_table.acquire( nullptr );
-//        return ObjectType( id );
+//        return NodeType( id );
 //    }
-//    void destroy( const ObjectType& graph ) override {
+//    void destroy( const NodeType& graph ) override {
 //        this->m_table.release( graph.objectID() );
 //    }
 //};

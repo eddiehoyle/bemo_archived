@@ -13,7 +13,7 @@ void py_genEnumVariantType( py::module& m );
 
 void py_genEnum( py::module& m ) {
 
-    py::enum_<ObjectType>( m, "ObjectType" )
+    py::enum_<ObjectType>( m, "NodeType" )
             .value( "Header", ObjectType::Node )
             .value( "Node", ObjectType::Node )
             .value( "Plug", ObjectType::Plug )

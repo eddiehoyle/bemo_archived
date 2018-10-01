@@ -26,9 +26,9 @@ void AbstractNode::setName( const NodeName& name ) {
             uniqueName = name + std::to_string( index++ );
             exists = BMO_NodeManager->find( uniqueName ) != nullptr;
         }
-        m_nodeName = uniqueName;
+        m_objectName = uniqueName;
     } else {
-        m_nodeName = name;
+        m_objectName = name;
     }
 }
 

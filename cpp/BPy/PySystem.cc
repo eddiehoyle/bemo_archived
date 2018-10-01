@@ -4,7 +4,7 @@
 #include <BCore/system/PluginSystem.hh>
 #include <BCore/managers/PluginManager.hh>
 
-#include "PyAbstractNode.hh"
+#include "PyNode.hh"
 
 #include <pybind11/pybind11.h>
 #include <pybind11/functional.h>

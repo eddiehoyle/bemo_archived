@@ -41,7 +41,7 @@ public:
 
 public:
     static Handle identity() { return Handle< N, I, V >( 0 ); }
-    static Handle invalid() { return Handle< N, I, V >( INVALID_HANDLE, ObjectType::Invalid ); }
+    static Handle invalid() { return Handle< N, I, V >( INVALID_HANDLE ); }
 
 public:
     explicit Handle( NumericType id ) : m_id( id ) {}

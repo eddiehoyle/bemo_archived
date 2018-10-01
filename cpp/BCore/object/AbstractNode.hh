@@ -10,8 +10,8 @@
 
 namespace bemo {
 
-using NodeName = std::string;
-using NodeType = std::string;
+typedef std::string NodeName;
+typedef std::string NodeType;
 
 class AbstractNode {
 
@@ -25,7 +25,7 @@ public:
     inline bool isValid() const { return m_id != ObjectID(); }
     inline ObjectID getID() const { return m_id; }
     inline NodeType getType() const { return m_nodeType; }
-    inline NodeName getName() const { return m_nodeName; }
+    inline NodeName getName() const { return m_objectName; }
     void setName( const NodeName& name );
 
     virtual int execute();
@@ -34,10 +34,8 @@ protected:
     ObjectID m_id;
 
 private:
-    NodeName m_nodeName;
+    NodeName m_objectName;
     NodeType m_nodeType;
-    std::vector< ObjectID > m_plugs;
-
 };
 
 }

@@ -5,7 +5,7 @@
 #include <BCore/internal/Handle.hh>
 #include <BCore/internal/Table.hh>
 #include <BCore/Platform.hh>
-#include <BCore/object/Graph.hh>
+#include <BCore/object/AbstractGraph.hh>
 
 using namespace bemo;
 using TinyHandy = Handle< u32, 4, 4 >;

@@ -13,7 +13,11 @@ sys.stdout.write('hi\n')
 def main():
     pybemo.initialise()
 
+    pybemo.terminate()
     nodeA = pybemo.create("sum")
+
+
+    print "asd"
     # nodeB = pybemo.create("multiply")
     # nodeA.set_input("valueA", 2)
     # nodeA.set_input("valueB", 3)

@@ -1,4 +1,4 @@
-#include "PyAbstractNode.hh"
+#include "PyNode.hh"
 
 #include <BCore/Bemo.hh>
 #include <BCore/object/Plug.hh>

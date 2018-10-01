@@ -24,7 +24,7 @@ AbstractNode* NodeManager::create( const NodeType& type, const NodeName& name ) 
         AbstractNode* node = fnCreate->invoke();
         node->m_id = BMO_ObjectManager->acquire( ObjectType::Node );
         node->m_nodeType = type;
-        node->m_nodeName = !name.empty() ? name : ( type + std::to_string( m_nodes.size() ) );
+        node->m_objectName = !name.empty() ? name : ( type + std::to_string( m_nodes.size() ) );
         fnLayout->invoke( node->m_id );
         m_nodes.push_back( node );
         BMO_EventHandler->sendEvent< NodeCreatedEvent >( node->getID() );

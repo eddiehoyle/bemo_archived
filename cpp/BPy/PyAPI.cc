@@ -4,7 +4,8 @@
 #include <BCore/managers/NodeManager.hh>
 #include <BCore/managers/PluginManager.hh>
 
-#include "PyAbstractNode.hh"
+#include "PyNode.hh"
+#include "PyGraph.hh"
 
 #include <pybind11/stl.h>
 #include <pybind11/eval.h>
@@ -29,6 +30,11 @@ void py_initialize() {
             init( BMO_PluginManager->create() );
         }
     }
+}
+
+PyProxyGraphPtr cpp_createGraph( const GraphType& type, const GraphName& name ) {
+
+    return nullptr;
 }
 
 
@@ -57,11 +63,11 @@ PyProxyNodePtr cpp_create( const NodeType& type, const NodeName& name ) {
     return PyProxyNodePtr( new PyProxyNode( node->getID() ) );
 }
 
-void cpp_remove( PyProxyNode* node ) {
+void cpp_remove( AbstractProxyObject* node ) {
     BMO_NodeManager->remove( node->getID() );
 }
 
-bool cpp_exists( PyProxyNode* node ) {
+bool cpp_exists( AbstractProxyObject* node ) {
     return BMO_NodeManager->exists( node->getID() );
 }
 
@@ -85,6 +91,11 @@ void py_genAPI( py::module& m ) {
     py::class_<ObjectID>(m, "ObjectID")
             .def(py::init<>())
             .def_static("invalid", &ObjectID::invalid);
+
+    m.def( "create_graph",
+            &cpp_createGraph,
+            py::arg("type"), py::arg("name") = "",
+            py::return_value_policy::take_ownership );
 
     m.def( "create",
             &cpp_create,

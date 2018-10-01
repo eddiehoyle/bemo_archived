@@ -56,22 +56,4 @@ class TestAPICreate(unittest.TestCase):
 
     def test_create_null(self):
         with self.assertRaises(TypeError):
-            node = pybemo.create("butts")
-
-    def test_exists(self):
-        node = pybemo.create("multiply")
-        self.assertTrue(pybemo.exists(node))
-
-
-    # def test_uninitialisedFunc(self):
-    #     with self.assertRaises(RuntimeError):
-    #         pybemo.create("sum")
-    #     with self.assertRaises(RuntimeError):
-    #         pybemo.ls()
-    #
-    # def test_roundtripFunc(self):
-    #     pybemo.initialise()
-    #     pybemo.terminate()
-    #     with self.assertRaises(RuntimeError):
-    #         pybemo.create("sum")
-
+            pybemo.create("butts")
