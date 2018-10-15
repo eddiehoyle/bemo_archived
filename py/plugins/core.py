@@ -1,9 +1,9 @@
 import pybemo
 
-class PySimpleGraph(pybemo.PyNode):
+class PySimpleGraph(pybemo.BPyDagGraph):
     """"""
 
-    def expand(self):
+    def initialise(self):
         pass
 
 
@@ -13,7 +13,7 @@ def py_PySimpleGraphCreate():
 def py_PySimpleGraphLayout(node_id):
     pass
 
-class PySumNode(pybemo.PyNode):
+class PySumNode(pybemo.BPyDagNode):
     """A node that computes the sum of two values, then sets an output result.
     Inputs:
         value_a (int): The first value.
@@ -21,6 +21,10 @@ class PySumNode(pybemo.PyNode):
     Outputs:
         result (int): The sum total of 'value_a' and 'value_b'.
     """
+
+    def __init__(self):
+        super(PySumNode, self).__init__()
+        print "I'm here in Python!"
 
     def execute(self):
         value_a = self.getInput("valueA")
@@ -54,7 +58,7 @@ def py_PySumNodeLayout(node_id):
                    isRequired=True)
 
 
-class PyEvalNode(pybemo.PyNode):
+class PyEvalNode(pybemo.BPyDagNode):
     """A node that computes the sum of two values, then sets an output result.
     Inputs:
         value_a (int): The first value.
@@ -83,8 +87,14 @@ def py_PyEvalNodeLayout(node_id):
 
 
 def bmo_registerPlugin(plugin_id):
+    print "Registering plugin...", plugin_id
+    # system = pybemo.PluginSystem(plugin_id)
+    # system.setHeader("PyBemoNodes", "Core nodes.", "icons/bemocore_16px.png")
+    # system.registerNode("sum", py_PySumNodeCreate, py_PySumNodeLayout)
+    # system.registerGraph("simple", py_PySimpleGraphCreate, py_PySimpleGraphLayout)
+    # system.registerNode("snippet", py_PyEvalNodeCreate, py_PyEvalNodeLayout)
+
     system = pybemo.PluginSystem(plugin_id)
-    system.setHeader("PyBemoNodes", "Core nodes.", "icons/bemocore_16px.png")
-    system.registerGraph("simple", py_PySimpleGraphCreate, py_PySimpleGraphLayout)
-    system.registerNode("sum", py_PySumNodeCreate, py_PySumNodeLayout)
-    system.registerNode("snippet", py_PyEvalNodeCreate, py_PyEvalNodeLayout)
+    system.registerNode("sum", py_PySumNodeCreate)
+    nodeA = system.create()
+    print nodeA.isValid()
