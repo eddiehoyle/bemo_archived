@@ -5,16 +5,12 @@
 #include <BCore/object/Node.hh>
 
 #include <memory>
+#include "PluginManager.hh"
 
 namespace bemo {
 
 // IKEA
 // Order number: 314376809
-
-class AbstractCreateFuncWrapper {
-public:
-    virtual void* get() = 0;
-};
 
 template< typename F >
 class CreateNodeFuncWrapper : public AbstractCreateFuncWrapper {
@@ -60,31 +56,41 @@ private:
 
 class PluginSystem {
 public:
-    explicit PluginSystem( const ObjectID& id ) : m_id( id ) {}
+    explicit PluginSystem( const ObjectID& id ) : m_id( id ) {
+
+    }
 
     void setHeader( const std::string& name,
                     const std::string& description,
                     const std::string& icon ) {}
 
-    template< typename T >
-    void registerNode( const std::string& name, T fnCreate ) {
+//    template< typename T >
+    void registerNode( const std::string& name, std::function<Object*()> fnCreate ) {
         BMO_ERROR << "registerNode: " << name;
-        m_wrapper = new CreateNodeFuncWrapper< T >( fnCreate );
-
+        registerNode2( name, new CreateNodeFuncWrapper< std::function<Object*()> >( fnCreate ) );
     }
 
     template< typename T >
-    T create() {
-        T fptr = *((T*)m_wrapper->get());
-        return fptr();
+    T* create( const std::string& name ) {
+
+        // TODO:
+        // Fix this, it's crashing when being dereferenced
+        auto f = PluginManager::instance().get(name);
+
+//        auto fptr = *((std::function<Object*()>*)PluginManager::instance().get(name));
+//        BMO_ERROR << "got valid functor: " << ( fptr != nullptr );
+//        return static_cast<T*>( fptr() );
+        return nullptr;
     }
 
 private:
 
-    AbstractCreateFuncWrapper* m_wrapper;
+    std::map< std::string, AbstractCreateFuncWrapper* > m_wrappers;
 
     /// This can be hidden
-    void registerNode( const std::string& name, void* ) {}
+    void registerNode2( const std::string& name, AbstractCreateFuncWrapper* wrapper ) {
+        PluginManager::instance().addWrapper( m_id, name, wrapper );
+    }
 
 //        BMO_NodeManager->addBlueprint( name,
 //                                       new CreateFuncWrapper< C >( fnCreate ),

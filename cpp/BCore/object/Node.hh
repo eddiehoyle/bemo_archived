@@ -9,6 +9,7 @@ class BDagNode : public Object {
 public:
     static constexpr ObjectType OBJECT_TYPE = { ObjectType::Graph };
 public:
+    BDagNode();
     explicit BDagNode( ObjectID id ) : Object( id ) {}
     virtual int execute() = 0;
 };

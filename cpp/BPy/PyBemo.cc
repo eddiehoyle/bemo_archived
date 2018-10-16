@@ -4,6 +4,7 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/functional.h>
 
+#include <BCore/Assert.hh>
 #include <BCore/object/Graph.hh>
 #include <BCore/object/Node.hh>
 #include <BCore/object/ObjectManager.hh>
@@ -11,6 +12,9 @@
 
 namespace py = pybind11;
 using namespace bemo;
+
+class BPyDagNode;
+typedef std::shared_ptr< BPyDagNode > BPyDagNodePtr;
 
 class BPyDagNode : public BDagNode {
 public:
@@ -50,7 +54,7 @@ private:
 };
 
 template< typename T >
-void cpp_deleteObject( std::shared_ptr< T > object ) {
+void cpp_deleteObject( T object ) {
     ObjectManager::instance().release( object->getObjectID() );
 }
 
@@ -69,7 +73,7 @@ void cpp_init() {
     if ( globals.contains( "bmo_registerPlugin" ) ) {
         py::object init = globals[ "bmo_registerPlugin" ];
         if ( py::hasattr( init, "__call__" ) ) {
-            init( ObjectManager::instance().acquire() );
+            init( PluginManager::instance().create() );
         }
     }
 }
@@ -83,34 +87,35 @@ void cpp_init() {
 
 
 
-using FnCreate = std::function< py::object() >;
-using FnLayout = std::function< void( ObjectID ) >;
-
-using FnPyCreate = std::function<std::shared_ptr<BPyDagNode>()>;
+typedef std::function<BPyDagNodePtr()> BPyFnCreateFunctor;
 
 namespace bemo {
 
-//template<>
-//std::shared_ptr< BDagNode > CreateNodeFuncWrapper< FnCreate >::invoke() {
-//    BMO_ERROR << "python intercept";
-//    py::object
-//    return py::cast< std::shared_ptr< BDagNode > >( m_func() );
-//}
-
-
+//template <>
+//BPyDagNode* PluginSystem::create( const std::string& name ) {
+//    AbstractCreateFuncWrapper* absFunc = PluginManager::instance().get(name);
+//    BMO_ASSERT( absFunc )
 //
-//template<>
-//void LayoutFuncWrapper< FnLayout >::invoke( ObjectID id ) {
-//    m_func( id );
+//    if ( absFunc ) {
+////        BPyFnCreateFunctor vptr = *static_cast<BPyFnCreateFunctor*>(absFunc->get());
+////        return vptr();
+//        std::function< Object*() > vptr = *static_cast<std::function< Object*() >*>(absFunc->get());
+////        return BPyDagNodePtr( static_cast< BPyDagNode* >( vptr() ) );
+////        return static_cast< BPyDagNode* >( vptr() );
+//        return nullptr;
+//
+//    }
+//    return nullptr;
 //}
 
-template <>
-std::shared_ptr< BPyDagNode > PluginSystem::create() {
-    BMO_ERROR << "highjacking";
-//    void* vptr = m_wrapper->get();
-    FnPyCreate vptr = *(FnPyCreate*)m_wrapper->get();
-    return vptr();
-}
+//template <>
+//BPyDagNodePtr PluginSystem::create() {
+//    BMO_ERROR << "highjacking: Object*";
+//    std::function< Object*() > vptr = *static_cast<std::function< Object*() >* >(m_wrapper->get());
+//    return nullptr;
+//    return BPyDagNodePtr( dynamic_cast< BPyDagNode* >( vptr() );
+//    return py::cast< py::object >( BPyDagNodePtr( dynamic_cast< BPyDagNode* >( vptr() ) ) );
+//}
 
 }
 
@@ -121,8 +126,10 @@ PYBIND11_MODULE(pybemo, m) {
     py::class_< PluginSystem, std::shared_ptr< PluginSystem > >( m, "PluginSystem" )
             .def( py::init< ObjectID >() )
             .def( "setHeader", &PluginSystem::setHeader )
-            .def( "registerNode", &PluginSystem::registerNode<std::function<std::shared_ptr<BPyDagNode>()>> )
-            .def( "create", &PluginSystem::create<std::shared_ptr< BPyDagNode >> );
+//            .def( "registerNode", &PluginSystem::registerNode<BPyFnCreateFunctor> )
+//            .def( "create", &PluginSystem::create<BPyDagNodePtr> );
+            .def( "registerNode", &PluginSystem::registerNode )
+            .def( "create", &PluginSystem::create<BPyDagNode> );
 
     m.def("init", &cpp_init );
 
@@ -134,19 +141,21 @@ PYBIND11_MODULE(pybemo, m) {
            &cpp_createDag< BPyDagGraph >,
            py::arg("type"), py::arg("name") = "graph1" );
 
-    m.def( "delete", &cpp_deleteObject< BPyDagNode > );
-    m.def( "delete", &cpp_deleteObject< BPyDagGraph > );
+    m.def( "delete", &cpp_deleteObject< BPyDagNode* > );
+    m.def( "delete", &cpp_deleteObject< BPyDagGraph* > );
 
     py::class_<ObjectID>(m, "ObjectID")
             .def(py::init<>())
             .def_static("invalid", &ObjectID::invalid);
 
-    py::class_< BPyDagNode, std::shared_ptr< BPyDagNode > >( m, "BPyDagNode" )
+//    py::class_< BPyDagNode, std::shared_ptr< BPyDagNode > >( m, "BPyDagNode" )
+    py::class_< BPyDagNode >( m, "BPyDagNode" )
             .def(py::init< ObjectID >())
             .def(py::init<>( [](){ return new BPyDagNode( ObjectManager::instance().acquire() ); } ) )
             .def("isValid", &BPyDagNode::isValid );
 
-    py::class_< BPyDagGraph, std::shared_ptr< BPyDagGraph > >( m, "BPyDagGraph" )
+//    py::class_< BPyDagGraph, std::shared_ptr< BPyDagGraph > >( m, "BPyDagGraph" )
+    py::class_< BPyDagGraph >( m, "BPyDagGraph" )
             .def(py::init< ObjectID >())
             .def("isValid", &BPyDagNode::isValid );
 

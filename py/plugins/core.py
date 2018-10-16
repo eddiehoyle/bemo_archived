@@ -96,5 +96,10 @@ def bmo_registerPlugin(plugin_id):
 
     system = pybemo.PluginSystem(plugin_id)
     system.registerNode("sum", py_PySumNodeCreate)
-    nodeA = system.create()
-    print nodeA.isValid()
+
+    # print "-"*100
+    nodeB = system.create("sum")
+    # nodeC = system.create("multiply")
+    # nodeD = system.create("multiply")
+    # print "-"*100
+    # pybemo.delete(nodeA)

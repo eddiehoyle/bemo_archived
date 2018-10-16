@@ -10,6 +10,7 @@ public:
     static constexpr ObjectType OBJECT_TYPE = { ObjectType::Plugin };
 public:
     Plugin() : Object(), m_loaded( false ) {}
+    explicit Plugin( ObjectID id ) : Object( id ) {}
     void load() { m_loaded = true; }
     void unload() { m_loaded = false; }
     bool isLoaded() const { return m_loaded; }
