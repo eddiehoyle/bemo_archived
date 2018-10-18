@@ -13,8 +13,8 @@ PluginManager& PluginManager::instance() {
 
 PluginManager::PluginManager() {
     // TODO: Remove this
-    AbstractCreateFuncWrapper* wrap = new CreateNodeFuncWrapper< std::function< Object*() > >( &multiplyCreate );
-    addWrapper( ObjectID::invalid(), "multiply", wrap );
+//    AbstractCreateFuncWrapper* wrap = new CreateNodeFuncWrapper< std::function< Object*() > >( &multiplyCreate );
+//    addWrapper( ObjectID::invalid(), "multiply", wrap );
 }
 
 }

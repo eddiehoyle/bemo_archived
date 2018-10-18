@@ -5,6 +5,7 @@
 #include <BCore/object/Node.hh>
 
 #include <memory>
+#include <BCore/Assert.hh>
 #include "PluginManager.hh"
 
 namespace bemo {
@@ -64,23 +65,30 @@ public:
                     const std::string& description,
                     const std::string& icon ) {}
 
-//    template< typename T >
-    void registerNode( const std::string& name, std::function<Object*()> fnCreate ) {
+    template< typename T >
+    void registerNode( const std::string& name, std::function<T()> fnCreate ) {
         BMO_ERROR << "registerNode: " << name;
-        registerNode2( name, new CreateNodeFuncWrapper< std::function<Object*()> >( fnCreate ) );
+        registerNode2( name, new CreateNodeFuncWrapper< std::function<T()> >( fnCreate ) );
     }
 
     template< typename T >
-    T* create( const std::string& name ) {
+    T create( const std::string& name ) {
+
+        BMO_ERROR << "trying to create: " << name;
 
         // TODO:
-        // Fix this, it's crashing when being dereferenced
+        BMO_ERROR << "1";
         auto f = PluginManager::instance().get(name);
+        BMO_ERROR << "2";
+        BMO_ASSERT( f != nullptr );
+        auto fptr = *(std::function<T()>*)(f->get());
+        BMO_ERROR << "3";
+        BMO_ASSERT( fptr != nullptr );
 
 //        auto fptr = *((std::function<Object*()>*)PluginManager::instance().get(name));
 //        BMO_ERROR << "got valid functor: " << ( fptr != nullptr );
 //        return static_cast<T*>( fptr() );
-        return nullptr;
+        return fptr();
     }
 
 private:
