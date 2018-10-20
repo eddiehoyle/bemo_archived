@@ -1,4 +1,4 @@
-# import bmo
+import pybemo
 #
 # class PySimpleGraph(pybemo.BPyDagGraph):
 #     """"""
@@ -13,28 +13,28 @@
 # def py_PySimpleGraphLayout(node_id):
 #     pass
 #
-# class PySumNode(pybemo.BPyDagNode):
-#     """A node that computes the sum of two values, then sets an output result.
-#     Inputs:
-#         value_a (int): The first value.
-#         value_b (int): The second value.
-#     Outputs:
-#         result (int): The sum total of 'value_a' and 'value_b'.
-#     """
-#
-#     def __init__(self):
-#         super(PySumNode, self).__init__()
-#         print "I'm here in Python!"
-#
-#     def execute(self):
-#         value_a = self.getInput("valueA")
-#         value_b = self.getInput("valueB")
-#         self.setOutput("result", value_a + value_b)
-#         return 0
-#
-# def py_PySumNodeCreate():
-#     return PySumNode()
-#
+class PySumNode(pybemo.OpenNode):
+    """A node that computes the sum of two values, then sets an output result.
+    Inputs:
+        value_a (int): The first value.
+        value_b (int): The second value.
+    Outputs:
+        result (int): The sum total of 'value_a' and 'value_b'.
+    """
+
+    def __init__(self):
+        super(PySumNode, self).__init__()
+        print "I'm here in Python!"
+
+    def execute(self):
+        value_a = self.getInput("valueA")
+        value_b = self.getInput("valueB")
+        self.setOutput("result", value_a + value_b)
+        return 0
+
+def py_PySumNodeCreate():
+    return PySumNode()
+
 # def py_PySumNodeLayout(node_id):
 #     system = pybemo.NodeSystem(node_id)
 #     system.addHeader("Add two values together.", "icons/SumNode.png")
@@ -86,30 +86,16 @@
 #                    isRequired=True)
 #
 #
-# def bmo_registerPlugin(plugin_id):
-#     print "Registering plugin...", plugin_id
-#     # system = pybemo.PluginSystem(plugin_id)
-#     # system.setHeader("PyBemoNodes", "Core nodes.", "icons/bemocore_16px.png")
-#     # system.registerNode("sum", py_PySumNodeCreate, py_PySumNodeLayout)
-#     # system.registerGraph("simple", py_PySimpleGraphCreate, py_PySimpleGraphLayout)
-#     # system.registerNode("snippet", py_PyEvalNodeCreate, py_PyEvalNodeLayout)
-#
-#     system = pybemo.PluginSystem(plugin_id)
-#     system.registerNode("sum", py_PySumNodeCreate)
-#
-#
-#
-#     # print "-"*100
-#     print "A1"
-#     # nodeB = system.create("sum")
-#     nodeB = test(system)
-#     print pybemo.execute(nodeB)
-#     print "A2"
-#     # nodeC = system.create("multiply")
-#     print "A3"
-#     # nodeD = system.create("multiply")
-#     # print "-"*100
-#     # pybemo.delete(nodeA)
-#
-# def test(system):
-#     return system.create("sum")
+def bmo_registerPlugin(plugin_id):
+    print "Registering plugin...", plugin_id
+    # system = pybemo.PluginSystem(plugin_id)
+    # system.setHeader("pybemoNodes", "Core nodes.", "icons/bemocore_16px.png")
+    # system.registerNode("sum", py_PySumNodeCreate, py_PySumNodeLayout)
+    # system.registerGraph("simple", py_PySimpleGraphCreate, py_PySimpleGraphLayout)
+    # system.registerNode("snippet", py_PyEvalNodeCreate, py_PyEvalNodeLayout)
+
+    system = pybemo.PluginSystem(plugin_id)
+    system.registerNode("sum", py_PySumNodeCreate)
+
+def test(system):
+    return system.create("sum")

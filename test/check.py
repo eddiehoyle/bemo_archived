@@ -4,7 +4,7 @@ import os
 import sys
 sys.path.insert(0, os.path.abspath("../build"))
 
-import bmo
+import pybemo
 
 SNIPPET = r"""
 sys.stdout.write('hi\n')
@@ -12,8 +12,9 @@ sys.stdout.write('hi\n')
 
 def main():
     print "1"
-    bmo.api.init()
-    print bmo.core
+    pybemo.init()
+    sumA = pybemo.create_node("sum")
+    print sumA, sumA.isValid()
     print "1"
 
 

@@ -10,6 +10,7 @@ namespace bemo {
 class AbstractCreateFuncWrapper {
 public:
     virtual void* get() = 0;
+//    virtual std::function< Object*() > get() = 0;
 };
 
 class PluginManager {

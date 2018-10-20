@@ -5,7 +5,6 @@ namespace bemo {
 
 Object::~Object() {
     ObjectManager::instance().release( getObjectID() );
-    BMO_ERROR << "dead";
 }
 
 bool Object::isValid() const {

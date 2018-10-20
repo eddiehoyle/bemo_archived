@@ -13,7 +13,6 @@ ObjectID ObjectManager::acquire() {
 }
 
 void ObjectManager::release( const ObjectID& id ) {
-    BMO_ERROR << "releasing id=" << id;
     m_table.release( id.m_handle );
 }
 

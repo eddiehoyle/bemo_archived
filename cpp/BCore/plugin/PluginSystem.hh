@@ -18,6 +18,7 @@ class CreateNodeFuncWrapper : public AbstractCreateFuncWrapper {
 public:
     explicit CreateNodeFuncWrapper( F func ) : m_func( func ) {}
     void* get() { return static_cast< void* >( &m_func ); }
+//    std::function< F() > get() { return m_func; }
 private:
     F m_func;
 };
@@ -65,10 +66,10 @@ public:
                     const std::string& description,
                     const std::string& icon ) {}
 
-    template< typename T >
-    void registerNode( const std::string& name, std::function<T()> fnCreate ) {
+    template< typename F >
+    void registerNode( const std::string& name, F fnCreate ) {
         BMO_ERROR << "registerNode: " << name;
-        registerNode2( name, new CreateNodeFuncWrapper< std::function<T()> >( fnCreate ) );
+        registerNode2( name, new CreateNodeFuncWrapper< F >( fnCreate ) );
     }
 
     template< typename T >
