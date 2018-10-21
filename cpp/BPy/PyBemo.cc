@@ -126,18 +126,14 @@ namespace bemo {
 
 }
 
-typedef std::function<BPyOpenNode*()> PyFnCreate;
-
-
 std::shared_ptr<BPyNode> cpp_createNode( const std::string& type, const std::string& name ) {
+    AbstractBlueprint* bp = BlueprintManager::instance().get( type );
+    BMO_ASSERT( bp );
+    auto fptr = *(static_cast< std::function<BPyOpenNode*()>* >( bp->getCreate() ));
     BMO_ERROR << "A";
-    auto fptr = *((PyFnCreate*)PluginManager::instance().get(type)->get());
-    BMO_ASSERT( fptr );
+    auto openNodePtr = fptr();
     BMO_ERROR << "B";
-//    BPyOpenNode* openNode = py::cast< BPyOpenNode* >( obj.release() );
-//    BMO_ASSERT( openNode );
-//    BMO_ERROR << "C";
-    return std::shared_ptr<BPyNode>(new BPyNode(fptr()->getObjectID()));
+    return std::shared_ptr<BPyNode>( new BPyNode( openNodePtr->getObjectID() ) );
 }
 
 PYBIND11_MODULE(pybemo, m) {

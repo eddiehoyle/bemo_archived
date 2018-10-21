@@ -14,9 +14,7 @@ def main():
     print "1"
     pybemo.init()
     sumA = pybemo.create_node("sum")
-    print sumA, sumA.isValid()
-    print "1"
-
+    print "Sum node: %s is valid: %s" % (sumA, sumA.isValid())
 
 if __name__ == '__main__':
     main()

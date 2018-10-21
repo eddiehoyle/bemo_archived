@@ -7,9 +7,8 @@ namespace bemo {
 
 class BDagGraph : public Object {
 public:
-    static constexpr ObjectType OBJECT_TYPE = { ObjectType::Node };
+    static constexpr ObjectType OBJECT_TYPE = { ObjectType::kGraph };
 public:
-    explicit BDagGraph( ObjectID id ) : Object( id ) {}
     virtual void initialise() = 0;
 };
 

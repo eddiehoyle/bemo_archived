@@ -21,8 +21,9 @@ void py_genSystem( py::module& m ) {
     py_coreGenPluginSystem( m );
 }
 
-typedef std::function<BPyOpenNode*()> PyFnCreate;
-typedef std::function<void(ObjectID)> PyFnLayout;
+//typedef std::function<BPyOpenNode*()> PyFnCreate;
+//typedef std::function<py::object()> PyFnCreate;
+//typedef std::function<void(ObjectID)> PyFnLayout;
 
 //typedef std::function<void(ObjectID)> PyFnLayout;
 //typedef std::function<py::object()> PyFnCreate;
@@ -32,7 +33,7 @@ void py_coreGenPluginSystem( py::module& m ) {
     py::class_< PluginSystem, std::shared_ptr< PluginSystem > >( m, "PluginSystem" )
             .def( py::init< ObjectID >() )
             .def( "setHeader", &PluginSystem::setHeader )
-            .def( "registerNode", &PluginSystem::registerNode<PyFnCreate> );
+            .def( "registerNode", &PluginSystem::registerNode<BPyOpenNode*> );
 //            .def( "create", []( PluginSystem* self, const std::string& name ) {
 //                return std::shared_ptr< BDagNode >( self->create< BDagNode* >( name ) );
 //            } );

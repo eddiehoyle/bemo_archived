@@ -3,6 +3,6 @@
 
 namespace bemo {
 
-BDagNode::BDagNode() : Object( ObjectManager::instance().acquire() ) {}
+BDagNode::BDagNode() : Object( OBJECT_TYPE ) {}
 
 }
