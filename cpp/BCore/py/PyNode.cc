@@ -30,5 +30,7 @@ void py_genNode( py::module& m ) {
 
     py::class_< BPyNode, std::shared_ptr< BPyNode > >( m, "Node" )
             .def(py::init< ObjectID >() )
+            .def("__eq__", &BPyNode::operator== )
+            .def("getObjectID", &BPyNode::getObjectID )
             .def("isValid", &BPyNode::isValid );
 }

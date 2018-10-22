@@ -9,8 +9,11 @@
 #include <BCore/Assert.hh>
 #include <BCore/object/Graph.hh>
 #include <BCore/object/Node.hh>
+#include <BCore/object/NodeManager.hh>
 #include <BCore/object/ObjectManager.hh>
 #include <BCore/plugin/PluginSystem.hh>
+
+#include <sstream>
 
 namespace py = pybind11;
 using namespace bemo;
@@ -69,6 +72,7 @@ void cpp_init() {
 
 void py_genNode( py::module& );
 void py_genSystem( py::module& );
+void py_genEnum( py::module& );
 
 
 
@@ -127,13 +131,16 @@ namespace bemo {
 }
 
 std::shared_ptr<BPyNode> cpp_createNode( const std::string& type, const std::string& name ) {
-    AbstractBlueprint* bp = BlueprintManager::instance().get( type );
-    BMO_ASSERT( bp );
-    auto fptr = *(static_cast< std::function<BPyOpenNode*()>* >( bp->getCreate() ));
-    BMO_ERROR << "A";
-    auto openNodePtr = fptr();
-    BMO_ERROR << "B";
-    return std::shared_ptr<BPyNode>( new BPyNode( openNodePtr->getObjectID() ) );
+    ObjectID id = NodeManager::instance().create( type, name );
+    return std::shared_ptr<BPyNode>( new BPyNode( id ) );
+}
+
+std::vector<std::shared_ptr<BPyNode>> cpp_ls() {
+    std::vector<std::shared_ptr<BPyNode>> nodes;
+    for ( auto node : NodeManager::instance().list() ) {
+        nodes.push_back( std::shared_ptr<BPyNode>( new BPyNode( node->getObjectID() ) ) );
+    }
+    return nodes;
 }
 
 PYBIND11_MODULE(pybemo, m) {
@@ -142,10 +149,14 @@ PYBIND11_MODULE(pybemo, m) {
 
     py_genNode( m );
     py_genSystem( m );
+    py_genEnum( m );
 
     m.def( "create_node",
            &cpp_createNode,
            py::arg("type"), py::arg("name") = "node1" );
+
+    m.def( "ls",
+            &cpp_ls );
 //
 //    m.def("execute", []( BDagNode* nodePtr )->int {
 //        return nodePtr->execute();
@@ -161,6 +172,11 @@ PYBIND11_MODULE(pybemo, m) {
 //
     py::class_<ObjectID>(m, "ObjectID")
             .def(py::init<>())
+            .def("__repr__", [](ObjectID* id){
+                std::stringstream ss;
+                ss << *id;
+                return ss.str();
+            })
             .def_static("invalid", &ObjectID::invalid);
 
 

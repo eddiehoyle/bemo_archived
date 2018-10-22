@@ -8,6 +8,23 @@
 
 namespace bemo {
 
+enum class PlugDirectionPolicy {
+    Input,
+    Output,
+    Ambiguous,
+};
+
+enum class PlugCastPolicy {
+    Strict,
+    Similar,
+    Anything,
+};
+
+enum class PlugAccessPolicy {
+    Single,
+    Multiple,
+};
+
 class NodeSystem {
 public:
     explicit NodeSystem( const ObjectID& id ) : m_id( id ) {}

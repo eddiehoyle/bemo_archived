@@ -8,8 +8,7 @@ ObjectManager& ObjectManager::instance() {
 }
 
 ObjectID ObjectManager::acquire() {
-    ObjectID obj( m_table.acquire() );
-    return obj;
+    return ObjectID( m_table.acquire() );
 }
 
 void ObjectManager::release( const ObjectID& id ) {

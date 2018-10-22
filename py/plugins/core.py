@@ -35,27 +35,28 @@ class PySumNode(pybemo.OpenNode):
 def py_PySumNodeCreate():
     return PySumNode()
 
-# def py_PySumNodeLayout(node_id):
-#     system = pybemo.NodeSystem(node_id)
-#     system.addHeader("Add two values together.", "icons/SumNode.png")
-#     system.addPlug("valueA",
-#                    pybemo.PlugDirectionPolicy.Input,
-#                    pybemo.PlugAccessPolicy.Single,
-#                    pybemo.PlugCastPolicy.Anything,
-#                    pybemo.VariantType.Long,
-#                    isRequired=True)
-#     system.addPlug("valueB",
-#                    pybemo.PlugDirectionPolicy.Input,
-#                    pybemo.PlugAccessPolicy.Single,
-#                    pybemo.PlugCastPolicy.Anything,
-#                    pybemo.VariantType.Long,
-#                    isRequired=True)
-#     system.addPlug("result",
-#                    pybemo.PlugDirectionPolicy.Output,
-#                    pybemo.PlugAccessPolicy.Single,
-#                    pybemo.PlugCastPolicy.Anything,
-#                    pybemo.VariantType.Long,
-#                    isRequired=True)
+def py_PySumNodeLayout(node_id):
+    print "Layout 'PySumNode' node:", node_id
+    system = pybemo.NodeSystem(node_id)
+    system.setHeader("PySum", "Add two values together.", "icons/SumNode.png")
+    system.addPlug("valueA",
+                   pybemo.PlugDirectionPolicy.Input,
+                   pybemo.PlugAccessPolicy.Single,
+                   pybemo.PlugCastPolicy.Anything,
+                   pybemo.VariantType.Long,
+                   isRequired=True)
+    system.addPlug("valueB",
+                   pybemo.PlugDirectionPolicy.Input,
+                   pybemo.PlugAccessPolicy.Single,
+                   pybemo.PlugCastPolicy.Anything,
+                   pybemo.VariantType.Long,
+                   isRequired=True)
+    system.addPlug("result",
+                   pybemo.PlugDirectionPolicy.Output,
+                   pybemo.PlugAccessPolicy.Single,
+                   pybemo.PlugCastPolicy.Anything,
+                   pybemo.VariantType.Long,
+                   isRequired=True)
 #
 #
 # class PyEvalNode(pybemo.BPyDagNode):
@@ -82,7 +83,7 @@ def py_PySumNodeCreate():
 #                    pybemo.PlugDirectionPolicy.Input,
 #                    pybemo.PlugAccessPolicy.Single,
 #                    pybemo.PlugCastPolicy.Anything,
-#                    pybemo.VariantType.String,
+#                    pybemo.VariantType.Strin\g,
 #                    isRequired=True)
 #
 #
@@ -95,7 +96,7 @@ def bmo_registerPlugin(plugin_id):
     # system.registerNode("snippet", py_PyEvalNodeCreate, py_PyEvalNodeLayout)
 
     system = pybemo.PluginSystem(plugin_id)
-    system.registerNode("sum", py_PySumNodeCreate)
+    system.registerNode("sum", py_PySumNodeCreate, py_PySumNodeLayout)
 
 def test(system):
     return system.create("sum")

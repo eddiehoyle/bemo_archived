@@ -25,7 +25,7 @@ public:
     }
 };
 
-Object* multiplyCreate() {
+BDagNode* multiplyCreate() {
     return new MultiplyNode();
 }
 

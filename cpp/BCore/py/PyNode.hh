@@ -30,6 +30,10 @@ public:
     explicit BPyNode( bemo::ObjectID id );
     ~BPyNode();
     bool isValid() const;
+    bemo::ObjectID getObjectID() const { return m_id; }
+    bool operator==( const BPyNode* node) const {
+        return node->getObjectID() == m_id;
+    }
 private:
     bemo::ObjectID m_id;
 };

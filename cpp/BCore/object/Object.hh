@@ -24,11 +24,15 @@ public:
     Object() : m_objectID( ObjectID::invalid() ), m_objectType( kNull ) {}
     explicit Object( ObjectType type ) : m_objectID( ObjectID::invalid() ), m_objectType( type ) {}
     virtual ~Object();
+
     bool isValid() const;
+
     ObjectID getObjectID() const { return m_objectID; }
     ObjectType getObjectType() const { return m_objectType; }
     std::string getType() const { return m_type; }
     std::string getName() const { return m_name; }
+
+    void setName( const std::string& name ) { m_name = name; }
 protected:
     explicit Object( ObjectID id, ObjectType type ) : m_objectID( id ), m_objectType( type ) {}
 private:

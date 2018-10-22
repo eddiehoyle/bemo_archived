@@ -9,12 +9,22 @@ import pybemo
 SNIPPET = r"""
 sys.stdout.write('hi\n')
 """
+sumA = None
+sumB = None
+
+def testA():
+    global sumA, sumB
+    sumA = pybemo.create_node("sum")
+    sumB = pybemo.create_node("sum")
 
 def main():
     print "1"
     pybemo.init()
-    sumA = pybemo.create_node("sum")
-    print "Sum node: %s is valid: %s" % (sumA, sumA.isValid())
+    # sumA = pybemo.create_node("sum")
+    testA()
+    nodes = pybemo.ls()
+    print "Nodes:", len(nodes)
+    print "IDs:", sumA.getObjectID(), sumB.getObjectID()
 
 if __name__ == '__main__':
     main()

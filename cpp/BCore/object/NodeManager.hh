@@ -1,7 +1,14 @@
 #ifndef BEMO_NODEMANAGER_HH
 #define BEMO_NODEMANAGER_HH
 
+#include <vector>
+
 #include "Node.hh"
+
+#include <pybind11/stl.h>
+#include <pybind11/eval.h>
+#include <pybind11/pybind11.h>
+#include <pybind11/functional.h>
 
 namespace bemo {
 
@@ -12,7 +19,9 @@ public:
     NodeManager(NodeManager const&) = delete;
     void operator=(NodeManager const&) = delete;
 public:
-    BDagNode* create(const std::string& type, const std::string& name);
+    ObjectID create(const std::string& type, const std::string& name);
+    BDagNode* find(ObjectID id) const;
+    std::vector<BDagNode*> list() const;
 private:
     NodeManager() {}
     std::vector<BDagNode*> m_nodes;

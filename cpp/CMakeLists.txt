@@ -1,31 +1,21 @@
-set(TARGET_PYLIB_API pybemo)
-set(TARGET_CORELIB corebemo)
-set(TARGET_UI appbemo)
+set(TARGET_LIBBEMO pybemo)
 set(BMO_LOGGING_ENABLED true)
+set(BMO_ASSERT_ENABLED true)
 
 include_directories(.)
 
 file(GLOB_RECURSE LIBBEMO_SOURCES BCore/*.cc)
 file(GLOB_RECURSE LIBBEMO_HEADERS BCore/*.hh)
-file(GLOB_RECURSE PYBEMO_API_SOURCES BPy/*.cc)
-file(GLOB_RECURSE PYBEMO_API_HEADERS BPy/*.hh)
-#file(GLOB_RECURSE UIBEMO_SOURCES BUI/*.cc)
-#file(GLOB_RECURSE UIBEMO_HEADERS BUI/*.hh)
 
-add_library(${TARGET_CORELIB} SHARED ${LIBBEMO_SOURCES} ${LIBBEMO_HEADERS})
-target_compile_definitions(${TARGET_CORELIB} PUBLIC
+pybind11_add_module(${TARGET_LIBBEMO} ${LIBBEMO_SOURCES} ${LIBBEMO_HEADERS})
+target_compile_definitions(${TARGET_LIBBEMO}
+        PUBLIC
         BMO_LOGGING_ENABLED=${BMO_LOGGING_ENABLED}
-        BMO_ASSERT_ENABLED=1
+        BMO_ASSERT_ENABLED=${BMO_ASSERT_ENABLED}
         )
 
-pybind11_add_module(${TARGET_PYLIB_API} ${PYBEMO_API_SOURCES} ${PYBEMO_API_HEADERS})
-
-target_link_libraries(${TARGET_PYLIB_API} PRIVATE ${TARGET_CORELIB})
-
-add_custom_command(TARGET ${TARGET_PYLIB_API} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${TARGET_PYLIB_API}> ${PYTHON_DIST_DIR})
-add_custom_command(TARGET ${TARGET_CORELIB}  POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${TARGET_CORELIB}> ${PYTHON_DIST_DIR})
+add_custom_command(TARGET ${TARGET_LIBBEMO} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${TARGET_LIBBEMO}> ${PYTHON_DIST_DIR})
 
 ## Qt5
 #set(CMAKE_PREFIX_PATH $ENV{HOME}/Qt/5.7/clang_64/lib/cmake ${CMAKE_PREFIX_PATH} )
@@ -35,6 +25,6 @@ add_custom_command(TARGET ${TARGET_CORELIB}  POST_BUILD
 #
 #add_executable(${TARGET_UI} ${UIBEMO_SOURCES})
 #target_link_libraries(${TARGET_UI} PRIVATE
-#        ${TARGET_CORELIB} pybind11::embed Qt5::Widgets)
+#        ${TARGET_LIBBEMO} pybind11::embed Qt5::Widgets)
 #
-#add_dependencies(${TARGET_UI} ${TARGET_PYLIB_API} ${TARGET_CORELIB})
+#add_dependencies(${TARGET_UI} ${TARGET_PYLIB_API} ${TARGET_LIBBEMO})

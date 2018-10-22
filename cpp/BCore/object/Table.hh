@@ -38,7 +38,9 @@ public:
             m_indices.push_back( index );
         }
 
-        return Handle( index | m_versions[index] << Handle::NUM_INDEX_BITS );
+        typename Handle::NumericType t = index | m_versions[index] << Handle::NUM_INDEX_BITS;
+        BMO_ERROR << "Acquired=" << t;
+        return Handle( t );
     }
 
     void release( Handle handle ) {
