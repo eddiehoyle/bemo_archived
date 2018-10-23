@@ -21,10 +21,7 @@ def main():
     print "1"
     pybemo.init()
     # sumA = pybemo.create_node("sum")
-    testA()
-    nodes = pybemo.ls()
-    print "Nodes:", len(nodes)
-    print "IDs:", sumA.getObjectID(), sumB.getObjectID()
+    multA = pybemo.create_node("multiply")
 
 if __name__ == '__main__':
     main()

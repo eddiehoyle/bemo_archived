@@ -1,11 +1,10 @@
 #include "Node.hh"
-#include "ObjectManager.hh"
+#include "BCore/object/ObjectManager.hh"
 
 namespace bemo {
 
 BDagNode::BDagNode() : m_objectID( ObjectID::invalid() ),
-                       m_objectType( ObjectType::kNull ),
-                       m_name( "null" ),
+                       m_name( "invalid" ),
                        m_type( "null" ) {}
 
 BDagNode::~BDagNode() { ObjectManager::instance().release( getObjectID() ); }

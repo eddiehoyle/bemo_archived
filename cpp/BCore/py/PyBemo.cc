@@ -8,66 +8,22 @@
 
 #include <BCore/Assert.hh>
 #include <BCore/object/Graph.hh>
-#include <BCore/object/Node.hh>
-#include <BCore/object/NodeManager.hh>
+#include <BCore/node/Node.hh>
+#include <BCore/node/NodeManager.hh>
 #include <BCore/object/ObjectManager.hh>
 #include <BCore/plugin/PluginSystem.hh>
 
 #include <sstream>
+#include <BCore/node/MultiplyNode.hh>
 
 namespace py = pybind11;
 using namespace bemo;
-//
-//class BPyDagGraph : public BDagGraph {
-//public:
-//    explicit BPyDagGraph( ObjectID id ) : BDagGraph( id ) { BMO_ERROR << "ctor=" << (void*)this; }
-////    BPyDagGraph() : BDagGraph( ObjectID::invalid() ) { BMO_ERROR << "ctor=" << (void*)this; }
-//    virtual ~BPyDagGraph() { BMO_ERROR << "dtor=" << (void*)this; }
-//    void initialise() override {
-//        PYBIND11_OVERLOAD_PURE(
-//                void,
-//                BPyDagGraph,
-//                initialise(),
-//        );
-//    }
-//};
-//
-///// An object that wraps a DAG object
-//class BPyDagObject {
-//public:
-//    explicit BPyDagObject( ObjectID id ) : m_objectID( id ){}
-//    ObjectID getObjectID() const { return m_objectID; }
-//private:
-//    ObjectID m_objectID;
-//};
-//
-//template< typename T >
-//void cpp_deleteObject( T object ) {
-//    ObjectManager::instance().release( object->getObjectID() );
-//}
-//
-//template< typename T >
-//std::shared_ptr< T > cpp_createDag( const std::string& type, const std::string& name ) {
-//    return std::shared_ptr< T >( new T( ObjectManager::instance().acquire() ) );
-//}
 
 void cpp_init() {
-
-    const std::string modulePath = "/Users/eddiehoyle/Code/cpp/bemo/py/plugins/core.py";
-
-    py::object scope = py::module::import( "__main__" ).attr( "__dict__" );
-    py::eval_file( modulePath, scope );
-    py::dict globals = scope.cast< py::dict >();
-    if ( globals.contains( "bmo_registerPlugin" ) ) {
-        py::object init = globals[ "bmo_registerPlugin" ];
-        if ( py::hasattr( init, "__call__" ) ) {
-            init( PluginManager::instance().create() );
-        }
-    }
+    NodeRegistry::instance().add( "multiply",
+                                  multiplyCreate,
+                                  multiplyLayout);
 }
-
-
-
 
 
 void py_genNode( py::module& );
@@ -75,64 +31,8 @@ void py_genSystem( py::module& );
 void py_genEnum( py::module& );
 
 
-
-
-//typedef std::function<BPyDagNodePtr()> BPyFnCreateFunctor;
-
-namespace bemo {
-
-//template <>
-//BPyDagNode* PluginSystem::create( const std::string& name ) {
-//    AbstractCreateFuncWrapper* absFunc = PluginManager::instance().get(name);
-//    BMO_ASSERT( absFunc )
-//
-//    if ( absFunc ) {
-////        BPyFnCreateFunctor vptr = *static_cast<BPyFnCreateFunctor*>(absFunc->get());
-////        return vptr();
-//        std::function< Object*() > vptr = *static_cast<std::function< Object*() >*>(absFunc->get());
-////        return BPyDagNodePtr( static_cast< BPyDagNode* >( vptr() ) );
-////        return static_cast< BPyDagNode* >( vptr() );
-//        return nullptr;
-//
-//    }
-//    return nullptr;
-//}
-
-//template <>
-//BPyDagNodePtr PluginSystem::create( const std::string& name ) {
-//    BMO_ERROR << "highjacking: BPyDagNodePtr";
-//    auto f = PluginManager::instance().get(name);
-//    BMO_ASSERT( f != nullptr );
-//
-//    // Python
-//    BPyFnCreateFunctor fptr = *(BPyFnCreateFunctor*)(f->get());
-//    BMO_ASSERT( fptr != nullptr );
-//    BPyDagNodePtr r = fptr();
-//
-//    // C++
-////    auto fptr = *(std::function<Object*()>*)(f->get());
-////    BMO_ASSERT( fptr != nullptr );
-////    BPyDagNodePtr r = BPyDagNodePtr( dynamic_cast< BPyDagNode* >( fptr() ) );
-//
-//    return nullptr;
-//}
-
-//template <>
-//Object* PluginSystem::create( const std::string& name ) {
-//    BMO_ERROR << "highjacking: Object*";
-////    auto f = PluginManager::instance().get(name);
-////    BMO_ASSERT( f != nullptr );
-////    auto fptr = *(std::function<BPyDagNodePtr()>*)(f->get());
-////    BMO_ASSERT( fptr != nullptr );
-////    BPyDagNodePtr r = fptr();
-//    return nullptr;
-//}
-
-}
-
 std::shared_ptr<BPyNode> cpp_createNode( const std::string& type, const std::string& name ) {
-    ObjectID id = NodeManager::instance().create( type, name );
-    return std::shared_ptr<BPyNode>( new BPyNode( id ) );
+    return std::shared_ptr<BPyNode>( new BPyNode( NodeManager::instance().create( type, name ) ) );
 }
 
 std::vector<std::shared_ptr<BPyNode>> cpp_ls() {

@@ -2,8 +2,8 @@
 #define BEMO_NODEREGISTRYSYSTEM_HH
 
 #include <BCore/object/ObjectManager.hh>
-#include <BCore/object/NodeRegistry.hh>
-#include <BCore/object/NodeManager.hh>
+#include <BCore/node/NodeRegistry.hh>
+#include <BCore/node/NodeManager.hh>
 #include <BCore/Assert.hh>
 #include <string>
 
@@ -30,25 +30,21 @@ enum class PlugAccessPolicy {
 
 class NodeSystem {
 public:
-    explicit NodeSystem( ObjectID id ) : m_id( id ) {}
-    bool isValid() const { return ObjectManager::instance().exists(m_id); }
+    explicit NodeSystem( ObjectID id );
+    bool isValid() const;
 
     void setHeader( const std::string& name,
                     const std::string& description,
-                    const std::string& icon ) {}
+                    const std::string& icon );
 
-    void setBlueprint( FnCreate fnCreate, FnLayout fnLayout ) {
-        BDagNode* node = NodeManager::instance().find( m_id );
-        BMO_ASSERT(node);
-        NodeRegistry::instance().add( node->getType(), fnCreate, fnLayout );
-    }
+    void setBlueprint( FnCreate fnCreate, FnLayout fnLayout );
 
     void addPlug( const std::string& name,
                   PlugDirectionPolicy direction,
                   PlugAccessPolicy access,
                   PlugCastPolicy cast,
                   VariantType type,
-                  bool isRequired = false ) {}
+                  bool isRequired = false );
 private:
     ObjectID m_id;
 

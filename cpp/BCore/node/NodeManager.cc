@@ -23,6 +23,7 @@ ObjectID NodeManager::create( const std::string& type, const std::string& name )
     py::object obj = bp->create();
     BDagNode* node = py::cast< BDagNode* >( obj.release() );
     node->m_objectID = ObjectManager::instance().acquire();
+    node->m_type = type;
     node->setName( name );
     bp->layout(node->getObjectID());
     m_nodes.push_back( node );
@@ -34,7 +35,7 @@ BDagNode* NodeManager::find( ObjectID id ) const {
                               m_nodes.end(),
                               [&id]( BDagNode* node ) {
                                   return node->getObjectID() == id;
-                              } );
+                              });
     return iter != m_nodes.end() ? *iter : nullptr;
 }
 

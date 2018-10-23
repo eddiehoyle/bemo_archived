@@ -96,6 +96,7 @@ def bmo_registerPlugin(plugin_id):
     # system.registerNode("snippet", py_PyEvalNodeCreate, py_PyEvalNodeLayout)
 
     system = pybemo.PluginSystem(plugin_id)
+    system.setHeader("pybemo Core nodes", "Core nodes.", "icons/bemocore_16px.png")
     system.registerNode("sum", py_PySumNodeCreate, py_PySumNodeLayout)
 
 def test(system):

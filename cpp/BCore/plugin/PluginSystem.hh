@@ -2,12 +2,12 @@
 #define BEMO_PLUGINSYSTEM_HH
 
 #include <BCore/object/ObjectID.hh>
-#include <BCore/object/Node.hh>
-#include <BCore/object/NodeRegistry.hh>
+#include <BCore/node/Node.hh>
+#include <BCore/node/NodeRegistry.hh>
 
 #include <memory>
 #include <BCore/Assert.hh>
-#include <BCore/object/NodeManager.hh>
+#include <BCore/node/NodeManager.hh>
 #include "PluginManager.hh"
 
 namespace bemo {

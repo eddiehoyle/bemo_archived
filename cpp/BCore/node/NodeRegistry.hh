@@ -5,11 +5,10 @@
 #include <BCore/object/ObjectID.hh>
 #include <map>
 
-
-#include "../../../ext/pybind11/include/pybind11/stl.h"
-#include "../../../ext/pybind11/include/pybind11/eval.h"
-#include "../../../ext/pybind11/include/pybind11/pybind11.h"
-#include "../../../ext/pybind11/include/pybind11/functional.h"
+#include <pybind11/stl.h>
+#include <pybind11/eval.h>
+#include <pybind11/pybind11.h>
+#include <pybind11/functional.h>
 
 namespace bemo {
 
@@ -17,7 +16,7 @@ typedef std::function< pybind11::object() > FnCreate;
 typedef std::function< void( ObjectID ) > FnLayout;
 
 struct Blueprint {
-    explicit Blueprint(FnCreate create, FnLayout layout) : create(create), layout(layout) {}
+    explicit Blueprint(FnCreate create, FnLayout layout) : create(std::move(create)), layout(std::move(layout)) {}
     FnCreate create;
     FnLayout layout;
 };
@@ -44,7 +43,7 @@ public:
 
 
 private:
-    NodeRegistry() {}
+    NodeRegistry();
     std::map< std::string, Blueprint* > m_blueprints;
 };
 

@@ -8,7 +8,7 @@
 //#include <BCore/managers/PluginManager.hh>
 //#include <BCore/managers/NodeManager.hh>
 #include <BCore/object/AbstractNode.hh>
-#include <BCore/object/Node.hh>
+#include <BCore/node/Node.hh>
 #include <BCore/store/SumNode.hh>
 #include <BCore/store/SnippetNode.hh>
 

@@ -2,7 +2,7 @@
 
 #include "../Common.hh"
 
-#include <BCore/object/Node.hh>
+#include <BCore/node/Node.hh>
 
 using namespace bemo;
 
