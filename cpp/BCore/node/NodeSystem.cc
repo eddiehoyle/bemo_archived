@@ -9,7 +9,7 @@ NodeSystem::NodeSystem( ObjectID id )
 }
 
 bool NodeSystem::isValid() const {
-    ObjectManager::instance().exists( m_id );
+    return ObjectManager::instance().exists( m_id );
 }
 
 void NodeSystem::setHeader( const std::string& name,

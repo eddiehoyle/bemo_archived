@@ -26,4 +26,4 @@ include_directories(${BMO_INCLUDE_DIR})
 
 add_subdirectory(ext)
 add_subdirectory(cpp)
-add_subdirectory(test)
+#add_subdirectory(test)
