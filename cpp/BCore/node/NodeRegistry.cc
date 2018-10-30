@@ -7,6 +7,8 @@ NodeRegistry& NodeRegistry::instance() {
     return mgr;
 }
 
-NodeRegistry::NodeRegistry() {}
+NodeRegistry::NodeRegistry() {
+
+}
 
 }

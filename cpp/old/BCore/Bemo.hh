@@ -3,7 +3,7 @@
 
 namespace bemo {
 
-class NodeManager;
+class WorkspaceManager;
 class PlugManager;
 class GraphManager;
 class PluginManager;
@@ -12,7 +12,7 @@ class ConnectionManager;
 class EventHandler;
 class DagManager;
 
-extern NodeManager* BMO_NodeManager;
+extern WorkspaceManager* BMO_NodeManager;
 extern PlugManager* BMO_PlugManager;
 extern GraphManager* BMO_GraphManager;
 extern PluginManager* BMO_PluginManager;

@@ -51,4 +51,7 @@ void multiplyLayout( ObjectID nodeID ) {
                  false );
 }
 
+//void REGISTER_NODE("multiply", multiplyCreate, multiplyLayout)
+//NodeRegistry::instance().add("multiply", multiplyCreate, multiplyLayout);
+
 }

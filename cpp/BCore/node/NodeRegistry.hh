@@ -12,6 +12,11 @@
 
 namespace bemo {
 
+#ifndef REGISTER_NODE
+#define REGISTER_NODE(name, create, layout)         \
+    NodeRegistry::instance().add( name, create, layout);
+#endif
+
 typedef std::function< pybind11::object() > FnCreate;
 typedef std::function< void( ObjectID ) > FnLayout;
 

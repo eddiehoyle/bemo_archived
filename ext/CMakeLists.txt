@@ -1,2 +1,3 @@
+add_subdirectory(jsoncpp)
 add_subdirectory(pybind11)
 add_subdirectory(googletest)

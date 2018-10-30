@@ -23,22 +23,17 @@ set_target_properties(${TARGET_LIBBEMO} PROPERTIES
 
 pybind11_add_module(${TARGET_PYBEMO} SHARED ${PYBEMO_SOURCES} ${PYBEMO_HEADERS})
 
-target_link_libraries(${TARGET_CLIBEMO} PRIVATE ${TARGET_LIBBEMO})
-target_link_libraries(${TARGET_PYBEMO} PRIVATE ${TARGET_LIBBEMO})
+target_link_libraries(${TARGET_CLIBEMO} PUBLIC ${TARGET_LIBBEMO})
+target_link_libraries(${TARGET_PYBEMO} PUBLIC ${TARGET_LIBBEMO})
 
 foreach(target ${TARGET_CLIBEMO} ${TARGET_LIBBEMO} ${TARGET_PYBEMO})
     target_compile_definitions(${target}
             PUBLIC
             BMO_LOGGING_ENABLED=${BMO_LOGGING_ENABLED}
             BMO_ASSERT_ENABLED=${BMO_ASSERT_ENABLED})
+    add_custom_command(TARGET ${target} POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${target}> ${PYTHON_DIST_DIR})
 endforeach(target)
-
-add_custom_command(TARGET ${TARGET_CLIBEMO} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${TARGET_CLIBEMO}> ${PYTHON_DIST_DIR})
-add_custom_command(TARGET ${TARGET_PYBEMO} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${TARGET_PYBEMO}> ${PYTHON_DIST_DIR})
-#add_custom_command(TARGET ${TARGET_PYBEMO} POST_BUILD
-#        COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${TARGET_PYBEMO}> ${PYTHON_DIST_DIR})
 
 ## Qt5
 #set(CMAKE_PREFIX_PATH $ENV{HOME}/Qt/5.7/clang_64/lib/cmake ${CMAKE_PREFIX_PATH} )

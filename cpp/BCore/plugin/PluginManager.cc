@@ -19,7 +19,20 @@ PluginManager& PluginManager::instance() {
 }
 
 PluginManager::PluginManager() {
+    BMO_ERROR << "init pluginmanager";
+    const std::string modulePath = "/Users/eddiehoyle/Code/cpp/bemo/py/plugins/core.py";
 
+    py::object scope = py::module::import( "__main__" ).attr( "__dict__" );
+    BMO_ERROR << "A";
+    py::eval_file( modulePath, scope );
+    py::dict globals = scope.cast< py::dict >();
+    if ( globals.contains( "bmo_registerPlugin" ) ) {
+        py::object init = globals[ "bmo_registerPlugin" ];
+        if ( py::hasattr( init, "__call__" ) ) {
+            init( create() );
+            BMO_ERROR << "initialised plugin";
+        }
+    }
 
 
 }
