@@ -1,11 +1,21 @@
 #include "Workspace.hh"
+#include "WorkspaceManager.hh"
 
 #include <BCore/node/NodeManager.hh>
 #include <BCore/object/ObjectManager.hh>
+#include <BCore/workspace/WorkspaceManager.hh>
 
 namespace py = pybind11;
 
 namespace bemo {
+
+ObjectID Workspace::create() {
+    return WorkspaceManager::instance().create();
+}
+
+Workspace::Workspace()
+    : m_objectID( ObjectID::invalid() ),
+      m_tasks() {}
 
 bool Workspace::isValid() const {
     return ObjectManager::instance().exists( getObjectID() );

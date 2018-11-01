@@ -21,7 +21,7 @@ public:
     WorkspaceManager(WorkspaceManager const&) = delete;
     void operator=(WorkspaceManager const&) = delete;
 public:
-    ObjectID create(const std::string& type, const std::string& name);
+    ObjectID create();
     Workspace* find(ObjectID id) const;
 private:
     WorkspaceManager() {}

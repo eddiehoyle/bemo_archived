@@ -6,9 +6,17 @@
 
 namespace bemo {
 
+class WorkspaceManager;
+
 class Workspace {
+
+    friend class WorkspaceManager;
+
 public:
-    Workspace() = default;
+    static ObjectID create();
+
+public:
+    Workspace();
     ~Workspace() = default;
 
     bool isValid() const;
@@ -21,8 +29,6 @@ public:
 
 private:
     std::vector< ObjectID > m_tasks;
-    ObjectID m_id;
-
     ObjectID m_objectID;
     std::string m_type;
 };

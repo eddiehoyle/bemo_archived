@@ -13,18 +13,11 @@ WorkspaceManager& WorkspaceManager::instance() {
     return mgr;
 }
 
-ObjectID WorkspaceManager::create( const std::string& type, const std::string& name ) {
-//    auto bp = NodeRegistry::instance().find(type);
-//    BMO_ASSERT(bp != nullptr);
-//    py::object obj = bp->create();
-//    BDagNode* node = py::cast< BDagNode* >( obj.release() );
-//    node->m_objectID = ObjectManager::instance().acquire();
-//    node->m_type = type;
-//    node->setName( name );
-//    bp->layout(node->getObjectID());
-//    m_workspaces.push_back( node );
-//    return m_workspaces.back()->getObjectID();
-    return ObjectID::invalid();
+ObjectID WorkspaceManager::create() {
+    Workspace* workspace = new Workspace();
+    workspace->m_objectID = ObjectManager::instance().acquire();
+    m_workspaces.emplace_back( workspace );
+    return workspace->getObjectID();
 }
 
 Workspace* WorkspaceManager::find( ObjectID id ) const {

@@ -44,6 +44,7 @@ void cpp_init() {
 void py_genNode( py::module& );
 void py_genSystem( py::module& );
 void py_genEnum( py::module& );
+void py_genWorkspace( py::module& );
 
 
 std::shared_ptr<BPyNode> cpp_createNode( const std::string& type, const std::string& name ) {
@@ -65,6 +66,7 @@ PYBIND11_MODULE(pybemo, m) {
     py_genNode( m );
     py_genSystem( m );
     py_genEnum( m );
+    py_genWorkspace( m );
 
     m.def( "create_node",
            &cpp_createNode,

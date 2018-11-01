@@ -27,6 +27,7 @@ public:
 
 class BPyNode {
 public:
+    static std::shared_ptr<BPyNode> create( const std::string& type, const std::string& name );
     explicit BPyNode( bemo::ObjectID id );
     ~BPyNode();
     bool isValid() const;

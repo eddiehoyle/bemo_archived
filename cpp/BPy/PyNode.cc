@@ -1,7 +1,6 @@
 
 #include "PyNode.hh"
 
-
 using namespace bemo;
 namespace py = pybind11;
 
@@ -17,6 +16,10 @@ int BPyOpenNode::execute() {
 
 BPyNode::BPyNode( ObjectID id ) : m_id( id ) { BMO_ERROR << "ctor=" << (void*)this; }
 BPyNode::~BPyNode() { BMO_ERROR << "dtor=" << (void*)this; }
+std::shared_ptr<BPyNode> BPyNode::create( const std::string& type, const std::string& name ) {
+    BPyNode* node = new BPyNode( NodeManager::instance().create( type, name ) );
+    return std::shared_ptr< BPyNode >( node );
+}
 bool BPyNode::isValid() const { return ObjectManager::instance().exists( m_id ); }
 
 void py_genNode( py::module& m ) {
@@ -30,6 +33,7 @@ void py_genNode( py::module& m ) {
 
     py::class_< BPyNode, std::shared_ptr< BPyNode > >( m, "Node" )
             .def(py::init< ObjectID >() )
+            .def_static("create", &BPyNode::create )
             .def("__eq__", &BPyNode::operator== )
             .def("getObjectID", &BPyNode::getObjectID )
             .def("isValid", &BPyNode::isValid );

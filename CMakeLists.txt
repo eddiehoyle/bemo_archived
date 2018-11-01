@@ -5,10 +5,11 @@ project(bemo)
 #include(GNUInstallDirs)
 
 set(CMAKE_CXX_STANDARD 11)
-
-
 set(TARGET_DIR ${CMAKE_SOURCE_DIR}/build)
 set(PYTHON_DIST_DIR ${TARGET_DIR})
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+
+add_definitions(-Wno-deprecated-register)
 
 #set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${TARGET_DIR})
 #set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${TARGET_DIR})

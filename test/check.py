@@ -19,9 +19,9 @@ def testA():
 
 def main():
     print "1"
-    pybemo.init()
-    sumA = pybemo.create_node("sum")
-    multA = pybemo.create_node("multiply")
+    ws = pybemo.Workspace.create()
+    print ws
+
 
 if __name__ == '__main__':
     main()
