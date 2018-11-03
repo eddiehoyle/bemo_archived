@@ -17,9 +17,9 @@ int BPyOpenNode::execute() {
 BPyNode::BPyNode( ObjectID id ) : m_id( id ) { BMO_ERROR << "ctor=" << (void*)this; }
 BPyNode::~BPyNode() { BMO_ERROR << "dtor=" << (void*)this; }
 std::shared_ptr<BPyNode> BPyNode::create( const std::string& type, const std::string& name ) {
-    BPyNode* node = new BPyNode( NodeManager::instance().create( type, name ) );
-    return std::shared_ptr< BPyNode >( node );
+    return std::shared_ptr< BPyNode >( new BPyNode( NodeManager::instance().create( type, name ) ) );
 }
+
 bool BPyNode::isValid() const { return ObjectManager::instance().exists( m_id ); }
 
 void py_genNode( py::module& m ) {

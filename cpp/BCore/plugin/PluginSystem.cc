@@ -3,7 +3,6 @@
 namespace bemo {
 
 
-//
 //void PluginSystem::registerNode( const std::string& name,
 //                                 CreateFuncWrapper fnCreate,
 //                                 LayoutFuncWrapper fnLayout ) {

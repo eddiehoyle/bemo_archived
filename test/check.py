@@ -18,9 +18,9 @@ def testA():
     sumB = pybemo.create_node("sum")
 
 def main():
-    print "1"
     ws = pybemo.Workspace.create()
-    print ws
+    sumA = pybemo.Node.create("sum", "sum1")
+    sumB = pybemo.Node.create("sum", "sum2")
 
 
 if __name__ == '__main__':
